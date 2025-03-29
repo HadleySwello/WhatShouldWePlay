@@ -51,10 +51,10 @@ const useBoardGameGeekCollection = () => {
       setError(null);
 
       // Optionally load from local storage first (commented out):
-      // const cached = await AsyncStorage.getItem('bggCollection');
-      // if (cached) {
-      //   setGames(JSON.parse(cached));
-      // }
+      const cached = await AsyncStorage.getItem('bggCollection');
+      if (cached) {
+        setGames(JSON.parse(cached));
+      }
 
       const data = await fetchCollection();
       const items = data?.items?.item || [];
@@ -84,8 +84,6 @@ const useBoardGameGeekCollection = () => {
           playersMin: minPlayers,
           playersMax: maxPlayers,
           complexity: parseComplexity(item), // optional
-          setupCost: 'low',    // not in snippet, if you truly need real data, you'd do a second call
-          footprint: 'medium', // same note as above
           length: parseLength(item), // from stats.@_playingtime or yearpublished
           color: '#ec7e1f',    // again, not in snippet, but you said you want it
           image: item.image || '',

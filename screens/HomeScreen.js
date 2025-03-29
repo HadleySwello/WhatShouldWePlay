@@ -6,31 +6,32 @@ import {
   Button,
   View,
   TouchableOpacity,
-  Modal,
+  ActivityIndicator
 } from 'react-native';
 
 import colors from '../helpers/colors';
-import games from '../helpers/games';
 import SpinnerScreen from './SpinnerScreen';
+import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 
 const HomeScreen = ({ navigation }) => {
   const [playerCount, setPlayerCount] = useState(2);
   const [complexity, setComplexity] = useState([]);
-  const [setupCost, setSetupCost] = useState([]);
-  const [footprint, setFootprint] = useState([]);
   const [gameLength, setGameLength] = useState([]);
-  const [selectedGames, setSelectedGames] = useState([]);
-  const [filteredGames, setFilteredGames] = useState([]);
+  const [filteredGames, setFilteredGames] = useState([]); 
   const [gameVotes, setGameVotes] = useState({});
   const [showSpinner, setShowSpinner] = useState(false);
   const [winner, setWinner] = useState(null);
 
-  // {"Ascension": 0, "Harry Potter Duel": 0, "Hogwarts Battle": 0, "King of Tokyo": 0, "Sparkle Kitty": 0, "Wingspan": 0}
+  // 1) Pull your BGG games from the custom hook
+  const { games, isLoading, error } = useBoardGameGeekCollection();
+  // For debugging, show one example
+  console.log('Example game object:', games[0]);
+
+  // 2) Build the participants array for the spinner
   const participants = Object.entries(gameVotes)
-    .flatMap(([game, votes]) => Array(votes).fill(game));
+    .flatMap(([gameName, votes]) => Array(votes).fill(gameName));
 
-  console.log(participants)
-
+  // 3) Toggle checkboxes for complexity or gameLength
   const toggleSelection = (value, state, setState) => {
     if (state.includes(value)) {
       setState(state.filter((item) => item !== value));
@@ -39,29 +40,29 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  // 4) Filter logic
   const handleSubmit = () => {
+    // Filter the BGG "games" array (already shaped from your hook)
     const results = games.filter((game) => {
       const matchesPlayerCount =
         playerCount >= game.playersMin && playerCount <= game.playersMax;
+
       const matchesComplexity =
         complexity.length > 0 ? complexity.includes(game.complexity) : true;
-      const matchesSetupCost =
-        setupCost.length > 0 ? setupCost.includes(game.setupCost) : true;
-      const matchesFootprint =
-        footprint.length > 0 ? footprint.includes(game.footprint) : true;
+
       const matchesLength =
         gameLength.length > 0 ? gameLength.includes(game.length) : true;
 
       return (
         matchesPlayerCount &&
         matchesComplexity &&
-        matchesSetupCost &&
-        matchesFootprint &&
         matchesLength
       );
     });
+
     setFilteredGames(results);
 
+    // 5) Initialize votes for just the filtered set
     const initialVotes = results.reduce((acc, game) => {
       acc[game.name] = 0;
       return acc;
@@ -69,11 +70,10 @@ const HomeScreen = ({ navigation }) => {
     setGameVotes(initialVotes);
   };
 
+  // 6) Reset entire filter state + gameVotes
   const resetForm = () => {
     setPlayerCount(2);
     setComplexity([]);
-    setSetupCost([]);
-    setFootprint([]);
     setGameLength([]);
     setFilteredGames([]);
     setGameVotes({});
@@ -81,40 +81,57 @@ const HomeScreen = ({ navigation }) => {
 
   const handleVote = (gameName, change) => {
     setGameVotes((prevVotes) => {
-      const updatedVotes = { ...prevVotes };
-      const newVoteCount = (updatedVotes[gameName] || 0) + change;
-      updatedVotes[gameName] = Math.max(newVoteCount, 0); // Prevent negative votes
-      return updatedVotes;
+      const updated = { ...prevVotes };
+      const totalVotes = Object.values(updated).reduce((sum, v) => sum + v, 0);
+  
+      const currentGameVotes = updated[gameName] || 0;
+      const newGameVotes = currentGameVotes + change;
+  
+      const newTotalVotes = totalVotes - currentGameVotes + newGameVotes;
+  
+      // If adding a vote would exceed the player count, skip it
+      if (change > 0 && newTotalVotes > playerCount) {
+        return updated; // no changes
+      }
+  
+      // Otherwise, allow the vote, but never go below 0
+      updated[gameName] = Math.max(newGameVotes, 0);
+      return updated;
     });
   };
+  
 
+  // 8) Tally the total votes
   const totalVotes = Object.values(gameVotes).reduce((sum, votes) => sum + votes, 0);
 
-  const openSpinner = () => {
-    setShowSpinner(true);
-  };
+  // 9) Spinner logic
+  const openSpinner = () => setShowSpinner(true);
+  const closeSpinner = () => setShowSpinner(false);
 
-  const closeSpinner = () => {
-    setShowSpinner(false);
-  };
+  // 10) Loading / Error states for BGG data
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.tintMain} />
+        <Text style={styles.infoText}>Loading your collection...</Text>
+      </View>
+    );
+  }
 
-  const Checkbox = ({ label, value, state, setState }) => (
-    <TouchableOpacity
-      onPress={() => toggleSelection(value, state, setState)}
-      style={[
-        styles.checkboxContainer,
-        state.includes(value) && styles.checkboxSelected,
-      ]}
-    >
-      <Text style={styles.checkboxText}>{label}</Text>
-    </TouchableOpacity>
-  );
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>Error: {error}</Text>
+      </View>
+    );
+  }
 
+  // 11) Return the main UI
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Find Your Perfect Game</Text>
-      <Text style={styles.value}>Selected: {playerCount} Players</Text>
+      <Text style={styles.title}>Select Your Options</Text>
 
+      {/* Player Count Checkboxes */}
       <Text style={styles.label}>Number of Players</Text>
       <View style={styles.checkboxGroup}>
         {[...Array(10)].map((_, i) => (
@@ -131,106 +148,36 @@ const HomeScreen = ({ navigation }) => {
         ))}
       </View>
 
+      {/* Complexity Checkboxes */}
       <Text style={styles.label}>Complexity</Text>
       <View style={styles.checkboxGroup}>
-        <Checkbox
-          label="Low"
-          value="low"
-          state={complexity}
-          setState={setComplexity}
-        />
-        <Checkbox
-          label="Medium"
-          value="medium"
-          state={complexity}
-          setState={setComplexity}
-        />
-        <Checkbox
-          label="High"
-          value="high"
-          state={complexity}
-          setState={setComplexity}
-        />
+        <Checkbox label="Low" value="low" state={complexity} setState={setComplexity} />
+        <Checkbox label="Medium" value="medium" state={complexity} setState={setComplexity} />
+        <Checkbox label="High" value="high" state={complexity} setState={setComplexity} />
       </View>
 
-      <Text style={styles.label}>Setup Cost</Text>
-      <View style={styles.checkboxGroup}>
-        <Checkbox
-          label="Low"
-          value="low"
-          state={setupCost}
-          setState={setSetupCost}
-        />
-        <Checkbox
-          label="Medium"
-          value="medium"
-          state={setupCost}
-          setState={setSetupCost}
-        />
-        <Checkbox
-          label="High"
-          value="high"
-          state={setupCost}
-          setState={setSetupCost}
-        />
-      </View>
-
-      <Text style={styles.label}>Game Footprint Size</Text>
-      <View style={styles.checkboxGroup}>
-        <Checkbox
-          label="Small"
-          value="small"
-          state={footprint}
-          setState={setFootprint}
-        />
-        <Checkbox
-          label="Medium"
-          value="medium"
-          state={footprint}
-          setState={setFootprint}
-        />
-        <Checkbox
-          label="Large"
-          value="large"
-          state={footprint}
-          setState={setFootprint}
-        />
-      </View>
-
+      {/* Game Length Checkboxes */}
       <Text style={styles.label}>Game Length</Text>
       <View style={styles.checkboxGroup}>
-        <Checkbox
-          label="Under 30 Minutes"
-          value="under 30 min"
-          state={gameLength}
-          setState={setGameLength}
-        />
-        <Checkbox
-          label="Under 1 Hour"
-          value="under 1 hour"
-          state={gameLength}
-          setState={setGameLength}
-        />
-        <Checkbox
-          label="Under 2 Hours"
-          value="under 2 hours"
-          state={gameLength}
-          setState={setGameLength}
-        />
-        <Checkbox
-          label="Long"
-          value="long"
-          state={gameLength}
-          setState={setGameLength}
-        />
+        <Checkbox label="Under 30 Minutes" value="under 30 min" state={gameLength} setState={setGameLength} />
+        <Checkbox label="Under 1 Hour" value="under 1 hour" state={gameLength} setState={setGameLength} />
+        <Checkbox label="Under 2 Hours" value="under 2 hours" state={gameLength} setState={setGameLength} />
+        <Checkbox label="Long" value="long" state={gameLength} setState={setGameLength} />
       </View>
 
       <Button title="Submit" onPress={handleSubmit} color={colors.tintMain} />
-      <Button title="Reset" onPress={resetForm} color={colors.tintSecondary} />
+      <Button title="Reset" onPress={resetForm} color={colors.textSecondary} />
 
+      {/* Display Filtered Games with Voting */}
+      <Text style={styles.title}>Game List</Text>
       {filteredGames.map((game) => (
-        <View key={game.name} style={styles.gameItem}>
+        <View key={game.id} style={styles.gameItem}>
           <Text style={styles.gameText}>{game.name}</Text>
+          <Text style={styles.gameDetails}>
+            {game.playersMin}-{game.playersMax} players | {game.length} | Complexity: {game.complexity}
+          </Text>
+
+          {/* Voting UI */}
           <View style={styles.voteContainer}>
             <TouchableOpacity
               onPress={() => handleVote(game.name, -1)}
@@ -241,26 +188,16 @@ const HomeScreen = ({ navigation }) => {
             <Text style={styles.voteCount}>{gameVotes[game.name] || 0}</Text>
             <TouchableOpacity
               onPress={() => handleVote(game.name, 1)}
-              style={[
-                styles.voteButton,
-                totalVotes < playerCount ? null : styles.voteButtonDisabled,
-              ]}
-              disabled={totalVotes >= playerCount}
+              style={styles.voteButton}
             >
-              <Text
-                style={[
-                  styles.voteText,
-                  totalVotes >= playerCount ? styles.voteTextDisabled : null,
-                ]}
-              >
-                +
-              </Text>
+              <Text style={styles.voteText}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
       ))}
 
-      {totalVotes === playerCount && (
+      {/* Condition to show Spin button if votes match playerCount */}
+      {totalVotes === playerCount && filteredGames.length > 0 && (
         <Button
           title="Spin the Spinner!"
           onPress={openSpinner}
@@ -268,6 +205,7 @@ const HomeScreen = ({ navigation }) => {
         />
       )}
 
+      {/* Popup Spinner Screen */}
       <SpinnerScreen 
         showSpinner={showSpinner} 
         closeSpinner={closeSpinner} 
@@ -277,6 +215,25 @@ const HomeScreen = ({ navigation }) => {
     </ScrollView>
   );
 };
+
+/** Reusable checkbox component */
+const Checkbox = ({ label, value, state, setState }) => (
+  <TouchableOpacity
+    onPress={() => {
+      if (state.includes(value)) {
+        setState(state.filter((item) => item !== value));
+      } else {
+        setState([...state, value]);
+      }
+    }}
+    style={[
+      styles.checkboxContainer,
+      state.includes(value) && styles.checkboxSelected,
+    ]}
+  >
+    <Text style={styles.checkboxText}>{label}</Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -313,10 +270,10 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   checkboxSelected: {
-    backgroundColor: colors.tintMain,
+    backgroundColor: colors.tintSecondary,
   },
   checkboxText: {
-    color: colors.textMain,
+    color: colors.textSpecial,
   },
   gameItem: {
     padding: 10,
@@ -329,6 +286,12 @@ const styles = StyleSheet.create({
   gameText: {
     color: colors.textMain,
     fontSize: 18,
+  },
+  gameDetails: {
+    color: colors.textSecondary,
+    fontSize: 14,
+    marginTop: 4,
+    textAlign: 'center',
   },
   voteContainer: {
     flexDirection: 'row',
@@ -348,6 +311,18 @@ const styles = StyleSheet.create({
   voteCount: {
     color: colors.textMain,
     fontSize: 18,
+  },
+  infoText: {
+    marginTop: 10,
+    color: colors.textSecondary,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  errorText: {
+    marginTop: 10,
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
