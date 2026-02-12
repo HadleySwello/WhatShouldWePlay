@@ -10,7 +10,7 @@ A Board Game Decision Tool — A React Native (Expo) app for **iOS** (and eventu
 - **Filter** — Narrow by number of players (1–10), complexity (low/medium/high), and game length (e.g. under 30 min, under 1 hour, under 2 hours, long).
 - **Vote** — Each player adds or removes votes on games from the filtered list. Total votes must equal the number of players.
 - **Spin** — When votes match the player count, a “Spin the Spinner!” button appears. The wheel shows the voted games and picks one at random.
-- **Game list** — The “Game History” tab shows your full owned collection from BGG.
+- **Game list** — The “My Games” tab shows your full owned collection from BGG.
 
 ## Development
 

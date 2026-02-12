@@ -30,7 +30,7 @@ export default function Navigation() {
         })}
       >
         <Tab.Screen name="Play A Game!" component={HomeScreen} />
-        <Tab.Screen name="Game History" component={RankingsScreen} />
+        <Tab.Screen name="My Games" component={RankingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

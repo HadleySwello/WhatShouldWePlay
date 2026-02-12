@@ -3,6 +3,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { XMLParser } from 'fast-xml-parser';
 
+import seedGames from '../data/seedGames';
+import * as userGamesStorage from '../helpers/userGamesStorage';
+
 const BGG_API_BASE = 'https://boardgamegeek.com/xmlapi2';
 const USERNAME = 'doink1212';
 const parser = new XMLParser({ ignoreAttributes: false });
@@ -46,69 +49,73 @@ const useBoardGameGeekCollection = () => {
   const [error, setError] = useState(null);
 
   const loadData = async () => {
+    setLoading(true);
+    setError(null);
+
+    let sourceGames = [];
     try {
-      setLoading(true);
-      setError(null);
-
-      // Optionally load from local storage first (commented out):
-      const cached = await AsyncStorage.getItem('bggCollection');
-      if (cached) {
-        setGames(JSON.parse(cached));
-      }
-
       const data = await fetchCollection();
       const items = data?.items?.item || [];
 
-      console.log('Raw item example:', items[0]); // confirm shape
-
-      // Convert each raw item from the snippet into your final shape
-      const newGames = items.map((item) => {
-        // 'name' is an object with "#text"
+      sourceGames = items.map((item) => {
         const rawName = item.name;
         const gameName =
           typeof rawName === 'object'
-            ? rawName['#text'] // e.g. "7 Wonders"
+            ? rawName['#text']
             : rawName || 'Unknown Game';
 
-        // 'stats' has attributes for minplayers, maxplayers, etc.
         const minPlayers = parseInt(item.stats?.['@_minplayers'] || '1', 10);
         const maxPlayers = parseInt(item.stats?.['@_maxplayers'] || '1', 10);
-
-        // 'rating' is in item.stats.rating['@_value'] if it exists
         const ratingValue = item.stats?.rating?.['@_value'] || null;
 
-        // Finally build the shape you want
         return {
           id: item['@_objectid'] || '(no id)',
           name: gameName,
           playersMin: minPlayers,
           playersMax: maxPlayers,
-          complexity: parseComplexity(item), // optional
-          length: parseLength(item), // from stats.@_playingtime or yearpublished
-          color: '#ec7e1f',    // again, not in snippet, but you said you want it
+          complexity: parseComplexity(item),
+          length: parseLength(item),
+          color: '#ec7e1f',
           image: item.image || '',
           thumbnail: item.thumbnail || '',
           yearPublished: item.yearpublished || 'N/A',
-          rating: ratingValue, // or parse more deeply from item.stats.rating
+          rating: ratingValue,
         };
       });
 
-      console.log('Final first item:', newGames[0]);
-
-      setGames(newGames);
-      await AsyncStorage.setItem('bggCollection', JSON.stringify(newGames));
+      setError(null);
+      await AsyncStorage.setItem('bggCollection', JSON.stringify(sourceGames));
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      sourceGames = seedGames;
+      setError(null);
     }
+
+    const userGames = await userGamesStorage.getUserGames();
+    const combined = sourceGames.concat(userGames);
+    setGames(combined);
+    setLoading(false);
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  return { games, isLoading, error, reload: loadData };
+  const addUserGame = (game) => {
+    return userGamesStorage.addUserGame(game).then(() => loadData());
+  };
+
+  const removeUserGame = (gameId) => {
+    return userGamesStorage.removeUserGame(gameId).then(() => loadData());
+  };
+
+  return {
+    games,
+    isLoading,
+    error,
+    reload: loadData,
+    addUserGame,
+    removeUserGame,
+  };
 };
 
 /** optional: parse the complexity from "averageweight", if you see it in "stats.rating.averageweight" */
