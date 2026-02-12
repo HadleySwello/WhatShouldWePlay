@@ -1,6 +1,6 @@
-# Board Game Roulette
+# What Should We Play?
 
-A React Native (Expo) app for **iOS** (and eventually other platforms) that helps you pick a board game from your [BoardGameGeek](https://boardgamegeek.com/) collection. Filter by player count, complexity, and length; vote as a group; then spin a wheel to choose the game.
+A Board Game Decision Tool — A React Native (Expo) app for **iOS** (and eventually other platforms) that helps you pick a board game from your [BoardGameGeek](https://boardgamegeek.com/) collection. Filter by player count, complexity, and length; vote as a group; then spin a wheel to choose the game.
 
 **Distribution:** Built for release on the App Store. Users will get the app from the store—they do not run this repo directly. BGG account connection will be handled **in-app** (e.g. a form to link your BoardGameGeek account); that flow is planned for a future release.
 
