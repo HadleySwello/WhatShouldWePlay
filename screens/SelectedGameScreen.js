@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import ConfettiCannon from 'react-native-confetti-cannon';
+import { Confetti } from '../components/ConfettiCelebration';
 import colors from '../helpers/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -32,12 +32,11 @@ export default function SelectedGameScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.confettiLayer} pointerEvents="none">
-        <ConfettiCannon
+        <Confetti
           count={200}
-          origin={{ x: SCREEN_WIDTH / 2, y: SCREEN_HEIGHT / 2 }}
-          explosionSpeed={350}
-          fallSpeed={5000}
-          autoStart
+          width={SCREEN_WIDTH}
+          height={SCREEN_HEIGHT}
+          fallDuration={12000}
         />
       </View>
 
