@@ -9,6 +9,7 @@ import HomeScreen from './HomeScreen';
 import RankingsScreen from './RankingsScreen';
 import WizardScreen from './WizardScreen';
 import ResultsScreen from './ResultsScreen';
+import SelectedGameScreen from './SelectedGameScreen';
 import colors from '../helpers/colors';
 
 const Stack = createNativeStackNavigator();
@@ -69,6 +70,11 @@ export default function Navigation() {
           name="Results"
           component={ResultsScreen}
           options={{ title: 'Your Options' }}
+        />
+        <Stack.Screen
+          name="SelectedGame"
+          component={SelectedGameScreen}
+          options={{ title: 'Selected Game' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

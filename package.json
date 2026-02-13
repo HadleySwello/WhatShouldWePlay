@@ -26,6 +26,7 @@
     "fast-xml-parser": "^4.5.1",
     "react": "18.3.1",
     "react-native": "0.76.9",
+    "react-native-confetti-cannon": "^1.5.2",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-lucky-wheel": "^0.2.2",
     "react-native-picker": "^4.3.7",

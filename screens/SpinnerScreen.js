@@ -14,6 +14,7 @@ export default function SpinnerScreen({
   closeSpinner,
   participants,
   onBackToList,
+  onPlayThis,
 }) {
   const [winner, setWinner] = useState(null);
   const [spinKey, setSpinKey] = useState(0);
@@ -32,6 +33,14 @@ export default function SpinnerScreen({
     (onBackToList || closeSpinner)();
   };
 
+  const handlePlayThis = () => {
+    if (onPlayThis && winner) {
+      onPlayThis(winner);
+    } else {
+      handleBackToList();
+    }
+  };
+
   const slices = participants && participants.length > 0 ? participants : ['No games'];
 
   return (
@@ -44,7 +53,7 @@ export default function SpinnerScreen({
             <View style={styles.buttonRow}>
               <TouchableOpacity
                 style={styles.primaryButton}
-                onPress={handleBackToList}
+                onPress={handlePlayThis}
               >
                 <Text style={styles.primaryButtonText}>Play This</Text>
               </TouchableOpacity>

@@ -16,7 +16,7 @@ function initialVotes(games) {
   }, {});
 }
 
-export default function ResultsScreen({ route }) {
+export default function ResultsScreen({ route, navigation }) {
   const { filteredGames = [], playerCount = 2 } = route.params || {};
   const [showSpinner, setShowSpinner] = useState(false);
   const [gameVotes, setGameVotes] = useState(() => initialVotes(filteredGames));
@@ -120,6 +120,11 @@ export default function ResultsScreen({ route }) {
         closeSpinner={() => setShowSpinner(false)}
         participants={participants}
         onBackToList={() => setShowSpinner(false)}
+        onPlayThis={(winnerName) => {
+          setShowSpinner(false);
+          const game = filteredGames.find((g) => g.name === winnerName);
+          navigation.navigate('SelectedGame', { game: game ?? null });
+        }}
       />
     </View>
   );
