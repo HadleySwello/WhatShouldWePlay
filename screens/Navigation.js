@@ -1,59 +1,76 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import SplashScreen from './SplashScreen';
+import ConnectBGGScreen from './ConnectBGGScreen';
 import HomeScreen from './HomeScreen';
 import RankingsScreen from './RankingsScreen';
-import colors from '../helpers/colors'; // Default import for colors
+import WizardScreen from './WizardScreen';
+import ResultsScreen from './ResultsScreen';
+import colors from '../helpers/colors';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const styles = StyleSheet.create({
+  headerStyle: {
+    backgroundColor: colors.backgroundMain,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.tintMain,
+  },
+  headerTitleStyle: {
+    color: colors.textMain,
+    fontSize: 20,
+  },
+});
+
+const screenOptions = {
+  headerStyle: styles.headerStyle,
+  headerTitleStyle: styles.headerTitleStyle,
+  headerTitleAlign: 'center',
+  headerTintColor: colors.tintMain,
+  contentStyle: { backgroundColor: colors.backgroundMain },
+};
 
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarStyle: styles.tabBar,
-          tabBarLabelStyle: styles.tabLabel,
-          tabBarIcon: ({ color, size }) => {
-            const iconName = route.name === 'Play A Game!' ? 'dice-five' : 'book';
-            return <FontAwesome5 name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: colors.tintMain, // Gold for active tab
-          tabBarInactiveTintColor: colors.textSecondary, // Black for inactive tabs
-          headerStyle: styles.headerStyle,
-          headerTitleStyle: styles.headerTitleStyle,
-          headerTitleAlign: 'center',
-          headerTintColor: colors.tintMain, // Gold for back button or icons
-        })}
+      <Stack.Navigator
+        initialRouteName="Splash"
+        screenOptions={screenOptions}
       >
-        <Tab.Screen name="Play A Game!" component={HomeScreen} />
-        <Tab.Screen name="My Games" component={RankingsScreen} />
-      </Tab.Navigator>
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ConnectBGG"
+          component={ConnectBGGScreen}
+          options={{ title: 'Connect Your Collection' }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MyGames"
+          component={RankingsScreen}
+          options={{ title: 'My Games' }}
+        />
+        <Stack.Screen
+          name="Wizard"
+          component={WizardScreen}
+          options={{ title: 'Choose a Game' }}
+        />
+        <Stack.Screen
+          name="Results"
+          component={ResultsScreen}
+          options={{ title: 'Your Options' }}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: colors.backgroundMain, // Main background color
-    borderTopWidth: 1,
-    borderTopColor: colors.tintMain, // Gold border for tab bar
-  },
-  tabLabel: {
-    fontSize: 14,
-    fontFamily: 'Arial',
-    color: colors.textMain, // Default text color
-  },
-  headerStyle: {
-    backgroundColor: colors.backgroundMain, // Main header background
-    borderBottomWidth: 1,
-    borderBottomColor: colors.tintMain, // Gold border for header
-  },
-  headerTitleStyle: {
-    color: colors.textMain, // Main text color for header
-    fontSize: 20,
-  },
-});

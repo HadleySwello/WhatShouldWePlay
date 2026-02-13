@@ -1,59 +1,147 @@
-import { Button, StyleSheet, Text, View, Modal } from 'react-native';
-
-import colors from '../helpers/colors';
+import React, { useState } from 'react';
+import {
+  Modal,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import Spinner from '../components/Spinner';
+import colors from '../helpers/colors';
 
-export default function SpinnerScreen({showSpinner, closeSpinner, winner, participants}) {
-  const handleWinner = (winner) => {
-    console.log('The winner is:', winner);
+export default function SpinnerScreen({
+  showSpinner,
+  closeSpinner,
+  participants,
+  onBackToList,
+}) {
+  const [winner, setWinner] = useState(null);
+  const [spinKey, setSpinKey] = useState(0);
+
+  const handleSpinningEnd = (w) => {
+    setWinner(w);
   };
 
-  const slices = [
-    { text: 'Wingspan', color: '#FFD700' },
-    { text: 'King of Tokyo', color: '#3E1F47' },
-    { text: 'Ascension', color: '#144552' },
-    { text: 'Sparkle Kitty', color: '#4D194D' },
-  ];
-  
+  const handleSpinAgain = () => {
+    setWinner(null);
+    setSpinKey((k) => k + 1);
+  };
+
+  const handleBackToList = () => {
+    setWinner(null);
+    (onBackToList || closeSpinner)();
+  };
+
+  const slices = participants && participants.length > 0 ? participants : ['No games'];
 
   return (
     <Modal visible={showSpinner} animationType="slide" transparent={true}>
-    <View style={styles.modalContainer}>
-      <Text style={styles.title}>Spin the Wheel!</Text>
-
-      <Spinner slices={participants} onSpinningEnd={handleWinner} />
-
-      <Button title="Close" onPress={closeSpinner} color={colors.tintMain} />
-      {winner && (
-        <View style={styles.winnerContainer}>
-          <Text style={styles.winnerText}>Winner:</Text>
-          <Text style={styles.winnerValue}>{winner}</Text>
-        </View>
-      )}
-    </View>
-  </Modal>
+      <View style={styles.modalContainer}>
+        {winner ? (
+          <View style={styles.celebration}>
+            <Text style={styles.celebrationTitle}>You're playing</Text>
+            <Text style={styles.winnerValue}>{winner}</Text>
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={styles.primaryButton}
+                onPress={handleBackToList}
+              >
+                <Text style={styles.primaryButtonText}>Play This</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.secondaryButton}
+                onPress={handleSpinAgain}
+              >
+                <Text style={styles.secondaryButtonText}>Spin Again</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.textButton}
+                onPress={handleBackToList}
+              >
+                <Text style={styles.textButtonText}>Back to List</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <>
+            <Text style={styles.title}>Spin the Wheel!</Text>
+            <Spinner
+              key={spinKey}
+              slices={slices}
+              onSpinningEnd={handleSpinningEnd}
+            />
+          </>
+        )}
+      </View>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-    modalContainer: {
-      flex: 1,
-      backgroundColor: colors.backgroundMain,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    },
-    winnerContainer: {
-      marginTop: 20,
-      alignItems: 'center',
-    },
-    winnerText: {
-      fontSize: 18,
-      color: colors.textMain,
-    },
-    winnerValue: {
-      fontSize: 20,
-      color: colors.tintMain,
-      fontWeight: 'bold',
-    },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: colors.backgroundMain,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 22,
+    color: colors.textMain,
+    marginBottom: 16,
+  },
+  celebration: {
+    alignItems: 'center',
+  },
+  celebrationTitle: {
+    fontSize: 18,
+    color: colors.textSecondary,
+    marginBottom: 8,
+  },
+  winnerValue: {
+    fontSize: 26,
+    color: colors.tintMain,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  buttonRow: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  primaryButton: {
+    backgroundColor: colors.tintMain,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    marginBottom: 12,
+  },
+  primaryButtonText: {
+    fontSize: 18,
+    color: colors.backgroundMain,
+    fontWeight: '600',
+  },
+  secondaryButton: {
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.tintMain,
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    marginBottom: 12,
+  },
+  secondaryButtonText: {
+    fontSize: 16,
+    color: colors.tintMain,
+  },
+  textButton: {
+    paddingVertical: 12,
+  },
+  textButtonText: {
+    fontSize: 16,
+    color: colors.textSecondary,
+  },
 });

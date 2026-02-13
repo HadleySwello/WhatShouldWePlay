@@ -15,29 +15,33 @@ import colors from '../helpers/colors';
 const { width } = Dimensions.get('window');
 const WHEEL_SIZE = width * 0.8;
 
-const Spinner = ({ slices }) => {
+const Spinner = ({ slices, onSpinningEnd }) => {
   const [winner, setWinner] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const spinDuration = 5000;
 
   const NUM_SECTIONS = slices.length;
-  const anglePerSection = 360 / NUM_SECTIONS;
+  const anglePerSection = NUM_SECTIONS > 0 ? 360 / NUM_SECTIONS : 360;
 
   const spinWheel = () => {
+    if (NUM_SECTIONS === 0) return;
     const winningIndex = Math.floor(Math.random() * NUM_SECTIONS);
-    const extraSpins = 5; // Number of full rotations
+    const extraSpins = 5;
     const finalAngle =
       360 - (winningIndex * anglePerSection + anglePerSection / 2) + extraSpins * 360;
-  
+
     animatedValue.setValue(0);
-    
+    setWinner(null);
+
     Animated.timing(animatedValue, {
       toValue: finalAngle,
       duration: spinDuration,
       useNativeDriver: true,
       easing: Easing.out(Easing.cubic),
     }).start(() => {
-      setWinner(slices[winningIndex]);
+      const w = slices[winningIndex];
+      setWinner(w);
+      if (onSpinningEnd) onSpinningEnd(w);
     });
   };
 
@@ -113,7 +117,9 @@ const Spinner = ({ slices }) => {
           ]}
         />
       </View>
-      <Button title="Spin!" onPress={spinWheel} color={colors.tintMain} />
+      {NUM_SECTIONS > 0 && (
+        <Button title="Spin!" onPress={spinWheel} color={colors.tintMain} />
+      )}
       {winner && <Text style={styles.winnerText}>Winner: {winner}</Text>}
     </View>
   );
