@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
@@ -18,6 +18,13 @@ export default function SpinnerScreen({
 }) {
   const [winner, setWinner] = useState(null);
   const [spinKey, setSpinKey] = useState(0);
+
+  useEffect(() => {
+    if (showSpinner) {
+      setWinner(null);
+      setSpinKey((k) => k + 1);
+    }
+  }, [showSpinner]);
 
   const handleSpinningEnd = (w) => {
     setWinner(w);
