@@ -11,14 +11,14 @@ export default function HomeScreen({ navigation }) {
         style={styles.primaryButton}
         onPress={() => navigation.navigate('Wizard')}
       >
-        <Text style={styles.primaryButtonText}>Let's Choose</Text>
+        <Text style={styles.primaryButtonText}>Choose A Game</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.primaryButton}
         onPress={() => navigation.navigate('MyGames')}
       >
-        <Text style={styles.primaryButtonText}>My Games</Text>
+        <Text style={styles.primaryButtonText}>View My Collection</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

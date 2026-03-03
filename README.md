@@ -7,7 +7,7 @@ A Board Game Decision Tool — A React Native (Expo) app for **iOS** (and eventu
 ## What the app does
 
 - **Load your collection** — Fetches your owned games from the BoardGameGeek XML API and caches them locally.
-- **Filter** — Narrow by number of players (1–10), complexity (low/medium/high), and game length (e.g. under 30 min, under 1 hour, under 2 hours, long).
+- **Filter** — Narrow by number of players (1–10), complexity (low/medium/high), game length, and category (Card Game, Dice, etc.).
 - **Vote** — Each player adds or removes votes on games from the filtered list. Total votes must equal the number of players.
 - **Spin** — When votes match the player count, a “Spin the Spinner!” button appears. The wheel shows the voted games and picks one at random.
 - **Game list** — The “My Games” tab shows your full owned collection from BGG.
@@ -23,13 +23,15 @@ For local development and building for the App Store:
   - `npm run ios` / `npm run android` — run on simulator/device.  
   - `npm run web` — run in browser.
 
-Until the in-app BGG account form exists, the app uses a hardcoded username in `hooks/boardGameGeekApi.js` (`USERNAME`) for fetching the collection during development.
+**BGG API token:** The app requires a BGG application token for the XML API. Copy `.env.example` to `.env` and add your token: `BGG_API_TOKEN=your-token-here`. Get your token at [boardgamegeek.com/applications](https://boardgamegeek.com/applications) (your app → Tokens). Never commit `.env`. For EAS Build, use `eas secret:create --name BGG_API_TOKEN --value "your-token"`.
+
+**Powered by BGG logo:** BGG terms require the "Powered by BGG" logo. Download it from [BGG's Google Drive](https://drive.google.com/drive/folders/1k3VgEIpNEY59iTVnpTibt31JcO0rEaSw) and save as `assets/powered-by-bgg.png` (replace the placeholder).
 
 ## Project structure
 
 - `App.js` — Root component; renders the main navigation.
 - `screens/` — `HomeScreen` (filter, vote, spinner), `SpinnerScreen` (wheel modal), `RankingsScreen` (owned games list), `Navigation.js` (bottom tabs).
-- `hooks/boardGameGeekApi.js` — Fetches and parses BGG collection XML, maps to game shape, caches in AsyncStorage.
+- `hooks/boardGameGeekApi.js` — Fetches BGG collection + thing API (categories, mechanics, minAge, bggAverage, bggRank). All data cached in AsyncStorage. Additional thing fields you could add: description, suggested player counts, language dependence, designers.
 - `components/` — `Spinner`, `Button`, `GameCard`.
 - `helpers/` — Shared colors, filters, and utilities.
 

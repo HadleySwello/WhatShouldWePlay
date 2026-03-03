@@ -71,6 +71,16 @@ export default function SelectedGameScreen({ route, navigation }) {
             <Text style={styles.cardDetail}>
               Complexity: {displayComplexity}
             </Text>
+            {game?.categories?.length > 0 && (
+              <Text style={styles.cardDetail}>
+                {game.categories.join(' · ')}
+              </Text>
+            )}
+            {game?.mechanics?.length > 0 && (
+              <Text style={styles.cardDetail}>
+                {game.mechanics.join(' · ')}
+              </Text>
+            )}
           </View>
         </View>
 

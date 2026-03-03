@@ -27,7 +27,14 @@ function getComplexityWeight(game) {
   return map[game.complexity] != null ? map[game.complexity] : 5;
 }
 
-function filterGames(games, playerCount, maxComplexityStars, maxLength) {
+function filterGames(
+  games,
+  playerCount,
+  maxComplexityStars,
+  maxLength,
+  selectedMechanic,
+  selectedCategory
+) {
   return games.filter((game) => {
     const matchPlayers =
       playerCount >= game.playersMin && playerCount <= game.playersMax;
@@ -35,8 +42,38 @@ function filterGames(games, playerCount, maxComplexityStars, maxLength) {
       maxComplexityStars == null ||
       getComplexityWeight(game) <= maxComplexityStars;
     const matchLength = lengthMatches(maxLength, game.length);
-    return matchPlayers && matchComplexity && matchLength;
+    const matchMechanic =
+      !selectedMechanic ||
+      (game.mechanics && game.mechanics.includes(selectedMechanic));
+    const matchCategory =
+      !selectedCategory ||
+      (game.categories && game.categories.includes(selectedCategory));
+    return (
+      matchPlayers &&
+      matchComplexity &&
+      matchLength &&
+      matchMechanic &&
+      matchCategory
+    );
   });
+}
+
+function getUniqueMechanics(games) {
+  const set = new Set();
+  for (const g of games) {
+    const list = g.mechanics || [];
+    for (const m of list) set.add(m);
+  }
+  return [...set].sort();
+}
+
+function getUniqueCategories(games) {
+  const set = new Set();
+  for (const g of games) {
+    const list = g.categories || [];
+    for (const c of list) set.add(c);
+  }
+  return [...set].sort();
 }
 
 const PLAY_TIME_OPTIONS = [
@@ -53,6 +90,12 @@ export default function WizardScreen({ navigation }) {
   const [playerCount, setPlayerCount] = useState(2);
   const [maxComplexityStars, setMaxComplexityStars] = useState(null);
   const [maxLength, setMaxLength] = useState(null);
+  const [selectedMechanic, setSelectedMechanic] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const uniqueMechanics = getUniqueMechanics(games);
+  const uniqueCategories = getUniqueCategories(games);
+  console.log('[Wizard] games:', games.length, 'mechanics:', uniqueMechanics.length, uniqueMechanics, 'categories:', uniqueCategories.length, uniqueCategories);
 
   const goToResults = (filteredList) => {
     navigation.navigate('Results', {
@@ -62,12 +105,26 @@ export default function WizardScreen({ navigation }) {
   };
 
   const handleFindGames = () => {
-    const filtered = filterGames(games, playerCount, maxComplexityStars, maxLength);
+    const filtered = filterGames(
+      games,
+      playerCount,
+      maxComplexityStars,
+      maxLength,
+      selectedMechanic,
+      selectedCategory
+    );
     goToResults(filtered);
   };
 
   const handleSkipFilters = () => {
-    const filtered = filterGames(games, playerCount, null, null);
+    const filtered = filterGames(
+      games,
+      playerCount,
+      null,
+      null,
+      null,
+      null
+    );
     goToResults(filtered);
   };
 
@@ -112,8 +169,13 @@ export default function WizardScreen({ navigation }) {
 
   return (
     <View style={styles.filtersContainer}>
-      <View style={styles.filtersContent}>
-        <View style={styles.filtersTop}>
+      <ScrollView
+        style={styles.filtersScroll}
+        contentContainerStyle={styles.filtersScrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.filtersContent}>
+          <View style={styles.filtersTop}>
           <Text style={[styles.progress, styles.filtersProgress]}>Step 2 of 2</Text>
           <Text style={styles.sectionTitle}>Optional filters</Text>
 
@@ -139,6 +201,112 @@ export default function WizardScreen({ navigation }) {
             </View>
           </View>
 
+          {uniqueMechanics.length > 0 && (
+            <>
+              <Text style={styles.label}>Mechanic</Text>
+              <Text style={styles.helper}>Filter by game mechanism</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.categoryScroll}
+                contentContainerStyle={styles.categoryScrollContent}
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.categoryChip,
+                    selectedMechanic === null && styles.categoryChipSelected,
+                  ]}
+                  onPress={() => setSelectedMechanic(null)}
+                >
+                  <Text
+                    style={[
+                      styles.categoryChipText,
+                      selectedMechanic === null &&
+                        styles.categoryChipTextSelected,
+                    ]}
+                  >
+                    Any
+                  </Text>
+                </TouchableOpacity>
+                {uniqueMechanics.map((mech) => (
+                  <TouchableOpacity
+                    key={mech}
+                    style={[
+                      styles.categoryChip,
+                      selectedMechanic === mech && styles.categoryChipSelected,
+                    ]}
+                    onPress={() =>
+                      setSelectedMechanic(
+                        selectedMechanic === mech ? null : mech
+                      )
+                    }
+                  >
+                    <Text
+                      style={[
+                        styles.categoryChipText,
+                        selectedMechanic === mech &&
+                          styles.categoryChipTextSelected,
+                      ]}
+                    >
+                      {mech}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </>
+          )}
+
+          {uniqueCategories.length > 0 && (
+            <>
+              <Text style={styles.label}>Category</Text>
+              <Text style={styles.helper}>Filter by game type</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.categoryScroll}
+                contentContainerStyle={styles.categoryScrollContent}
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.categoryChip,
+                    selectedCategory === null && styles.categoryChipSelected,
+                  ]}
+                  onPress={() => setSelectedCategory(null)}
+                >
+                  <Text
+                    style={[
+                      styles.categoryChipText,
+                      selectedCategory === null && styles.categoryChipTextSelected,
+                    ]}
+                  >
+                    Any
+                  </Text>
+                </TouchableOpacity>
+                {uniqueCategories.map((cat) => (
+                  <TouchableOpacity
+                    key={cat}
+                    style={[
+                      styles.categoryChip,
+                      selectedCategory === cat && styles.categoryChipSelected,
+                    ]}
+                    onPress={() =>
+                      setSelectedCategory(selectedCategory === cat ? null : cat)
+                    }
+                  >
+                    <Text
+                      style={[
+                        styles.categoryChipText,
+                        selectedCategory === cat && styles.categoryChipTextSelected,
+                      ]}
+                    >
+                      {cat}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </>
+          )}
+
           <Text style={styles.label}>Play Time</Text>
           <Text style={styles.helper}>Maximum game length</Text>
           <View style={styles.playTimeRow}>
@@ -157,15 +325,16 @@ export default function WizardScreen({ navigation }) {
           </View>
         </View>
 
-        <View style={styles.filtersButtons}>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleFindGames}>
-            <Text style={styles.primaryButtonText}>Find Games</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.textButton} onPress={handleSkipFilters}>
-            <Text style={styles.textButtonText}>Skip Filters</Text>
-          </TouchableOpacity>
+          <View style={styles.filtersButtons}>
+            <TouchableOpacity style={styles.primaryButton} onPress={handleFindGames}>
+              <Text style={styles.primaryButtonText}>Find Games</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.textButton} onPress={handleSkipFilters}>
+              <Text style={styles.textButtonText}>Skip Filters</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -239,14 +408,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.backgroundMain,
   },
-  filtersContent: {
+  filtersScroll: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
+  },
+  filtersScrollContent: {
+    flexGrow: 1,
     paddingBottom: 32,
   },
+  filtersContent: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+  },
   filtersTop: {
-    flex: 1,
   },
   filtersButtons: {
     paddingTop: 24,
@@ -286,6 +459,31 @@ const styles = StyleSheet.create({
   complexitySliderLabel: {
     fontSize: 14,
     color: colors.textSecondary,
+  },
+  categoryScroll: {
+    marginBottom: 20,
+    minHeight: 44,
+  },
+  categoryScrollContent: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingRight: 24,
+  },
+  categoryChip: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    backgroundColor: colors.cardMain,
+  },
+  categoryChipSelected: {
+    backgroundColor: colors.tintMain,
+  },
+  categoryChipText: {
+    fontSize: 15,
+    color: colors.textMain,
+  },
+  categoryChipTextSelected: {
+    color: colors.backgroundMain,
   },
   playTimeRow: {
     flexDirection: 'row',

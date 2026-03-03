@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../helpers/colors';
+
+const BGG_URL = 'https://boardgamegeek.com';
 
 const BGG_COLLECTION_KEY = 'bggCollection';
 const SPLASH_DELAY_MS = 5000;
@@ -48,9 +57,20 @@ export default function SplashScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>What Should We Play?</Text>
       <Text style={styles.subtitle}>A Board Game Decision Tool</Text>
-      <View style={styles.footer}>
+      <TouchableOpacity
+        style={styles.footer}
+        onPress={() => Linking.openURL(BGG_URL)}
+        activeOpacity={0.7}
+      >
+        <Image
+          source={require('../assets/powered-by-bgg.jpg')}
+          style={styles.bggLogo}
+          resizeMode="contain"
+          accessible
+          accessibilityLabel="Powered by BoardGameGeek"
+        />
         <Text style={styles.footerText}>Data provided by BoardGameGeek</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -78,6 +98,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 48,
     alignItems: 'center',
+  },
+  bggLogo: {
+    marginBottom: 4,
+    width: '100%',
   },
   footerText: {
     fontSize: 12,
