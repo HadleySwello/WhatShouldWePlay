@@ -49,6 +49,23 @@ export default function RankingsScreen({ navigation }) {
     );
   }
 
+  if (games.length === 0) {
+    return (
+      <View style={[styles.container, styles.emptyContainer]}>
+        <Text style={styles.emptyTitle}>Your collection is empty</Text>
+        <Text style={styles.emptyBody}>
+          No games in your collection. Add games via BoardGameGeek or change your username.
+        </Text>
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => navigation.navigate('ConnectBGG')}
+        >
+          <Text style={styles.primaryButtonText}>Change Username</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -76,7 +93,7 @@ export default function RankingsScreen({ navigation }) {
       />
       <TouchableOpacity
         style={styles.primaryButton}
-        onPress={() => navigation.navigate('Wizard')}
+        onPress={() => navigation.navigate('Setup')}
       >
         <Text style={styles.primaryButtonText}>Choose a Game</Text>
       </TouchableOpacity>
@@ -113,6 +130,25 @@ const styles = StyleSheet.create({
   retryButtonText: {
     color: colors.tintMain,
     fontSize: 16,
+  },
+  emptyContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  emptyTitle: {
+    fontSize: 22,
+    color: colors.textMain,
+    textAlign: 'center',
+    marginTop: 48,
+    marginBottom: 12,
+  },
+  emptyBody: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    marginHorizontal: 24,
+    marginBottom: 32,
   },
   refreshButton: {
     padding: 8,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,26 @@ import {
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
+import { getPresets } from '../helpers/presetsStorage';
 import colors from '../helpers/colors';
+
+const QUICK_PRESETS = [
+  {
+    id: 'party',
+    name: 'Party Night',
+    filters: { playerCount: 4, maxComplexityStars: 2, maxLength: 'under 1 hour', selectedMechanic: null, selectedCategory: null },
+  },
+  {
+    id: 'heavy',
+    name: 'Heavy Night',
+    filters: { playerCount: 3, maxComplexityStars: 6, maxLength: null, selectedMechanic: null, selectedCategory: null },
+  },
+  {
+    id: 'family',
+    name: 'Family',
+    filters: { playerCount: 4, maxComplexityStars: 2, maxLength: 'under 1 hour', selectedMechanic: null, selectedCategory: null },
+  },
+];
 
 const LENGTH_ORDER = ['under 30 min', 'under 1 hour', 'under 2 hours', 'long'];
 
@@ -84,23 +103,53 @@ const PLAY_TIME_OPTIONS = [
   { value: 'long', label: '3h+' },
 ];
 
-export default function WizardScreen({ navigation }) {
+export default function SetupScreen({ navigation }) {
   const { games, isLoading } = useBoardGameGeekCollection();
-  const [wizardStep, setWizardStep] = useState('players');
   const [playerCount, setPlayerCount] = useState(2);
   const [maxComplexityStars, setMaxComplexityStars] = useState(null);
   const [maxLength, setMaxLength] = useState(null);
   const [selectedMechanic, setSelectedMechanic] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showNoMatches, setShowNoMatches] = useState(false);
+  const [savedPresets, setSavedPresets] = useState([]);
+
+  useEffect(() => {
+    getPresets().then(setSavedPresets);
+  }, []);
+
+  const applyPreset = (preset) => {
+    const f = preset.filters || preset;
+    setPlayerCount(f.playerCount ?? 2);
+    setMaxComplexityStars(f.maxComplexityStars ?? null);
+    setMaxLength(f.maxLength ?? null);
+    setSelectedMechanic(f.selectedMechanic ?? null);
+    setSelectedCategory(f.selectedCategory ?? null);
+    setShowNoMatches(false);
+  };
+
+  const filteredCount = filterGames(
+    games,
+    playerCount,
+    maxComplexityStars,
+    maxLength,
+    selectedMechanic,
+    selectedCategory
+  ).length;
 
   const uniqueMechanics = getUniqueMechanics(games);
   const uniqueCategories = getUniqueCategories(games);
-  console.log('[Wizard] games:', games.length, 'mechanics:', uniqueMechanics.length, uniqueMechanics, 'categories:', uniqueCategories.length, uniqueCategories);
 
   const goToResults = (filteredList) => {
     navigation.navigate('Results', {
       filteredGames: filteredList,
       playerCount,
+      filters: {
+        playerCount,
+        maxComplexityStars,
+        maxLength,
+        selectedMechanic,
+        selectedCategory,
+      },
     });
   };
 
@@ -113,6 +162,11 @@ export default function WizardScreen({ navigation }) {
       selectedMechanic,
       selectedCategory
     );
+    if (filtered.length === 0) {
+      setShowNoMatches(true);
+      return;
+    }
+    setShowNoMatches(false);
     goToResults(filtered);
   };
 
@@ -125,6 +179,11 @@ export default function WizardScreen({ navigation }) {
       null,
       null
     );
+    if (filtered.length === 0) {
+      setShowNoMatches(true);
+      return;
+    }
+    setShowNoMatches(false);
     goToResults(filtered);
   };
 
@@ -137,33 +196,20 @@ export default function WizardScreen({ navigation }) {
     );
   }
 
-  if (wizardStep === 'players') {
+  if (showNoMatches) {
     return (
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.progress}>Step 1 of 2</Text>
-        <Text style={styles.question}>How many players?</Text>
-        <View style={styles.stepperRow}>
-          <TouchableOpacity
-            style={styles.stepperButton}
-            onPress={() => setPlayerCount((n) => Math.max(1, n - 1))}
-          >
-            <Text style={styles.stepperSymbol}>−</Text>
-          </TouchableOpacity>
-          <Text style={styles.stepperValue}>{playerCount}</Text>
-          <TouchableOpacity
-            style={styles.stepperButton}
-            onPress={() => setPlayerCount((n) => Math.min(10, n + 1))}
-          >
-            <Text style={styles.stepperSymbol}>+</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.container}>
+        <Text style={styles.noMatchesTitle}>No Matches</Text>
+        <Text style={styles.noMatchesBody}>
+          No games match your criteria. Try adjusting your filters.
+        </Text>
         <TouchableOpacity
           style={styles.primaryButton}
-          onPress={() => setWizardStep('filters')}
+          onPress={() => setShowNoMatches(false)}
         >
-          <Text style={styles.primaryButtonText}>Next</Text>
+          <Text style={styles.primaryButtonText}>Adjust Filters</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     );
   }
 
@@ -176,7 +222,49 @@ export default function WizardScreen({ navigation }) {
       >
         <View style={styles.filtersContent}>
           <View style={styles.filtersTop}>
-          <Text style={[styles.progress, styles.filtersProgress]}>Step 2 of 2</Text>
+          <Text style={styles.sectionTitle}>How many players?</Text>
+          <View style={styles.stepperRow}>
+            <TouchableOpacity
+              style={styles.stepperButton}
+              onPress={() => setPlayerCount((n) => Math.max(1, n - 1))}
+            >
+              <Text style={styles.stepperSymbol}>−</Text>
+            </TouchableOpacity>
+            <Text style={styles.stepperValue}>{playerCount}</Text>
+            <TouchableOpacity
+              style={styles.stepperButton}
+              onPress={() => setPlayerCount((n) => Math.min(10, n + 1))}
+            >
+              <Text style={styles.stepperSymbol}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.matchCount}>{filteredCount} games match</Text>
+          <Text style={styles.sectionTitle}>Quick presets</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.presetsScroll}
+            contentContainerStyle={styles.presetsScrollContent}
+          >
+            {QUICK_PRESETS.map((p) => (
+              <TouchableOpacity
+                key={p.id}
+                style={styles.presetChip}
+                onPress={() => applyPreset(p)}
+              >
+                <Text style={styles.presetChipText}>{p.name}</Text>
+              </TouchableOpacity>
+            ))}
+            {savedPresets.map((p) => (
+              <TouchableOpacity
+                key={p.id}
+                style={styles.presetChip}
+                onPress={() => applyPreset(p)}
+              >
+                <Text style={styles.presetChipText}>{p.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
           <Text style={styles.sectionTitle}>Optional filters</Text>
 
           <Text style={styles.helper}>How complex are you willing to go?</Text>
@@ -346,27 +434,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 24,
-    paddingTop: 16,
-  },
-  progress: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    marginBottom: 24,
-  },
-  question: {
-    fontSize: 24,
-    color: colors.textMain,
-    textAlign: 'center',
-    marginBottom: 32,
-  },
   stepperRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40,
+    marginBottom: 24,
   },
   stepperButton: {
     width: 56,
@@ -404,6 +476,42 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontSize: 16,
   },
+  noMatchesTitle: {
+    fontSize: 24,
+    color: colors.textMain,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  noMatchesBody: {
+    fontSize: 18,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  matchCount: {
+    fontSize: 16,
+    color: colors.tintMain,
+    marginBottom: 16,
+  },
+  presetsScroll: {
+    marginBottom: 20,
+    minHeight: 44,
+  },
+  presetsScrollContent: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingRight: 24,
+  },
+  presetChip: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    backgroundColor: colors.cardMain,
+  },
+  presetChipText: {
+    fontSize: 15,
+    color: colors.textMain,
+  },
   filtersContainer: {
     flex: 1,
     backgroundColor: colors.backgroundMain,
@@ -423,9 +531,6 @@ const styles = StyleSheet.create({
   },
   filtersButtons: {
     paddingTop: 24,
-  },
-  filtersProgress: {
-    marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 22,

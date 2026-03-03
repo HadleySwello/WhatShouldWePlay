@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import { Confetti } from '../components/ConfettiCelebration';
+import { savePreset } from '../helpers/presetsStorage';
 import colors from '../helpers/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -15,6 +17,15 @@ const CARD_WIDTH = Math.min(SCREEN_WIDTH - 48, 320);
 
 export default function SelectedGameScreen({ route, navigation }) {
   const game = route.params?.game;
+  const filters = route.params?.filters;
+  const filteredGames = route.params?.filteredGames;
+  const playerCount = route.params?.playerCount ?? 2;
+
+  const [showPresetInput, setShowPresetInput] = useState(false);
+  const [presetName, setPresetName] = useState('');
+  const [presetSaved, setPresetSaved] = useState(false);
+
+  const canPickAgain = filters && filteredGames && filteredGames.length > 0;
 
   useEffect(() => {
     navigation.setOptions({ gestureEnabled: false });
@@ -88,15 +99,73 @@ export default function SelectedGameScreen({ route, navigation }) {
           style={styles.primaryButton}
           onPress={() => navigation.navigate('Home')}
         >
-          <Text style={styles.primaryButtonText}>Start Over</Text>
+          <Text style={styles.primaryButtonText}>Start New Pick</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.secondaryButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.secondaryButtonText}>Pick Again</Text>
-        </TouchableOpacity>
+        {canPickAgain && (
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() =>
+              navigation.navigate('Results', {
+                filteredGames,
+                playerCount,
+                filters,
+              })
+            }
+          >
+            <Text style={styles.secondaryButtonText}>
+              Pick Again (Same Filters)
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {filters && (
+          <>
+            {presetSaved ? (
+              <Text style={styles.presetSavedText}>Preset saved!</Text>
+            ) : showPresetInput ? (
+              <View style={styles.presetInputRow}>
+                <TextInput
+                  style={styles.presetInput}
+                  placeholder="Preset name"
+                  placeholderTextColor={colors.textSecondary}
+                  value={presetName}
+                  onChangeText={setPresetName}
+                  autoCapitalize="words"
+                />
+                <TouchableOpacity
+                  style={styles.presetSaveButton}
+                  onPress={() => {
+                    const name = presetName.trim() || 'My Preset';
+                    savePreset(name, filters).then(() => {
+                      setPresetSaved(true);
+                      setShowPresetInput(false);
+                      setPresetName('');
+                    });
+                  }}
+                >
+                  <Text style={styles.presetSaveButtonText}>Save</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.textButton}
+                  onPress={() => {
+                    setShowPresetInput(false);
+                    setPresetName('');
+                  }}
+                >
+                  <Text style={styles.textButtonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.tertiaryButton}
+                onPress={() => setShowPresetInput(true)}
+              >
+                <Text style={styles.tertiaryButtonText}>Save Preset</Text>
+              </TouchableOpacity>
+            )}
+          </>
+        )}
       </View>
     </View>
   );
@@ -186,5 +255,51 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     fontSize: 18,
     color: colors.tintMain,
+  },
+  tertiaryButton: {
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    marginTop: 12,
+  },
+  tertiaryButtonText: {
+    fontSize: 16,
+    color: colors.textSecondary,
+  },
+  presetInputRow: {
+    alignSelf: 'stretch',
+    marginTop: 16,
+  },
+  presetInput: {
+    backgroundColor: colors.cardMain,
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 16,
+    color: colors.textMain,
+    marginBottom: 12,
+  },
+  presetSaveButton: {
+    backgroundColor: colors.tintMain,
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  presetSaveButtonText: {
+    fontSize: 18,
+    color: colors.backgroundMain,
+    fontWeight: '600',
+  },
+  presetSavedText: {
+    fontSize: 16,
+    color: colors.tintMain,
+    marginTop: 16,
+  },
+  textButton: {
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  textButtonText: {
+    fontSize: 16,
+    color: colors.textSecondary,
   },
 });

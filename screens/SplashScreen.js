@@ -36,7 +36,7 @@ export default function SplashScreen({ navigation }) {
           if (hasCollection) {
             navigation.replace('Home');
           } else {
-            navigation.replace('ConnectBGG');
+            navigation.replace('Welcome');
           }
         }, SPLASH_DELAY_MS);
 
@@ -44,7 +44,7 @@ export default function SplashScreen({ navigation }) {
       } catch (_) {
         if (!cancelled) {
           setChecked(true);
-          setTimeout(() => navigation.replace('ConnectBGG'), SPLASH_DELAY_MS);
+          setTimeout(() => navigation.replace('Welcome'), SPLASH_DELAY_MS);
         }
       }
     };

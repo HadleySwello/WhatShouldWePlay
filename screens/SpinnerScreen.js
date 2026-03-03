@@ -15,6 +15,7 @@ export default function SpinnerScreen({
   participants,
   onBackToList,
   onPlayThis,
+  autoNavigate = false,
 }) {
   const [winner, setWinner] = useState(null);
   const [spinKey, setSpinKey] = useState(0);
@@ -27,6 +28,10 @@ export default function SpinnerScreen({
   }, [showSpinner]);
 
   const handleSpinningEnd = (w) => {
+    if (autoNavigate && onPlayThis && w) {
+      onPlayThis(w);
+      return;
+    }
     setWinner(w);
   };
 
@@ -50,10 +55,12 @@ export default function SpinnerScreen({
 
   const slices = participants && participants.length > 0 ? participants : ['No games'];
 
+  const showCelebration = winner && !autoNavigate;
+
   return (
     <Modal visible={showSpinner} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
-        {winner ? (
+        {showCelebration ? (
           <View style={styles.celebration}>
             <Text style={styles.celebrationTitle}>You're playing</Text>
             <Text style={styles.winnerValue}>{winner}</Text>

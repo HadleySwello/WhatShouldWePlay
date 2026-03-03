@@ -2,30 +2,19 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../helpers/colors';
 
-export default function HomeScreen({ navigation }) {
+export default function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Start Picking</Text>
-
+      <Text style={styles.title}>What Should We Play?</Text>
+      <Text style={styles.subtitle}>
+        Connect your BoardGameGeek collection to find the perfect game for your group.
+      </Text>
       <TouchableOpacity
         style={styles.primaryButton}
-        onPress={() => navigation.navigate('Setup')}
+        onPress={() => navigation.navigate('ConnectBGG')}
+        activeOpacity={0.8}
       >
-        <Text style={styles.primaryButtonText}>Choose A Game</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate('MyGames')}
-      >
-        <Text style={styles.primaryButtonText}>Browse Collection</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate('Settings')}
-      >
-        <Text style={styles.primaryButtonText}>Settings</Text>
+        <Text style={styles.primaryButtonText}>Connect BoardGameGeek</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,8 +29,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     color: colors.textMain,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: colors.textSecondary,
     textAlign: 'center',
     marginBottom: 48,
   },
@@ -51,12 +46,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
     borderRadius: 8,
     alignItems: 'center',
-    alignSelf: 'stretch',
-    marginHorizontal: 24,
-    marginBottom: 16,
   },
   primaryButtonText: {
-    fontSize: 18,
+    fontSize: 20,
     color: colors.backgroundMain,
     fontWeight: '600',
   },
