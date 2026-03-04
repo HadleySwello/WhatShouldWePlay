@@ -4,6 +4,7 @@ import { Confetti } from '../components/ConfettiCelebration';
 import { clearVoteCache } from '../helpers/voteCache';
 
 import AppText from '../components/AppText';
+import { getComplexityTier } from '../helpers/complexity';
 import AppButton from '../components/AppButton';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
@@ -27,10 +28,13 @@ export default function SelectedGameScreen({ route, navigation }) {
     return () => clearTimeout(t);
   }, [navigation]);
 
+  const tier = getComplexityTier(game?.complexityWeight);
   const displayComplexity =
-    game?.complexityWeight != null
-      ? game.complexityWeight.toFixed(1)
-      : (game?.complexity ?? '—');
+    tier != null
+      ? tier
+      : Number.isFinite(game?.complexityWeight)
+        ? game.complexityWeight.toFixed(1)
+        : '—';
 
   return (
     <View style={styles.screen.container}>

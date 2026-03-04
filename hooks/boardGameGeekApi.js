@@ -132,6 +132,7 @@ function parseThingResponse(data) {
     const maxPlaytime = item.maxplaytime?.['@_value'];
     const stats = item.statistics?.ratings;
     const bggAverage = stats?.average?.['@_value'];
+    const averageweight = stats?.averageweight?.['@_value'];
     const ranks = stats?.ranks?.rank;
     const rankList = Array.isArray(ranks) ? ranks : ranks ? [ranks] : [];
     const boardGameRank = rankList.find(
@@ -148,6 +149,7 @@ function parseThingResponse(data) {
       maxPlaytime: maxPlaytime ? parseInt(maxPlaytime, 10) : null,
       bggAverage: bggAverage ? parseFloat(bggAverage) : null,
       bggRank,
+      ...(averageweight ? { complexityWeight: parseFloat(averageweight) } : {}),
     };
   }
   return result;
@@ -277,7 +279,6 @@ function mapItemToGame(item) {
     name: gameName,
     playersMin: minPlayers,
     playersMax: maxPlayers,
-    complexity: parseComplexity(item),
     complexityWeight,
     length: parseLength(item),
     color: '#ec7e1f',
@@ -291,14 +292,11 @@ function mapItemToGame(item) {
 }
 
 function parseComplexityWeight(item) {
-  return parseFloat(item.stats?.rating?.averageweight?.['@_value'] || '0');
-}
-
-function parseComplexity(item) {
-  const avgWeight = parseComplexityWeight(item);
-  if (avgWeight < 2) return 'low';
-  if (avgWeight < 3.5) return 'medium';
-  return 'high';
+  // Collection API may use stats.rating; Thing API uses statistics.ratings
+  const fromStats = item.stats?.rating?.averageweight?.['@_value'];
+  const fromStatistics = item.statistics?.ratings?.averageweight?.['@_value'];
+  const raw = fromStats ?? fromStatistics ?? '0';
+  return parseFloat(raw);
 }
 
 function parseLength(item) {

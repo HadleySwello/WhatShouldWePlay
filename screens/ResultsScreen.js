@@ -5,6 +5,7 @@ import { savePreset } from '../helpers/presetsStorage';
 import { getVotes, setVotes } from '../helpers/voteCache';
 
 import AppText from '../components/AppText';
+import { getComplexityTier } from '../helpers/complexity';
 import AppButton from '../components/AppButton';
 import PresetNameModal from '../components/PresetNameModal';
 import { useAppTheme } from '../theme';
@@ -198,9 +199,12 @@ export default function ResultsScreen({ route, navigation }) {
                 <AppText variant="gameName">{item.name}</AppText>
                 <AppText variant="gameDetails">
                   {item.playersMin}-{item.playersMax} players · {item.length} ·
-                  {item.complexityWeight != null
-                    ? ` ${item.complexityWeight.toFixed(1)}`
-                    : ` ${item.complexity}`}
+                  {(() => {
+                    const tier = getComplexityTier(item.complexityWeight);
+                    if (tier != null) return ` ${tier}`;
+                    const w = item.complexityWeight;
+                    return Number.isFinite(w) ? ` ${w.toFixed(1)}` : ' —';
+                  })()}
                 </AppText>
               </View>
               <View style={styles.voteRow}>

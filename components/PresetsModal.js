@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AppText from './AppText';
+import { formatComplexitySummary } from '../helpers/complexity';
 import { useAppTheme } from '../theme';
 
 const LENGTH_LABELS = {
@@ -19,18 +20,11 @@ const LENGTH_LABELS = {
   long: '3h+',
 };
 
-function formatComplexity(maxStars) {
-  if (maxStars == null || maxStars >= 6) return 'Any complexity';
-  if (maxStars <= 2) return 'Light';
-  if (maxStars <= 4) return 'Medium';
-  return 'Heavy';
-}
-
 function formatPresetMetadata(filters) {
   const f = filters || {};
   const parts = [];
   parts.push(`${f.playerCount ?? 2} players`);
-  parts.push(formatComplexity(f.maxComplexityStars));
+  parts.push(`Complexity: ${formatComplexitySummary(f.complexityMin, f.complexityMax)}`);
   parts.push(LENGTH_LABELS[f.maxLength] ?? LENGTH_LABELS.null);
   const mechs = f.selectedMechanics ?? [];
   const cats = f.selectedCategories ?? [];

@@ -1,7 +1,7 @@
 /**
  * Persist filter presets in AsyncStorage.
  * Preset shape: { id, name, filters, createdAt?, updatedAt? }
- * Filter shape: { playerCount, maxComplexityStars, maxLength, selectedMechanics, selectedCategories }
+ * Filter shape: { playerCount, complexityMin, complexityMax, maxLength, selectedMechanics, selectedCategories }
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -24,9 +24,15 @@ function generateId() {
 }
 
 function normalizeFilters(filters) {
+  let min = filters.complexityMin ?? null;
+  let max = filters.complexityMax ?? null;
+  if (min != null && max != null && min > max) {
+    min = max;
+  }
   return {
     playerCount: filters.playerCount ?? 2,
-    maxComplexityStars: filters.maxComplexityStars ?? null,
+    complexityMin: min,
+    complexityMax: max,
     maxLength: filters.maxLength ?? null,
     selectedMechanics: filters.selectedMechanics ?? [],
     selectedCategories: filters.selectedCategories ?? [],

@@ -643,8 +643,17 @@ export function getComponentVariantStyles() {
       padding: s.sm,
       marginRight: s.sm,
     },
+    complexityRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: s.md,
+    },
     complexitySliderWrap: {
       marginBottom: s['2xl'] - 4,
+    },
+    complexityReadout: {
+      marginTop: s.sm,
     },
     complexitySliderLabels: {
       flexDirection: 'row',
@@ -674,7 +683,7 @@ export function getComponentVariantStyles() {
     },
     filtersScrollContent: {
       flexGrow: 1,
-      paddingBottom: s['3xl'] + s['3xl'] + s['2xl'] + s.lg,
+      paddingBottom: s['3xl'] + s['3xl'] + s['3xl'] + s['2xl'] + s['2xl'],
     },
     filtersContent: {
       paddingHorizontal: s.xl,

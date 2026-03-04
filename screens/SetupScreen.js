@@ -4,10 +4,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Switch,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Slider from '@react-native-community/slider';
+import { RangeSlider } from '@sharcoux/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 import {
   getPresets,
@@ -32,7 +33,8 @@ const QUICK_PRESETS = [
     description: 'Light games, short sessions—great for groups.',
     filters: {
       playerCount: 4,
-      maxComplexityStars: 2,
+      complexityMin: 0,
+      complexityMax: 2,
       maxLength: 'under 1 hour',
       selectedMechanics: [],
       selectedCategories: [],
@@ -45,7 +47,8 @@ const QUICK_PRESETS = [
     description: 'Complex games for serious gamers.',
     filters: {
       playerCount: 3,
-      maxComplexityStars: 6,
+      complexityMin: null,
+      complexityMax: null,
       maxLength: null,
       selectedMechanics: [],
       selectedCategories: [],
@@ -58,7 +61,8 @@ const QUICK_PRESETS = [
     description: 'Accessible games for all ages.',
     filters: {
       playerCount: 4,
-      maxComplexityStars: 2,
+      complexityMin: 0,
+      complexityMax: 2,
       maxLength: 'under 1 hour',
       selectedMechanics: [],
       selectedCategories: [],
@@ -76,16 +80,21 @@ function lengthMatches(maxLength, gameLength) {
   return gameIdx >= 0 && gameIdx <= maxIdx;
 }
 
-function getComplexityWeight(game) {
-  if (game.complexityWeight != null) return game.complexityWeight;
-  const map = { low: 1.5, medium: 2.5, high: 4 };
-  return map[game.complexity] != null ? map[game.complexity] : 5;
+function gameMatchesComplexityFilter(game, complexityMin, complexityMax) {
+  const active = complexityMin != null || complexityMax != null;
+  if (!active) return true;
+  const w = game.complexityWeight;
+  if (!Number.isFinite(w)) return false;
+  if (complexityMin != null && w < complexityMin) return false;
+  if (complexityMax != null && w > complexityMax) return false;
+  return true;
 }
 
 function filterGames(
   games,
   playerCount,
-  maxComplexityStars,
+  complexityMin,
+  complexityMax,
   maxLength,
   selectedMechanics,
   selectedCategories
@@ -95,9 +104,11 @@ function filterGames(
   return games.filter((game) => {
     const matchPlayers =
       playerCount >= game.playersMin && playerCount <= game.playersMax;
-    const matchComplexity =
-      maxComplexityStars == null ||
-      getComplexityWeight(game) <= maxComplexityStars;
+    const matchComplexity = gameMatchesComplexityFilter(
+      game,
+      complexityMin,
+      complexityMax
+    );
     const matchLength = lengthMatches(maxLength, game.length);
     const matchMechanic =
       mechs.length === 0 ||
@@ -112,23 +123,6 @@ function filterGames(
       matchMechanic &&
       matchCategory
     );
-  });
-}
-
-function filterGamesByPlayersTimeComplexity(
-  games,
-  playerCount,
-  maxComplexityStars,
-  maxLength
-) {
-  return games.filter((game) => {
-    const matchPlayers =
-      playerCount >= game.playersMin && playerCount <= game.playersMax;
-    const matchComplexity =
-      maxComplexityStars == null ||
-      getComplexityWeight(game) <= maxComplexityStars;
-    const matchLength = lengthMatches(maxLength, game.length);
-    return matchPlayers && matchComplexity && matchLength;
   });
 }
 
@@ -160,7 +154,8 @@ const PLAY_TIME_OPTIONS = [
 
 function filtersMatchPreset(
   playerCount,
-  maxComplexityStars,
+  complexityMin,
+  complexityMax,
   maxLength,
   selectedMechanics,
   selectedCategories,
@@ -177,7 +172,8 @@ function filtersMatchPreset(
     cats.length === pCats.length && cats.every((c, i) => c === pCats[i]);
   return (
     (playerCount ?? 2) === (f.playerCount ?? 2) &&
-    (maxComplexityStars ?? null) === (f.maxComplexityStars ?? null) &&
+    (complexityMin ?? null) === (f.complexityMin ?? null) &&
+    (complexityMax ?? null) === (f.complexityMax ?? null) &&
     (maxLength ?? null) === (f.maxLength ?? null) &&
     mechsEq &&
     catsEq
@@ -186,14 +182,16 @@ function filtersMatchPreset(
 
 function getCurrentFilters(
   playerCount,
-  maxComplexityStars,
+  complexityMin,
+  complexityMax,
   maxLength,
   selectedMechanics,
   selectedCategories
 ) {
   return {
     playerCount: playerCount ?? 2,
-    maxComplexityStars: maxComplexityStars ?? null,
+    complexityMin: complexityMin ?? null,
+    complexityMax: complexityMax ?? null,
     maxLength: maxLength ?? null,
     selectedMechanics: selectedMechanics ?? [],
     selectedCategories: selectedCategories ?? [],
@@ -203,7 +201,8 @@ function getCurrentFilters(
 export default function SetupScreen({ navigation }) {
   const { games, isLoading } = useBoardGameGeekCollection();
   const [playerCount, setPlayerCount] = useState(2);
-  const [maxComplexityStars, setMaxComplexityStars] = useState(null);
+  const [complexityMin, setComplexityMin] = useState(null);
+  const [complexityMax, setComplexityMax] = useState(null);
   const [maxLength, setMaxLength] = useState(null);
   const [selectedMechanics, setSelectedMechanics] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -231,7 +230,8 @@ export default function SetupScreen({ navigation }) {
       filterGames(
         games,
         playerCount,
-        maxComplexityStars,
+        complexityMin,
+        complexityMax,
         maxLength,
         selectedMechanics,
         selectedCategories
@@ -239,32 +239,23 @@ export default function SetupScreen({ navigation }) {
     [
       games,
       playerCount,
-      maxComplexityStars,
+      complexityMin,
+      complexityMax,
       maxLength,
       selectedMechanics,
       selectedCategories,
     ]
   );
 
-  const facetGames = useMemo(
-    () =>
-      filterGamesByPlayersTimeComplexity(
-        games,
-        playerCount,
-        maxComplexityStars,
-        maxLength
-      ),
-    [games, playerCount, maxComplexityStars, maxLength]
-  );
-
-  const uniqueMechanics = getUniqueMechanics(facetGames);
-  const uniqueCategories = getUniqueCategories(facetGames);
+  const uniqueMechanics = getUniqueMechanics(games);
+  const uniqueCategories = getUniqueCategories(games);
 
   const hasNoMatches = filteredGames.length === 0;
 
   const currentFilters = getCurrentFilters(
     playerCount,
-    maxComplexityStars,
+    complexityMin,
+    complexityMax,
     maxLength,
     selectedMechanics,
     selectedCategories
@@ -274,7 +265,8 @@ export default function SetupScreen({ navigation }) {
     loadedPreset.filters &&
     !filtersMatchPreset(
       playerCount,
-      maxComplexityStars,
+      complexityMin,
+      complexityMax,
       maxLength,
       selectedMechanics,
       selectedCategories,
@@ -285,7 +277,8 @@ export default function SetupScreen({ navigation }) {
   const applyPresetFilters = useCallback((f) => {
     const ff = f || {};
     setPlayerCount(ff.playerCount ?? 2);
-    setMaxComplexityStars(ff.maxComplexityStars ?? null);
+    setComplexityMin(ff.complexityMin ?? null);
+    setComplexityMax(ff.complexityMax ?? null);
     setMaxLength(ff.maxLength ?? null);
     setSelectedMechanics(ff.selectedMechanics ?? []);
     setSelectedCategories(ff.selectedCategories ?? []);
@@ -300,7 +293,8 @@ export default function SetupScreen({ navigation }) {
         name: preset.name,
         filters: {
           playerCount: f.playerCount ?? 2,
-          maxComplexityStars: f.maxComplexityStars ?? null,
+          complexityMin: f.complexityMin ?? null,
+          complexityMax: f.complexityMax ?? null,
           maxLength: f.maxLength ?? null,
           selectedMechanics: f.selectedMechanics ?? [],
           selectedCategories: f.selectedCategories ?? [],
@@ -377,7 +371,8 @@ export default function SetupScreen({ navigation }) {
       playerCount,
       filters: {
         playerCount,
-        maxComplexityStars,
+        complexityMin,
+        complexityMax,
         maxLength,
         selectedMechanics,
         selectedCategories,
@@ -460,26 +455,57 @@ export default function SetupScreen({ navigation }) {
             <AppText variant="helper" style={styles.helper}>
               How complex are you willing to go?
             </AppText>
-            <View style={styles.complexitySliderWrap}>
-              <Slider
-                style={styles.complexitySlider}
-                minimumValue={1}
-                maximumValue={6}
-                step={1}
-                value={maxComplexityStars == null ? 6 : maxComplexityStars}
-                onValueChange={(v) => {
-                  const n = Math.round(v);
-                  setMaxComplexityStars(n >= 6 ? null : n);
+            <View style={styles.complexityRow}>
+              <AppText variant="body">Any complexity</AppText>
+              <Switch
+                value={complexityMin == null && complexityMax == null}
+                onValueChange={(on) => {
+                  if (on) {
+                    setComplexityMin(null);
+                    setComplexityMax(null);
+                  } else {
+                    setComplexityMin(0);
+                    setComplexityMax(5);
+                  }
                 }}
-                minimumTrackTintColor={tokens.colors.tintMain}
-                maximumTrackTintColor={tokens.colors.cardMain}
-                thumbTintColor={tokens.colors.tintMain}
+                trackColor={{
+                  false: tokens.colors.cardMain,
+                  true: tokens.colors.tintMain,
+                }}
+                thumbColor="#fff"
               />
-              <View style={styles.complexitySliderLabels}>
-                <AppText variant="complexitySliderLabel">Light</AppText>
-                <AppText variant="complexitySliderLabel">Heavy</AppText>
-              </View>
             </View>
+            {complexityMin != null || complexityMax != null ? (
+              <View style={styles.complexitySliderWrap}>
+                <RangeSlider
+                  style={styles.complexitySlider}
+                  range={[complexityMin ?? 0, complexityMax ?? 5]}
+                  minimumValue={0}
+                  maximumValue={5}
+                  step={1}
+                  crossingAllowed={false}
+                  inboundColor={tokens.colors.tintMain}
+                  outboundColor={tokens.colors.cardMain}
+                  thumbTintColor={tokens.colors.tintMain}
+                  onValueChange={(range) => {
+                    let [low, high] = range;
+                    low = Math.round(low);
+                    high = Math.round(high);
+                    if (low > high) low = high;
+                    if (high < low) high = low;
+                    setComplexityMin(low);
+                    setComplexityMax(high);
+                  }}
+                />
+                <AppText variant="helper" style={styles.complexityReadout}>
+                  Min: {complexityMin ?? 0} Max: {complexityMax ?? 5}
+                </AppText>
+              </View>
+            ) : (
+              <AppText variant="helper" style={styles.complexityReadout}>
+                Any
+              </AppText>
+            )}
 
             {(uniqueMechanics.length > 0 || uniqueCategories.length > 0) && (
               <View style={styles.advancedFiltersBlock}>
