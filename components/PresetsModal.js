@@ -30,8 +30,12 @@ function formatPresetMetadata(filters) {
   parts.push(`${f.playerCount ?? 2} players`);
   parts.push(formatComplexity(f.maxComplexityStars));
   parts.push(LENGTH_LABELS[f.maxLength] ?? LENGTH_LABELS.null);
-  if (f.selectedMechanic) parts.push(f.selectedMechanic);
-  if (f.selectedCategory) parts.push(f.selectedCategory);
+  const mechs = f.selectedMechanics ?? [];
+  const cats = f.selectedCategories ?? [];
+  if (mechs.length === 1) parts.push(mechs[0]);
+  else if (mechs.length > 1) parts.push(`${mechs.length} mechanics`);
+  if (cats.length === 1) parts.push(cats[0]);
+  else if (cats.length > 1) parts.push(`${cats.length} categories`);
   return parts.join(' · ');
 }
 

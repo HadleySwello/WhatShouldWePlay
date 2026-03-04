@@ -1,6 +1,6 @@
 /**
  * Persist filter presets in AsyncStorage.
- * Preset shape: { id, name, filters: { playerCount, maxComplexityStars, maxLength, selectedMechanic, selectedCategory } }
+ * Filter shape: { playerCount, maxComplexityStars, maxLength, selectedMechanics, selectedCategories }
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -30,8 +30,8 @@ export async function savePreset(name, filters) {
       playerCount: filters.playerCount ?? 2,
       maxComplexityStars: filters.maxComplexityStars ?? null,
       maxLength: filters.maxLength ?? null,
-      selectedMechanic: filters.selectedMechanic ?? null,
-      selectedCategory: filters.selectedCategory ?? null,
+      selectedMechanics: filters.selectedMechanics ?? [],
+      selectedCategories: filters.selectedCategories ?? [],
     },
   };
   presets.push(preset);
