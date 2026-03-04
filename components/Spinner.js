@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Button,
@@ -10,15 +9,21 @@ import {
 import Svg, { G, Path, Text as SvgText } from 'react-native-svg';
 import * as d3Shape from 'd3-shape';
 import { Easing } from 'react-native';
-import colors from '../helpers/colors';
+
+import { useAppTheme } from '../theme';
+import { getSpinnerMarkerStyle } from '../theme';
+import { layout } from '../theme';
 
 const { width } = Dimensions.get('window');
 const WHEEL_SIZE = width * 0.8;
 
-const Spinner = ({ slices, onSpinningEnd }) => {
+export default function Spinner({ slices, onSpinningEnd, colors }) {
+  const c = colors || {};
   const [winner, setWinner] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const spinDuration = 5000;
+  const { styles } = useAppTheme();
+  const markerStyle = getSpinnerMarkerStyle(WHEEL_SIZE);
 
   const NUM_SECTIONS = slices.length;
   const anglePerSection = NUM_SECTIONS > 0 ? 360 / NUM_SECTIONS : 360;
@@ -68,12 +73,12 @@ const Spinner = ({ slices, onSpinningEnd }) => {
         <G key={`slice-${index}`}>
           <Path
             d={path}
-            fill={index % 2 === 0 ? colors.tintSecondary : colors.tintSpecial}
+            fill={index % 2 === 0 ? c.tintSecondary : c.tintSpecial}
           />
           <SvgText
             x={labelX}
             y={labelY}
-            fill={colors.textMain}
+            fill={c.textMain}
             fontSize="14"
             textAnchor="middle"
           >
@@ -85,11 +90,11 @@ const Spinner = ({ slices, onSpinningEnd }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.wheelContainer}>
+    <View style={[layout.fill, layout.center]}>
+      <View style={styles.spinnerWheelContainer}>
         <Animated.View
           style={[
-            styles.wheel,
+            { width: WHEEL_SIZE, height: WHEEL_SIZE },
             {
               transform: [
                 {
@@ -112,53 +117,14 @@ const Spinner = ({ slices, onSpinningEnd }) => {
             </G>
           </Svg>
         </Animated.View>
-        <View
-          style={[
-            styles.marker,
-            {
-              top: -10, // Raise the marker slightly
-              left: WHEEL_SIZE / 2 - 10,
-            },
-          ]}
-        />
+        <View style={markerStyle} />
       </View>
       {NUM_SECTIONS > 0 && (
-        <Button title="Spin!" onPress={spinWheel} color={colors.tintMain} />
+        <Button title="Spin!" onPress={spinWheel} color={c.tintMain} />
       )}
-      {winner && <Text style={styles.winnerText}>Winner: {winner}</Text>}
+      {winner && (
+        <Text style={styles.spinnerWinnerText}>Winner: {winner}</Text>
+      )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.backgroundMain,
-  },
-  wheelContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  wheel: {
-    width: WHEEL_SIZE,
-    height: WHEEL_SIZE,
-  },
-  marker: {
-    position: 'absolute',
-    width: 20,
-    height: 20,
-    backgroundColor: colors.tintMain,
-    borderRadius: 10,
-    zIndex: 1,
-  },
-  winnerText: {
-    marginTop: 20,
-    fontSize: 18,
-    color: colors.textSpecial,
-  },
-});
-
-export default Spinner;
+}

@@ -16,6 +16,9 @@ const colors = {
   tintMain: '#FFD700', // Gold for main accents
   tintSecondary: '#3E1F47', // Reddish-purple for secondary accents
   tintSpecial: '#4D194D', // Deep magenta for special accents
+
+  // Shadows
+  shadow: '#000',
 };
 
 export default colors;

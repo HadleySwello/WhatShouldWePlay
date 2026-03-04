@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
+import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import colors from '../helpers/colors';
+import AppText from '../components/AppText';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 const BGG_URL = 'https://boardgamegeek.com';
-
 const BGG_COLLECTION_KEY = 'bggCollection';
 const SPLASH_DELAY_MS = 3000;
 
 export default function SplashScreen({ navigation }) {
   const [, setChecked] = useState(false);
+  const { styles } = useAppTheme();
 
   useEffect(() => {
     let cancelled = false;
@@ -57,9 +52,17 @@ export default function SplashScreen({ navigation }) {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>What Should We Play?</Text>
-      <Text style={styles.subtitle}>A Board Game Decision Tool</Text>
+    <View
+      style={[
+        styles.screen.container,
+        layout.center,
+        layout.paddingLg,
+      ]}
+    >
+      <AppText variant="title" style={layout.marginBottomMd}>
+        What Should We Play?
+      </AppText>
+      <AppText variant="subtitle">A Board Game Decision Tool</AppText>
       <TouchableOpacity
         style={styles.footer}
         onPress={() => Linking.openURL(BGG_URL)}
@@ -72,42 +75,8 @@ export default function SplashScreen({ navigation }) {
           accessible
           accessibilityLabel="Powered by BoardGameGeek"
         />
-        <Text style={styles.footerText}>Data provided by BoardGameGeek</Text>
+        <AppText variant="footer">Data provided by BoardGameGeek</AppText>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 28,
-    color: colors.textMain,
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    textAlign: 'center',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 48,
-    alignItems: 'center',
-  },
-  bggLogo: {
-    marginBottom: 4,
-    width: '100%',
-  },
-  footerText: {
-    fontSize: 12,
-    color: colors.textSecondary,
-  },
-});

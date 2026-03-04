@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Modal, View, TouchableOpacity } from 'react-native';
 import Spinner from '../components/Spinner';
-import colors from '../helpers/colors';
+
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 export default function SpinnerScreen({
   showSpinner,
@@ -13,6 +17,7 @@ export default function SpinnerScreen({
 }) {
   const [winner, setWinner] = useState(null);
   const [spinKey, setSpinKey] = useState(0);
+  const { tokens, styles } = useAppTheme();
 
   useEffect(() => {
     if (showSpinner) {
@@ -54,39 +59,42 @@ export default function SpinnerScreen({
 
   return (
     <Modal visible={showSpinner} animationType="slide" transparent={true}>
-      <View style={styles.modalContainer}>
+      <View style={styles.spinnerModal}>
         {showCelebration ? (
           <View style={styles.celebration}>
-            <Text style={styles.celebrationTitle}>You're playing</Text>
-            <Text style={styles.winnerValue}>{winner}</Text>
+            <AppText variant="celebrationTitle">You're playing</AppText>
+            <AppText variant="winnerValue">{winner}</AppText>
             <View style={styles.buttonRow}>
-              <TouchableOpacity
-                style={styles.primaryButton}
+              <AppButton
+                variant="primary"
                 onPress={handlePlayThis}
+                style={styles.button.primaryCompact}
               >
-                <Text style={styles.primaryButtonText}>Play This</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.secondaryButton}
+                Play This
+              </AppButton>
+              <AppButton
+                variant="secondary"
                 onPress={handleSpinAgain}
+                style={layout.marginBottomMd}
               >
-                <Text style={styles.secondaryButtonText}>Spin Again</Text>
-              </TouchableOpacity>
+                Spin Again
+              </AppButton>
               <TouchableOpacity
                 style={styles.textButton}
                 onPress={handleBackToList}
               >
-                <Text style={styles.textButtonText}>Back to List</Text>
+                <AppText variant="textButton">Back to List</AppText>
               </TouchableOpacity>
             </View>
           </View>
         ) : (
           <>
-            <Text style={styles.title}>Spin the Wheel!</Text>
+            <AppText variant="spinnerTitle">Spin the Wheel!</AppText>
             <Spinner
               key={spinKey}
               slices={slices}
               onSpinningEnd={handleSpinningEnd}
+              colors={tokens.colors}
             />
           </>
         )}
@@ -94,72 +102,3 @@ export default function SpinnerScreen({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 22,
-    color: colors.textMain,
-    marginBottom: 16,
-  },
-  celebration: {
-    alignItems: 'center',
-  },
-  celebrationTitle: {
-    fontSize: 18,
-    color: colors.textSecondary,
-    marginBottom: 8,
-  },
-  winnerValue: {
-    fontSize: 26,
-    color: colors.tintMain,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 32,
-  },
-  buttonRow: {
-    alignItems: 'center',
-    width: '100%',
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 8,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    marginBottom: 12,
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.tintMain,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    marginBottom: 12,
-  },
-  secondaryButtonText: {
-    fontSize: 16,
-    color: colors.tintMain,
-  },
-  textButton: {
-    paddingVertical: 12,
-  },
-  textButtonText: {
-    fontSize: 16,
-    color: colors.textSecondary,
-  },
-});

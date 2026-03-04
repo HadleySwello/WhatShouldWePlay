@@ -1,63 +1,31 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import colors from '../helpers/colors';
+import { View } from 'react-native';
+
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 export default function HomeScreen({ navigation }) {
+  const { styles } = useAppTheme();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Start Picking</Text>
+    <View style={[styles.screen.container, layout.fill, layout.center, layout.paddingXl]}>
+      <AppText variant="title" style={layout.marginBottom3xl}>
+        Start Picking
+      </AppText>
 
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate('Setup')}
-      >
-        <Text style={styles.primaryButtonText}>Choose A Game</Text>
-      </TouchableOpacity>
+      <AppButton onPress={() => navigation.navigate('Setup')} variant="primary">
+        Choose A Game
+      </AppButton>
 
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate('MyGames')}
-      >
-        <Text style={styles.primaryButtonText}>Browse Collection</Text>
-      </TouchableOpacity>
+      <AppButton onPress={() => navigation.navigate('MyGames')} variant="primary">
+        Browse Collection
+      </AppButton>
 
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate('Settings')}
-      >
-        <Text style={styles.primaryButtonText}>Settings</Text>
-      </TouchableOpacity>
+      <AppButton onPress={() => navigation.navigate('Settings')} variant="primary">
+        Settings
+      </AppButton>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-    padding: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 26,
-    color: colors.textMain,
-    textAlign: 'center',
-    marginBottom: 48,
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    paddingVertical: 18,
-    paddingHorizontal: 48,
-    borderRadius: 8,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    marginHorizontal: 24,
-    marginBottom: 16,
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-});

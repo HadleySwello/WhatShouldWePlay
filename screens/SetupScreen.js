@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
-  Text,
-  StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
@@ -12,7 +10,12 @@ import Slider from '@react-native-community/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 import { getPresets } from '../helpers/presetsStorage';
 import PresetsModal from '../components/PresetsModal';
-import colors from '../helpers/colors';
+
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import AppChip from '../components/AppChip';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 const QUICK_PRESETS = [
   {
@@ -156,6 +159,7 @@ export default function SetupScreen({ navigation }) {
   const [categoriesExpanded, setCategoriesExpanded] = useState(false);
   const [showPresetsModal, setShowPresetsModal] = useState(false);
   const [savedPresets, setSavedPresets] = useState([]);
+  const { tokens, styles } = useAppTheme();
 
   useEffect(() => {
     getPresets().then(setSavedPresets);
@@ -238,9 +242,11 @@ export default function SetupScreen({ navigation }) {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={colors.tintMain} />
-        <Text style={styles.loadingText}>Loading your collection...</Text>
+      <View style={[styles.screen.container, layout.center]}>
+        <ActivityIndicator size="large" color={tokens.colors.tintMain} />
+        <AppText variant="helper" style={layout.marginTopMd}>
+          Loading your collection...
+        </AppText>
       </View>
     );
   }
@@ -253,65 +259,63 @@ export default function SetupScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.filtersContent}>
-          <View style={styles.filtersTop}>
-            <Text style={styles.sectionTitle}>How many players?</Text>
-            <View style={styles.stepperRow}>
+          <View>
+            <AppText variant="sectionTitle">
+              How many players?
+            </AppText>
+            <View style={styles.stepper.row}>
               <TouchableOpacity
-                style={styles.stepperButton}
+                style={styles.stepper.button}
                 onPress={() => setPlayerCount((n) => Math.max(1, n - 1))}
               >
-                <Text style={styles.stepperSymbol}>−</Text>
+                <AppText variant="stepperSymbol">−</AppText>
               </TouchableOpacity>
-              <Text style={styles.stepperValue}>{playerCount}</Text>
+              <AppText variant="stepperValue">{playerCount}</AppText>
               <TouchableOpacity
-                style={styles.stepperButton}
+                style={styles.stepper.button}
                 onPress={() => setPlayerCount((n) => Math.min(10, n + 1))}
               >
-                <Text style={styles.stepperSymbol}>+</Text>
+                <AppText variant="stepperSymbol">+</AppText>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               style={styles.usePresetButton}
               onPress={() => setShowPresetsModal(true)}
             >
-              <Text style={styles.usePresetButtonText}>Use a preset</Text>
+              <AppText variant="usePresetButton">Use a preset</AppText>
             </TouchableOpacity>
             {hasNoMatches && (
               <View style={styles.noMatchesCard}>
-                <Text style={styles.noMatchesTitle}>No matches</Text>
-                <Text style={styles.noMatchesBody}>
+                <AppText variant="noMatchesTitle">No matches</AppText>
+                <AppText variant="noMatchesBody">
                   Try loosening your filters, or adding more games to your
                   collection.
-                </Text>
+                </AppText>
               </View>
             )}
-            <Text style={styles.label}>Play Time</Text>
-            <Text style={styles.helper}>Maximum game length</Text>
+            <AppText variant="label" style={styles.label}>
+              Play Time
+            </AppText>
+            <AppText variant="helper" style={styles.helper}>
+              Maximum game length
+            </AppText>
             <View style={styles.chipWrap}>
               {PLAY_TIME_OPTIONS.map((opt) => (
-                <TouchableOpacity
+                <AppChip
                   key={opt.value === null ? 'any' : opt.value}
-                  style={[
-                    styles.presetChip,
-                    maxLength === opt.value && styles.presetChipSelected,
-                  ]}
+                  selected={maxLength === opt.value}
                   onPress={() => setMaxLength(opt.value)}
                 >
-                  <Text
-                    style={[
-                      styles.presetChipText,
-                      maxLength === opt.value && styles.presetChipTextSelected,
-                    ]}
-                  >
-                    {opt.label}
-                  </Text>
-                </TouchableOpacity>
+                  {opt.label}
+                </AppChip>
               ))}
             </View>
-            <Text style={styles.label}>Complexity</Text>
-            <Text style={styles.helper}>
+            <AppText variant="label" style={styles.label}>
+              Complexity
+            </AppText>
+            <AppText variant="helper" style={styles.helper}>
               How complex are you willing to go?
-            </Text>
+            </AppText>
             <View style={styles.complexitySliderWrap}>
               <Slider
                 style={styles.complexitySlider}
@@ -323,21 +327,21 @@ export default function SetupScreen({ navigation }) {
                   const n = Math.round(v);
                   setMaxComplexityStars(n >= 6 ? null : n);
                 }}
-                minimumTrackTintColor={colors.tintMain}
-                maximumTrackTintColor={colors.cardMain}
-                thumbTintColor={colors.tintMain}
+                minimumTrackTintColor={tokens.colors.tintMain}
+                maximumTrackTintColor={tokens.colors.cardMain}
+                thumbTintColor={tokens.colors.tintMain}
               />
               <View style={styles.complexitySliderLabels}>
-                <Text style={styles.complexitySliderLabel}>Light</Text>
-                <Text style={styles.complexitySliderLabel}>Heavy</Text>
+                <AppText variant="complexitySliderLabel">Light</AppText>
+                <AppText variant="complexitySliderLabel">Heavy</AppText>
               </View>
             </View>
 
             {(uniqueMechanics.length > 0 || uniqueCategories.length > 0) && (
               <View style={styles.advancedFiltersBlock}>
-                <Text style={styles.advancedFiltersLabel}>
+                <AppText variant="advancedFiltersLabel">
                   Advanced Filters
-                </Text>
+                </AppText>
 
                 {uniqueMechanics.length > 0 && (
                   <View style={styles.collapsibleSection}>
@@ -346,55 +350,40 @@ export default function SetupScreen({ navigation }) {
                       onPress={() => setMechanicsExpanded((x) => !x)}
                       activeOpacity={0.7}
                     >
-                      <Text style={styles.collapsibleLabel}>Mechanics</Text>
+                      <AppText variant="collapsibleLabel">Mechanics</AppText>
                       <Icon
                         name={mechanicsExpanded ? 'expand-less' : 'expand-more'}
                         size={24}
-                        color={colors.textMain}
+                        color={tokens.colors.textMain}
                       />
                     </TouchableOpacity>
                     {!mechanicsExpanded && (
-                      <Text style={styles.collapsibleSummary}>
+                      <AppText variant="collapsibleSummary">
                         {selectedMechanics.length === 0
                           ? 'Any'
                           : selectedMechanics.length === 1
                             ? selectedMechanics[0]
                             : `${selectedMechanics.length} selected`}
-                      </Text>
+                      </AppText>
                     )}
                     {mechanicsExpanded && (
                       <View style={styles.collapsibleContent}>
-                        <Text style={styles.helper}>
+                        <AppText variant="helper">
                           Filter by game mechanism
-                        </Text>
+                        </AppText>
                         <View style={styles.chipWrap}>
-                          <TouchableOpacity
-                            style={[
-                              styles.categoryChip,
-                              selectedMechanics.length === 0 &&
-                                styles.categoryChipSelected,
-                            ]}
+                          <AppChip
+                            selected={selectedMechanics.length === 0}
                             onPress={() => setSelectedMechanics([])}
                           >
-                            <Text
-                              style={[
-                                styles.categoryChipText,
-                                selectedMechanics.length === 0 &&
-                                  styles.categoryChipTextSelected,
-                              ]}
-                            >
-                              Any
-                            </Text>
-                          </TouchableOpacity>
+                            Any
+                          </AppChip>
                           {uniqueMechanics.map((mech) => {
                             const isSelected = selectedMechanics.includes(mech);
                             return (
-                              <TouchableOpacity
+                              <AppChip
                                 key={mech}
-                                style={[
-                                  styles.categoryChip,
-                                  isSelected && styles.categoryChipSelected,
-                                ]}
+                                selected={isSelected}
                                 onPress={() =>
                                   setSelectedMechanics((prev) =>
                                     isSelected
@@ -403,16 +392,8 @@ export default function SetupScreen({ navigation }) {
                                   )
                                 }
                               >
-                                <Text
-                                  style={[
-                                    styles.categoryChipText,
-                                    isSelected &&
-                                      styles.categoryChipTextSelected,
-                                  ]}
-                                >
-                                  {mech}
-                                </Text>
-                              </TouchableOpacity>
+                                {mech}
+                              </AppChip>
                             );
                           })}
                         </View>
@@ -428,55 +409,40 @@ export default function SetupScreen({ navigation }) {
                       onPress={() => setCategoriesExpanded((x) => !x)}
                       activeOpacity={0.7}
                     >
-                      <Text style={styles.collapsibleLabel}>Categories</Text>
+                      <AppText variant="collapsibleLabel">Categories</AppText>
                       <Icon
                         name={
                           categoriesExpanded ? 'expand-less' : 'expand-more'
                         }
                         size={24}
-                        color={colors.textMain}
+                        color={tokens.colors.textMain}
                       />
                     </TouchableOpacity>
                     {!categoriesExpanded && (
-                      <Text style={styles.collapsibleSummary}>
+                      <AppText variant="collapsibleSummary">
                         {selectedCategories.length === 0
                           ? 'Any'
                           : selectedCategories.length === 1
                             ? selectedCategories[0]
                             : `${selectedCategories.length} selected`}
-                      </Text>
+                      </AppText>
                     )}
                     {categoriesExpanded && (
                       <View style={styles.collapsibleContent}>
-                        <Text style={styles.helper}>Filter by game type</Text>
+                        <AppText variant="helper">Filter by game type</AppText>
                         <View style={styles.chipWrap}>
-                          <TouchableOpacity
-                            style={[
-                              styles.categoryChip,
-                              selectedCategories.length === 0 &&
-                                styles.categoryChipSelected,
-                            ]}
+                          <AppChip
+                            selected={selectedCategories.length === 0}
                             onPress={() => setSelectedCategories([])}
                           >
-                            <Text
-                              style={[
-                                styles.categoryChipText,
-                                selectedCategories.length === 0 &&
-                                  styles.categoryChipTextSelected,
-                              ]}
-                            >
-                              Any
-                            </Text>
-                          </TouchableOpacity>
+                            Any
+                          </AppChip>
                           {uniqueCategories.map((cat) => {
                             const isSelected = selectedCategories.includes(cat);
                             return (
-                              <TouchableOpacity
+                              <AppChip
                                 key={cat}
-                                style={[
-                                  styles.categoryChip,
-                                  isSelected && styles.categoryChipSelected,
-                                ]}
+                                selected={isSelected}
                                 onPress={() =>
                                   setSelectedCategories((prev) =>
                                     isSelected
@@ -485,16 +451,8 @@ export default function SetupScreen({ navigation }) {
                                   )
                                 }
                               >
-                                <Text
-                                  style={[
-                                    styles.categoryChipText,
-                                    isSelected &&
-                                      styles.categoryChipTextSelected,
-                                  ]}
-                                >
-                                  {cat}
-                                </Text>
-                              </TouchableOpacity>
+                                {cat}
+                              </AppChip>
                             );
                           })}
                         </View>
@@ -508,18 +466,18 @@ export default function SetupScreen({ navigation }) {
         </View>
       </ScrollView>
       <View style={styles.stickyButtonContainer}>
-        <TouchableOpacity
-          style={[
-            styles.primaryButton,
-            hasNoMatches && styles.primaryButtonDisabled,
-          ]}
+        <AppButton
+          variant="primary"
           onPress={handleFindGames}
           disabled={hasNoMatches}
+          style={[
+            styles.button.primaryCompact,
+            layout.stretch,
+            hasNoMatches && styles.button.disabled,
+          ]}
         >
-          <Text style={styles.primaryButtonText}>
-            {hasNoMatches ? 'No matches' : `View ${filteredGames.length} Games`}
-          </Text>
-        </TouchableOpacity>
+          {hasNoMatches ? 'No matches' : `View ${filteredGames.length} Games`}
+        </AppButton>
       </View>
 
       <PresetsModal
@@ -532,227 +490,3 @@ export default function SetupScreen({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  stepperRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 24,
-  },
-  stepperButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.cardMain,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  stepperSymbol: {
-    fontSize: 28,
-    color: colors.textMain,
-  },
-  stepperValue: {
-    fontSize: 38,
-    color: colors.textMain,
-    marginHorizontal: 32,
-    minWidth: 48,
-    textAlign: 'center',
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  primaryButtonDisabled: {
-    opacity: 0.5,
-  },
-  primaryButtonText: {
-    fontSize: 20,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-  loadingText: {
-    marginTop: 12,
-    color: colors.textSecondary,
-    fontSize: 16,
-  },
-  noMatchesCard: {
-    backgroundColor: colors.cardSecondary,
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 24,
-    borderLeftWidth: 4,
-    borderLeftColor: colors.tintMain,
-  },
-  noMatchesTitle: {
-    fontSize: 18,
-    color: colors.textMain,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  noMatchesBody: {
-    fontSize: 15,
-    color: colors.textSecondary,
-  },
-  matchCount: {
-    fontSize: 16,
-    color: colors.tintMain,
-    marginBottom: 16,
-  },
-  chipWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 20,
-  },
-  presetChip: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    backgroundColor: colors.cardMain,
-  },
-  presetChipSelected: {
-    backgroundColor: colors.tintMain,
-  },
-  presetChipText: {
-    fontSize: 15,
-    color: colors.textMain,
-  },
-  presetChipTextSelected: {
-    color: colors.backgroundMain,
-  },
-  filtersContainer: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-  },
-  filtersScroll: {
-    flex: 1,
-  },
-  filtersScrollContent: {
-    flexGrow: 1,
-    paddingBottom: 100,
-  },
-  filtersContent: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  filtersTop: {},
-  stickyButtonContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32,
-    backgroundColor: colors.backgroundMain,
-    borderTopWidth: 1,
-    borderTopColor: colors.cardMain,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  usePresetButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: colors.tintMain,
-    alignSelf: 'flex-start',
-    marginBottom: 24,
-  },
-  usePresetButtonText: {
-    fontSize: 16,
-    color: colors.tintMain,
-    fontWeight: '600',
-  },
-  sectionTitle: {
-    fontSize: 22,
-    color: colors.textMain,
-    marginBottom: 24,
-  },
-  label: {
-    fontSize: 18,
-    color: colors.textMain,
-    marginTop: 24,
-    marginBottom: 6,
-  },
-  helper: {
-    fontSize: 15,
-    color: colors.textSecondary,
-    marginBottom: 12,
-  },
-  complexitySliderWrap: {
-    marginBottom: 28,
-  },
-  complexitySlider: {
-    width: '100%',
-    height: 40,
-  },
-  complexitySliderLabels: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 4,
-    marginTop: 8,
-  },
-  complexitySliderLabel: {
-    fontSize: 14,
-    color: colors.textSecondary,
-  },
-  advancedFiltersBlock: {
-    marginTop: 24,
-  },
-  advancedFiltersLabel: {
-    fontSize: 18,
-    color: colors.textMain,
-    marginBottom: 12,
-    fontWeight: '600',
-  },
-  collapsibleSection: {
-    marginBottom: 16,
-  },
-  collapsibleHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-  },
-  collapsibleLabel: {
-    fontSize: 18,
-    color: colors.textMain,
-  },
-  collapsibleSummary: {
-    fontSize: 15,
-    color: colors.textSecondary,
-    paddingBottom: 8,
-  },
-  collapsibleContent: {
-    paddingTop: 4,
-  },
-  categoryChip: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    backgroundColor: colors.cardMain,
-  },
-  categoryChipSelected: {
-    backgroundColor: colors.tintMain,
-  },
-  categoryChipText: {
-    fontSize: 15,
-    color: colors.textMain,
-  },
-  categoryChipTextSelected: {
-    color: colors.backgroundMain,
-  },
-});

@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+
+import AppText from '../components/AppText';
+import AppInput from '../components/AppInput';
+import AppButton from '../components/AppButton';
 import { fetchAndSaveCollection } from '../hooks/boardGameGeekApi';
-import colors from '../helpers/colors';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 export default function ConnectBGGScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const { tokens, styles } = useAppTheme();
 
   const handleLoad = () => {
     setErrorMessage(null);
@@ -37,18 +39,18 @@ export default function ConnectBGGScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.screen.container, layout.paddingXl, layout.center]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <Text style={styles.header}>Connect Your Collection</Text>
-      <Text style={styles.body}>
+      <AppText variant="header" style={layout.marginBottomLg}>
+        Connect Your Collection
+      </AppText>
+      <AppText variant="body" style={layout.marginBottomXl}>
         Enter your BoardGameGeek username to load your games.
-      </Text>
+      </AppText>
 
-      <TextInput
-        style={styles.input}
+      <AppInput
         placeholder="Username"
-        placeholderTextColor={colors.textSecondary}
         value={username}
         onChangeText={(text) => {
           setUsername(text);
@@ -57,88 +59,32 @@ export default function ConnectBGGScreen({ navigation }) {
         autoCapitalize="none"
         autoCorrect={false}
         editable={!loading}
+        style={layout.marginBottomLg}
       />
 
       {errorMessage ? (
-        <Text style={styles.softError}>{errorMessage}</Text>
+        <AppText variant="error" style={layout.marginBottomLg}>
+          {errorMessage}
+        </AppText>
       ) : null}
 
       {loading ? (
         <View style={styles.loadingRow}>
-          <ActivityIndicator size="small" color={colors.tintMain} />
-          <Text style={styles.loadingText}>Fetching your collection…</Text>
+          <ActivityIndicator size="small" color={tokens.colors.tintMain} />
+          <AppText variant="helper">
+            Fetching your collection…
+          </AppText>
         </View>
       ) : (
-        <TouchableOpacity
-          style={[
-            styles.primaryButton,
-            !canSubmit && styles.primaryButtonDisabled,
-          ]}
+        <AppButton
+          variant="primary"
           onPress={handleLoad}
           disabled={!canSubmit}
+          style={[styles.button.primaryCompact, !canSubmit && styles.button.disabled]}
         >
-          <Text style={styles.primaryButtonText}>Load My Games</Text>
-        </TouchableOpacity>
+          Load My Games
+        </AppButton>
       )}
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-    padding: 24,
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: 24,
-    color: colors.textMain,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  body: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  input: {
-    backgroundColor: colors.cardMain,
-    borderRadius: 8,
-    padding: 14,
-    fontSize: 16,
-    color: colors.textMain,
-    marginBottom: 16,
-  },
-  softError: {
-    fontSize: 15,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  loadingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  loadingText: {
-    fontSize: 16,
-    color: colors.textSecondary,
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  primaryButtonDisabled: {
-    opacity: 0.5,
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-});

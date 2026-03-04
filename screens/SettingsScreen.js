@@ -1,38 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import colors from '../helpers/colors';
+import { View } from 'react-native';
+
+import AppButton from '../components/AppButton';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 export default function SettingsScreen({ navigation }) {
+  const { styles } = useAppTheme();
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.primaryButton}
+    <View style={[styles.screen.container, layout.paddingXl]}>
+      <AppButton
+        variant="primary"
         onPress={() => navigation.navigate('ConnectBGG')}
-        activeOpacity={0.8}
       >
-        <Text style={styles.primaryButtonText}>Change Username</Text>
-      </TouchableOpacity>
+        Change Username
+      </AppButton>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-    padding: 24,
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    paddingVertical: 18,
-    paddingHorizontal: 48,
-    borderRadius: 8,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-});

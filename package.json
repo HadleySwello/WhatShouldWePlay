@@ -35,6 +35,7 @@
     "react-native-fast-confetti": "^1.1.2",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-lucky-wheel": "^0.2.2",
+    "react-native-paper": "^5.15.0",
     "react-native-picker": "^4.3.7",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
@@ -47,9 +48,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "dotenv": "^16.4.5",
     "@eslint/js": "^9.17.0",
     "@react-native-community/cli": "^15.1.3",
+    "dotenv": "^16.4.5",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.3",

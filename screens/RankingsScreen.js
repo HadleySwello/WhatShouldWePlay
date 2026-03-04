@@ -1,19 +1,22 @@
 import React, { useLayoutEffect } from 'react';
 import {
   View,
-  Text,
   FlatList,
   ActivityIndicator,
-  StyleSheet,
   TouchableOpacity,
   Image,
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
-import colors from '../helpers/colors';
+
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 export default function RankingsScreen({ navigation }) {
   const { games, error, isLoading, reload } = useBoardGameGeekCollection();
+  const { tokens, styles } = useAppTheme();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -23,27 +26,35 @@ export default function RankingsScreen({ navigation }) {
           style={styles.refreshButton}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
-          <FontAwesome5 name="sync-alt" size={20} color={colors.tintMain} />
+          <FontAwesome5
+            name="sync-alt"
+            size={20}
+            color={tokens.colors.tintMain}
+          />
         </TouchableOpacity>
       ),
     });
-  }, [navigation, reload]);
+  }, [navigation, reload, tokens.colors.tintMain, styles.refreshButton]);
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator color={colors.tintMain} size="large" />
-        <Text style={styles.loading}>Loading your collection...</Text>
+      <View style={[styles.screen.container, layout.center]}>
+        <ActivityIndicator color={tokens.colors.tintMain} size="large" />
+        <AppText variant="helper" style={layout.marginTopMd}>
+          Loading your collection...
+        </AppText>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.softError}>{error}</Text>
+      <View style={[styles.screen.container, layout.center]}>
+        <AppText variant="error" style={layout.marginTopMd}>
+          {error}
+        </AppText>
         <TouchableOpacity style={styles.retryButton} onPress={reload}>
-          <Text style={styles.retryButtonText}>Try Again</Text>
+          <AppText variant="retry">Try Again</AppText>
         </TouchableOpacity>
       </View>
     );
@@ -51,24 +62,29 @@ export default function RankingsScreen({ navigation }) {
 
   if (games.length === 0) {
     return (
-      <View style={[styles.container, styles.emptyContainer]}>
-        <Text style={styles.emptyTitle}>Your collection is empty</Text>
-        <Text style={styles.emptyBody}>
+      <View style={[styles.screen.container, styles.emptyContainer]}>
+        <AppText variant="emptyTitle" style={layout.marginTop3xl}>
+          Your collection is empty
+        </AppText>
+        <AppText
+          variant="emptyBody"
+          style={[layout.marginBottomXl, layout.textCenter, layout.marginHorizontalXl]}
+        >
           No games in your collection. Add games via BoardGameGeek or change
           your username.
-        </Text>
-        <TouchableOpacity
-          style={styles.primaryButton}
+        </AppText>
+        <AppButton
+          variant="primary"
           onPress={() => navigation.navigate('ConnectBGG')}
         >
-          <Text style={styles.primaryButtonText}>Change Username</Text>
-        </TouchableOpacity>
+          Change Username
+        </AppButton>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen.container}>
       <FlatList
         data={games}
         keyExtractor={(item) => item.id}
@@ -78,123 +94,37 @@ export default function RankingsScreen({ navigation }) {
             {item.thumbnail ? (
               <Image
                 source={{ uri: item.thumbnail }}
-                style={styles.thumbnail}
+                style={styles.listItem.thumbnail}
+                resizeMode="cover"
               />
             ) : (
-              <View style={[styles.thumbnail, styles.thumbnailPlaceholder]} />
+              <View
+                style={[
+                  styles.listItem.thumbnail,
+                  styles.listItem.thumbnailPlaceholder,
+                ]}
+              />
             )}
-            <View style={styles.gameInfo}>
-              <Text style={styles.gameName}>{item.name}</Text>
-              <Text style={styles.gameDetails}>
+            <View style={layout.flex1}>
+              <AppText variant="gameName">{item.name}</AppText>
+              <AppText variant="gameDetails">
                 {item.yearPublished} · Rating: {item.rating || '—'}
-              </Text>
+              </AppText>
             </View>
           </View>
         )}
       />
-      <TouchableOpacity
-        style={styles.primaryButton}
+      <AppButton
+        variant="primary"
         onPress={() => navigation.navigate('Setup')}
+        style={[
+          styles.button.primaryCompact,
+          layout.marginHorizontalLg,
+          layout.marginBottomXl,
+        ]}
       >
-        <Text style={styles.primaryButtonText}>Choose a Game</Text>
-      </TouchableOpacity>
+        Choose a Game
+      </AppButton>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-  },
-  listContent: {
-    padding: 16,
-    paddingBottom: 24,
-  },
-  loading: {
-    marginTop: 10,
-    color: colors.textSecondary,
-    fontSize: 16,
-  },
-  softError: {
-    marginTop: 10,
-    color: colors.textSecondary,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  retryButton: {
-    marginTop: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    alignSelf: 'center',
-  },
-  retryButtonText: {
-    color: colors.tintMain,
-    fontSize: 16,
-  },
-  emptyContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  emptyTitle: {
-    fontSize: 22,
-    color: colors.textMain,
-    textAlign: 'center',
-    marginTop: 48,
-    marginBottom: 12,
-  },
-  emptyBody: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginHorizontal: 24,
-    marginBottom: 32,
-  },
-  refreshButton: {
-    padding: 8,
-    marginRight: 8,
-  },
-  gameItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.cardSecondary,
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 8,
-  },
-  thumbnail: {
-    width: 48,
-    height: 48,
-    borderRadius: 6,
-    marginRight: 12,
-  },
-  thumbnailPlaceholder: {
-    backgroundColor: colors.cardMain,
-  },
-  gameInfo: {
-    flex: 1,
-  },
-  gameName: {
-    fontSize: 18,
-    color: colors.textMain,
-  },
-  gameDetails: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    marginTop: 2,
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    marginHorizontal: 16,
-    marginBottom: 24,
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-});

@@ -2,12 +2,12 @@ import React from 'react';
 import {
   Modal,
   View,
-  Text,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import colors from '../helpers/colors';
+
+import AppText from './AppText';
+import { useAppTheme } from '../theme';
 
 const LENGTH_LABELS = {
   null: 'Any length',
@@ -46,6 +46,9 @@ export default function PresetsModal({
   savedPresets,
   onSelectPreset,
 }) {
+  const { styles } = useAppTheme();
+  const m = styles.modal;
+
   const handleSelect = (preset) => {
     onSelectPreset(preset);
     onClose();
@@ -58,66 +61,64 @@ export default function PresetsModal({
       transparent
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.header}>
-            <View style={styles.headerTop}>
-              <Text style={styles.title}>Choose a Preset</Text>
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
+      <View style={m.overlay}>
+        <View style={m.content}>
+          <View style={m.header}>
+            <View style={m.headerTop}>
+              <AppText variant="modalTitle">Choose a Preset</AppText>
+              <TouchableOpacity onPress={onClose} style={m.closeButton}>
+                <AppText variant="closeButtonText">Close</AppText>
               </TouchableOpacity>
             </View>
-            <Text style={styles.headerNote}>
+            <AppText variant="headerNote">
               You can save your own presets from the game list after filtering.
-            </Text>
+            </AppText>
           </View>
 
           <ScrollView
-            style={styles.scroll}
-            contentContainerStyle={styles.scrollContent}
+            style={m.scroll}
+            contentContainerStyle={m.scrollContent}
             showsVerticalScrollIndicator={false}
           >
             {savedPresets.length > 0 && (
               <>
-                <Text style={styles.sectionTitle}>My Presets</Text>
+                <AppText variant="modalSectionTitle">My Presets</AppText>
                 {savedPresets.map((p) => (
                   <TouchableOpacity
                     key={p.id}
-                    style={styles.presetCard}
+                    style={m.presetCard}
                     onPress={() => handleSelect(p)}
                     activeOpacity={0.7}
                   >
-                    <Text style={styles.presetName}>{p.name}</Text>
-                    <Text style={styles.presetMetadata}>
+                    <AppText variant="presetName">{p.name}</AppText>
+                    <AppText variant="presetMetadata">
                       {formatPresetMetadata(p.filters)}
-                    </Text>
+                    </AppText>
                   </TouchableOpacity>
                 ))}
               </>
             )}
 
-            <Text
-              style={[
-                styles.sectionTitle,
-                savedPresets.length > 0 && styles.savedSectionTitle,
-              ]}
+            <AppText
+              variant="modalSectionTitle"
+              style={savedPresets.length > 0 ? m.savedSectionTitle : undefined}
             >
               Quick Presets
-            </Text>
+            </AppText>
             {quickPresets.map((p) => (
               <TouchableOpacity
                 key={p.id}
-                style={styles.presetCard}
+                style={m.presetCard}
                 onPress={() => handleSelect(p)}
                 activeOpacity={0.7}
               >
-                <Text style={styles.presetName}>{p.name}</Text>
+                <AppText variant="presetName">{p.name}</AppText>
                 {p.description ? (
-                  <Text style={styles.presetDescription}>{p.description}</Text>
+                  <AppText variant="presetDescription">{p.description}</AppText>
                 ) : null}
-                <Text style={styles.presetMetadata}>
+                <AppText variant="presetMetadata">
                   {formatPresetMetadata(p.filters)}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -126,84 +127,3 @@ export default function PresetsModal({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: colors.backgroundMain,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    maxHeight: '80%',
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.cardMain,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerNote: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    marginTop: 12,
-    lineHeight: 20,
-  },
-  title: {
-    fontSize: 22,
-    color: colors.textMain,
-    fontWeight: '600',
-  },
-  closeButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  closeButtonText: {
-    fontSize: 16,
-    color: colors.tintMain,
-  },
-  scroll: {
-    maxHeight: 400,
-  },
-  scrollContent: {
-    padding: 24,
-    paddingBottom: 40,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    color: colors.textSecondary,
-    marginBottom: 12,
-  },
-  savedSectionTitle: {
-    marginTop: 24,
-  },
-  presetCard: {
-    backgroundColor: colors.cardSecondary,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 10,
-  },
-  presetName: {
-    fontSize: 18,
-    color: colors.textMain,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  presetDescription: {
-    fontSize: 15,
-    color: colors.textSecondary,
-    marginBottom: 8,
-  },
-  presetMetadata: {
-    fontSize: 14,
-    color: colors.textSecondary,
-  },
-});

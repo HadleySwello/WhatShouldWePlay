@@ -1,24 +1,21 @@
 import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 import { Confetti } from '../components/ConfettiCelebration';
 import { clearVoteCache } from '../helpers/voteCache';
-import colors from '../helpers/colors';
+
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import { useAppTheme } from '../theme';
+import { layout } from '../theme';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const CARD_WIDTH = Math.min(SCREEN_WIDTH - 48, 320);
 
 export default function SelectedGameScreen({ route, navigation }) {
   const game = route.params?.game;
   const filters = route.params?.filters;
   const filteredGames = route.params?.filteredGames;
   const playerCount = route.params?.playerCount ?? 2;
+  const { styles } = useAppTheme();
 
   const canPickAgain = filters && filteredGames && filteredGames.length > 0;
 
@@ -36,7 +33,7 @@ export default function SelectedGameScreen({ route, navigation }) {
       : (game?.complexity ?? '—');
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen.container}>
       <View style={styles.confettiLayer} pointerEvents="none">
         <Confetti
           count={200}
@@ -46,10 +43,12 @@ export default function SelectedGameScreen({ route, navigation }) {
         />
       </View>
 
-      <View style={styles.content}>
-        <Text style={styles.title}>You're playing</Text>
+      <View style={styles.selectedGameContent}>
+        <AppText variant="title" style={layout.marginBottomXl}>
+          You're playing
+        </AppText>
 
-        <View style={styles.card}>
+        <View style={styles.selectedGameCard}>
           {game?.thumbnail ? (
             <Image
               source={{ uri: game.thumbnail }}
@@ -60,45 +59,46 @@ export default function SelectedGameScreen({ route, navigation }) {
             <View style={[styles.cardImage, styles.cardImagePlaceholder]} />
           )}
           <View style={styles.cardBody}>
-            <Text style={styles.cardName} numberOfLines={2}>
+            <AppText variant="cardName" numberOfLines={2} style={[layout.textCenter, layout.marginBottomMd]}>
               {game?.name ?? 'Selected game'}
-            </Text>
-            <Text style={styles.cardDetail}>{game?.yearPublished ?? '—'}</Text>
-            <Text style={styles.cardDetail}>
+            </AppText>
+            <AppText variant="cardDetail" style={layout.textCenter}>{game?.yearPublished ?? '—'}</AppText>
+            <AppText variant="cardDetail" style={layout.textCenter}>
               {game?.playersMin != null && game?.playersMax != null
                 ? `${game.playersMin}–${game.playersMax} players`
                 : '—'}
-            </Text>
-            <Text style={styles.cardDetail}>{game?.length ?? '—'}</Text>
-            <Text style={styles.cardDetail}>
+            </AppText>
+            <AppText variant="cardDetail" style={layout.textCenter}>{game?.length ?? '—'}</AppText>
+            <AppText variant="cardDetail" style={layout.textCenter}>
               Complexity: {displayComplexity}
-            </Text>
+            </AppText>
             {game?.categories?.length > 0 && (
-              <Text style={styles.cardDetail}>
+              <AppText variant="cardDetail" style={layout.textCenter}>
                 {game.categories.join(' · ')}
-              </Text>
+              </AppText>
             )}
             {game?.mechanics?.length > 0 && (
-              <Text style={styles.cardDetail}>
+              <AppText variant="cardDetail" style={layout.textCenter}>
                 {game.mechanics.join(' · ')}
-              </Text>
+              </AppText>
             )}
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.primaryButton}
+        <AppButton
+          variant="primary"
           onPress={() => {
             clearVoteCache();
             navigation.navigate('Home');
           }}
+          style={layout.stretch}
         >
-          <Text style={styles.primaryButtonText}>Start New Pick</Text>
-        </TouchableOpacity>
+          Start New Pick
+        </AppButton>
 
         {canPickAgain && (
-          <TouchableOpacity
-            style={styles.secondaryButton}
+          <AppButton
+            variant="secondary"
             onPress={() =>
               navigation.navigate('Results', {
                 filteredGames,
@@ -107,99 +107,10 @@ export default function SelectedGameScreen({ route, navigation }) {
               })
             }
           >
-            <Text style={styles.secondaryButtonText}>
-              Pick Again (Same Filters)
-            </Text>
-          </TouchableOpacity>
+            Pick Again (Same Filters)
+          </AppButton>
         )}
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundMain,
-  },
-  confettiLayer: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1,
-  },
-  content: {
-    flex: 1,
-    zIndex: 2,
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 32,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 28,
-    color: colors.textMain,
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  card: {
-    width: CARD_WIDTH,
-    backgroundColor: colors.cardSecondary,
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 32,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  cardImage: {
-    width: '100%',
-    height: 160,
-    backgroundColor: colors.cardMain,
-  },
-  cardImagePlaceholder: {
-    backgroundColor: colors.cardMain,
-  },
-  cardBody: {
-    padding: 16,
-  },
-  cardName: {
-    fontSize: 22,
-    color: colors.textMain,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  cardDetail: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  primaryButton: {
-    backgroundColor: colors.tintMain,
-    paddingVertical: 16,
-    paddingHorizontal: 48,
-    borderRadius: 8,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    marginBottom: 12,
-  },
-  primaryButtonText: {
-    fontSize: 20,
-    color: colors.backgroundMain,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.tintMain,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-  },
-  secondaryButtonText: {
-    fontSize: 18,
-    color: colors.tintMain,
-  },
-});

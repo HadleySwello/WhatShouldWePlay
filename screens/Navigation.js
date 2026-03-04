@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -13,31 +12,13 @@ import RankingsScreen from './RankingsScreen';
 import SetupScreen from './SetupScreen';
 import ResultsScreen from './ResultsScreen';
 import SelectedGameScreen from './SelectedGameScreen';
-import colors from '../helpers/colors';
+import { getNavigationScreenOptions } from '../theme';
 
 const Stack = createNativeStackNavigator();
 
-const styles = StyleSheet.create({
-  headerStyle: {
-    backgroundColor: colors.backgroundMain,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.tintMain,
-  },
-  headerTitleStyle: {
-    color: colors.textMain,
-    fontSize: 20,
-  },
-});
-
-const screenOptions = {
-  headerStyle: styles.headerStyle,
-  headerTitleStyle: styles.headerTitleStyle,
-  headerTitleAlign: 'center',
-  headerTintColor: colors.tintMain,
-  contentStyle: { backgroundColor: colors.backgroundMain },
-};
-
 export default function Navigation() {
+  const screenOptions = getNavigationScreenOptions();
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash" screenOptions={screenOptions}>
