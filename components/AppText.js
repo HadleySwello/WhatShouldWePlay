@@ -102,6 +102,8 @@ export default function AppText({
     presetName: styles.modal?.presetName,
     presetDescription: styles.modal?.presetDescription,
     presetMetadata: styles.modal?.presetMetadata,
+    presetHeaderTitle: styles.presetHeaderTitle,
+    presetSaveControlText: styles.presetSaveControlText,
     cardName: styles.cardName || { fontSize: t.sizes['2xl'], color: c.textMain },
     cardDetail: styles.cardDetail || { fontSize: t.sizes.md, color: c.textSecondary },
     stepperValue: {

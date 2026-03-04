@@ -1,15 +1,22 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from '@react-native-community/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
-import { getPresets } from '../helpers/presetsStorage';
+import {
+  getPresets,
+  savePreset,
+  updatePreset,
+  deletePreset,
+} from '../helpers/presetsStorage';
 import PresetsModal from '../components/PresetsModal';
+import PresetNameModal from '../components/PresetNameModal';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
@@ -21,6 +28,7 @@ const QUICK_PRESETS = [
   {
     id: 'party',
     name: 'Party Night',
+    isQuick: true,
     description: 'Light games, short sessions—great for groups.',
     filters: {
       playerCount: 4,
@@ -33,6 +41,7 @@ const QUICK_PRESETS = [
   {
     id: 'heavy',
     name: 'Heavy Night',
+    isQuick: true,
     description: 'Complex games for serious gamers.',
     filters: {
       playerCount: 3,
@@ -45,6 +54,7 @@ const QUICK_PRESETS = [
   {
     id: 'family',
     name: 'Family',
+    isQuick: true,
     description: 'Accessible games for all ages.',
     filters: {
       playerCount: 4,
@@ -148,6 +158,48 @@ const PLAY_TIME_OPTIONS = [
   { value: 'long', label: '3h+' },
 ];
 
+function filtersMatchPreset(
+  playerCount,
+  maxComplexityStars,
+  maxLength,
+  selectedMechanics,
+  selectedCategories,
+  presetFilters
+) {
+  const f = presetFilters || {};
+  const mechs = selectedMechanics ?? [];
+  const cats = selectedCategories ?? [];
+  const pMechs = f.selectedMechanics ?? [];
+  const pCats = f.selectedCategories ?? [];
+  const mechsEq =
+    mechs.length === pMechs.length && mechs.every((m, i) => m === pMechs[i]);
+  const catsEq =
+    cats.length === pCats.length && cats.every((c, i) => c === pCats[i]);
+  return (
+    (playerCount ?? 2) === (f.playerCount ?? 2) &&
+    (maxComplexityStars ?? null) === (f.maxComplexityStars ?? null) &&
+    (maxLength ?? null) === (f.maxLength ?? null) &&
+    mechsEq &&
+    catsEq
+  );
+}
+
+function getCurrentFilters(
+  playerCount,
+  maxComplexityStars,
+  maxLength,
+  selectedMechanics,
+  selectedCategories
+) {
+  return {
+    playerCount: playerCount ?? 2,
+    maxComplexityStars: maxComplexityStars ?? null,
+    maxLength: maxLength ?? null,
+    selectedMechanics: selectedMechanics ?? [],
+    selectedCategories: selectedCategories ?? [],
+  };
+}
+
 export default function SetupScreen({ navigation }) {
   const { games, isLoading } = useBoardGameGeekCollection();
   const [playerCount, setPlayerCount] = useState(2);
@@ -158,12 +210,21 @@ export default function SetupScreen({ navigation }) {
   const [mechanicsExpanded, setMechanicsExpanded] = useState(false);
   const [categoriesExpanded, setCategoriesExpanded] = useState(false);
   const [showPresetsModal, setShowPresetsModal] = useState(false);
+  const [showPresetNameModal, setShowPresetNameModal] = useState(false);
+  const [presetNameModalMode, setPresetNameModalMode] = useState('saveAsNew'); // 'rename' | 'saveAsNew'
   const [savedPresets, setSavedPresets] = useState([]);
+  const [loadedPreset, setLoadedPreset] = useState(null);
   const { tokens, styles } = useAppTheme();
 
-  useEffect(() => {
+  const refreshPresets = useCallback(() => {
     getPresets().then(setSavedPresets);
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshPresets();
+    }, [refreshPresets])
+  );
 
   const filteredGames = useMemo(
     () =>
@@ -201,29 +262,113 @@ export default function SetupScreen({ navigation }) {
 
   const hasNoMatches = filteredGames.length === 0;
 
-  const handlePresetSelect = (preset) => {
-    const f = preset.filters || preset;
-    const filtered = filterGames(
-      games,
-      f.playerCount ?? 2,
-      f.maxComplexityStars ?? null,
-      f.maxLength ?? null,
-      f.selectedMechanics ?? [],
-      f.selectedCategories ?? []
+  const currentFilters = getCurrentFilters(
+    playerCount,
+    maxComplexityStars,
+    maxLength,
+    selectedMechanics,
+    selectedCategories
+  );
+  const isModified =
+    loadedPreset &&
+    loadedPreset.filters &&
+    !filtersMatchPreset(
+      playerCount,
+      maxComplexityStars,
+      maxLength,
+      selectedMechanics,
+      selectedCategories,
+      loadedPreset.filters
     );
-    setShowPresetsModal(false);
-    navigation.navigate('Results', {
-      filteredGames: filtered,
-      playerCount: f.playerCount ?? 2,
-      filters: {
-        playerCount: f.playerCount ?? 2,
-        maxComplexityStars: f.maxComplexityStars ?? null,
-        maxLength: f.maxLength ?? null,
-        selectedMechanics: f.selectedMechanics ?? [],
-        selectedCategories: f.selectedCategories ?? [],
-      },
+  const isMyPreset = loadedPreset && !loadedPreset.isQuick;
+
+  const applyPresetFilters = useCallback((f) => {
+    const ff = f || {};
+    setPlayerCount(ff.playerCount ?? 2);
+    setMaxComplexityStars(ff.maxComplexityStars ?? null);
+    setMaxLength(ff.maxLength ?? null);
+    setSelectedMechanics(ff.selectedMechanics ?? []);
+    setSelectedCategories(ff.selectedCategories ?? []);
+  }, []);
+
+  const handlePresetSelect = useCallback(
+    (preset) => {
+      const f = preset.filters || preset;
+      applyPresetFilters(f);
+      setLoadedPreset({
+        id: preset.id,
+        name: preset.name,
+        filters: {
+          playerCount: f.playerCount ?? 2,
+          maxComplexityStars: f.maxComplexityStars ?? null,
+          maxLength: f.maxLength ?? null,
+          selectedMechanics: f.selectedMechanics ?? [],
+          selectedCategories: f.selectedCategories ?? [],
+        },
+        isQuick: preset.isQuick === true,
+      });
+      setShowPresetsModal(false);
+    },
+    [applyPresetFilters]
+  );
+
+  const handleSaveOverwrite = useCallback(() => {
+    if (!loadedPreset || !isMyPreset || !isModified) return;
+    updatePreset(loadedPreset.id, {
+      name: loadedPreset.name,
+      filters: currentFilters,
+    }).then((updated) => {
+      if (updated) {
+        setLoadedPreset({ ...loadedPreset, filters: currentFilters });
+        refreshPresets();
+      }
     });
-  };
+  }, [loadedPreset, isMyPreset, isModified, currentFilters, refreshPresets]);
+
+  const handleSaveAsNew = useCallback(() => {
+    setPresetNameModalMode('saveAsNew');
+    setShowPresetNameModal(true);
+  }, []);
+
+  const handleRename = useCallback(() => {
+    setPresetNameModalMode('rename');
+    setShowPresetNameModal(true);
+  }, []);
+
+  const handlePresetNameSave = useCallback(
+    (name) => {
+      if (presetNameModalMode === 'rename' && loadedPreset && isMyPreset) {
+        updatePreset(loadedPreset.id, {
+          name,
+          filters: loadedPreset.filters,
+        }).then((updated) => {
+          if (updated) {
+            setLoadedPreset({ ...loadedPreset, name });
+            setShowPresetNameModal(false);
+            refreshPresets();
+          }
+        });
+      } else {
+        savePreset(name, currentFilters).then((preset) => {
+          setLoadedPreset({
+            id: preset.id,
+            name: preset.name,
+            filters: preset.filters,
+            isQuick: false,
+          });
+          setShowPresetNameModal(false);
+          refreshPresets();
+        });
+      }
+    },
+    [
+      presetNameModalMode,
+      loadedPreset,
+      isMyPreset,
+      currentFilters,
+      refreshPresets,
+    ]
+  );
 
   const handleFindGames = () => {
     if (filteredGames.length === 0) return;
@@ -260,9 +405,13 @@ export default function SetupScreen({ navigation }) {
       >
         <View style={styles.filtersContent}>
           <View>
-            <AppText variant="sectionTitle">
-              How many players?
-            </AppText>
+            <TouchableOpacity
+              style={styles.usePresetButton}
+              onPress={() => setShowPresetsModal(true)}
+            >
+              <AppText variant="usePresetButton">Load a Preset</AppText>
+            </TouchableOpacity>
+            <AppText variant="sectionTitle">How many players?</AppText>
             <View style={styles.stepper.row}>
               <TouchableOpacity
                 style={styles.stepper.button}
@@ -278,18 +427,13 @@ export default function SetupScreen({ navigation }) {
                 <AppText variant="stepperSymbol">+</AppText>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.usePresetButton}
-              onPress={() => setShowPresetsModal(true)}
-            >
-              <AppText variant="usePresetButton">Use a preset</AppText>
-            </TouchableOpacity>
             {hasNoMatches && (
               <View style={styles.noMatchesCard}>
-                <AppText variant="noMatchesTitle">No matches</AppText>
+                <AppText variant="noMatchesTitle">
+                  No games match these filters.
+                </AppText>
                 <AppText variant="noMatchesBody">
-                  Try loosening your filters, or adding more games to your
-                  collection.
+                  Try adjusting your filters.
                 </AppText>
               </View>
             )}
@@ -478,6 +622,61 @@ export default function SetupScreen({ navigation }) {
         >
           {hasNoMatches ? 'No matches' : `View ${filteredGames.length} Games`}
         </AppButton>
+        <View style={styles.stickyPresetSection}>
+          <AppText variant="presetHeaderTitle">
+            {loadedPreset
+              ? isModified
+                ? `Preset: ${loadedPreset.name} (modified)`
+                : `Preset: ${loadedPreset.name}`
+              : 'Custom filters'}
+          </AppText>
+          {(loadedPreset == null ||
+            (isMyPreset && isModified) ||
+            (isMyPreset && !isModified) ||
+            (loadedPreset && loadedPreset.isQuick && isModified)) && (
+            <View style={styles.presetSaveControls}>
+              {loadedPreset == null ? (
+                <TouchableOpacity
+                  style={styles.stickyPresetAction}
+                  onPress={handleSaveAsNew}
+                >
+                  <AppText variant="presetSaveControlText">Save as new</AppText>
+                </TouchableOpacity>
+              ) : isMyPreset && isModified ? (
+                <React.Fragment>
+                  <TouchableOpacity
+                    style={styles.stickyPresetAction}
+                    onPress={handleSaveOverwrite}
+                  >
+                    <AppText variant="presetSaveControlText">Save</AppText>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.stickyPresetAction}
+                    onPress={handleSaveAsNew}
+                  >
+                    <AppText variant="presetSaveControlText">
+                      Save as new
+                    </AppText>
+                  </TouchableOpacity>
+                </React.Fragment>
+              ) : isMyPreset && !isModified ? (
+                <TouchableOpacity
+                  style={styles.stickyPresetAction}
+                  onPress={handleRename}
+                >
+                  <AppText variant="presetSaveControlText">Rename</AppText>
+                </TouchableOpacity>
+              ) : loadedPreset.isQuick && isModified ? (
+                <TouchableOpacity
+                  style={styles.stickyPresetAction}
+                  onPress={handleSaveAsNew}
+                >
+                  <AppText variant="presetSaveControlText">Save as new</AppText>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          )}
+        </View>
       </View>
 
       <PresetsModal
@@ -486,6 +685,25 @@ export default function SetupScreen({ navigation }) {
         quickPresets={QUICK_PRESETS}
         savedPresets={savedPresets}
         onSelectPreset={handlePresetSelect}
+        onDeletePreset={(preset) => {
+          deletePreset(preset.id).then(() => {
+            if (loadedPreset && loadedPreset.id === preset.id) {
+              setLoadedPreset(null);
+            }
+            refreshPresets();
+          });
+        }}
+      />
+      <PresetNameModal
+        visible={showPresetNameModal}
+        onClose={() => setShowPresetNameModal(false)}
+        onSave={handlePresetNameSave}
+        excludeId={
+          presetNameModalMode === 'rename' && loadedPreset
+            ? loadedPreset.id
+            : undefined
+        }
+        checkPresetCount={presetNameModalMode === 'saveAsNew'}
       />
     </View>
   );

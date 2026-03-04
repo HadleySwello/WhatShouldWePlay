@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, FlatList, TouchableOpacity, Image } from 'react-native';
 import SpinnerScreen from './SpinnerScreen';
 import { savePreset } from '../helpers/presetsStorage';
 import { getVotes, setVotes } from '../helpers/voteCache';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
-import AppInput from '../components/AppInput';
+import PresetNameModal from '../components/PresetNameModal';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -51,8 +46,7 @@ export default function ResultsScreen({ route, navigation }) {
   const { styles } = useAppTheme();
 
   const [showSpinner, setShowSpinner] = useState(false);
-  const [showPresetInput, setShowPresetInput] = useState(false);
-  const [presetName, setPresetName] = useState('');
+  const [showPresetNameModal, setShowPresetNameModal] = useState(false);
   const [presetSaved, setPresetSaved] = useState(false);
 
   const gameKey = filteredGames.map((g) => g.id).join(',');
@@ -147,42 +141,10 @@ export default function ResultsScreen({ route, navigation }) {
       {canSavePreset &&
         (presetSaved ? (
           <AppText variant="presetSavedText">Preset saved!</AppText>
-        ) : showPresetInput ? (
-          <View style={styles.presetInputRow}>
-            <AppInput
-              placeholder="Preset name"
-              value={presetName}
-              onChangeText={setPresetName}
-              autoCapitalize="words"
-              style={layout.flex1}
-            />
-            <TouchableOpacity
-              style={styles.presetSaveButton}
-              onPress={() => {
-                const name = presetName.trim() || 'My Preset';
-                savePreset(name, filters).then(() => {
-                  setPresetSaved(true);
-                  setShowPresetInput(false);
-                  setPresetName('');
-                });
-              }}
-            >
-              <AppText variant="buttonPrimary">Save</AppText>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.presetCancelButton}
-              onPress={() => {
-                setShowPresetInput(false);
-                setPresetName('');
-              }}
-            >
-              <AppText variant="presetCancelText">Cancel</AppText>
-            </TouchableOpacity>
-          </View>
         ) : (
           <TouchableOpacity
             style={styles.savePresetButton}
-            onPress={() => setShowPresetInput(true)}
+            onPress={() => setShowPresetNameModal(true)}
           >
             <AppText variant="savePresetButtonText">Save as preset</AppText>
           </TouchableOpacity>
@@ -225,7 +187,12 @@ export default function ResultsScreen({ route, navigation }) {
                   resizeMode="cover"
                 />
               ) : (
-                <View style={[styles.listItem.thumbnail, styles.listItem.thumbnailPlaceholder]} />
+                <View
+                  style={[
+                    styles.listItem.thumbnail,
+                    styles.listItem.thumbnailPlaceholder,
+                  ]}
+                />
               )}
               <View style={layout.flex1}>
                 <AppText variant="gameName">{item.name}</AppText>
@@ -275,6 +242,18 @@ export default function ResultsScreen({ route, navigation }) {
         onBackToList={() => setShowSpinner(false)}
         onPlayThis={handleSpinnerComplete}
         autoNavigate={true}
+      />
+
+      <PresetNameModal
+        visible={showPresetNameModal}
+        onClose={() => setShowPresetNameModal(false)}
+        onSave={(name) => {
+          savePreset(name, filters).then(() => {
+            setPresetSaved(true);
+            setShowPresetNameModal(false);
+          });
+        }}
+        checkPresetCount
       />
     </View>
   );

@@ -4,7 +4,9 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AppText from './AppText';
 import { useAppTheme } from '../theme';
@@ -45,13 +47,30 @@ export default function PresetsModal({
   quickPresets,
   savedPresets,
   onSelectPreset,
+  onDeletePreset,
 }) {
-  const { styles } = useAppTheme();
+  const { styles, tokens } = useAppTheme();
   const m = styles.modal;
 
   const handleSelect = (preset) => {
     onSelectPreset(preset);
     onClose();
+  };
+
+  const handleDelete = (preset, e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    Alert.alert(
+      'Delete preset?',
+      preset.name,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => onDeletePreset && onDeletePreset(preset),
+        },
+      ]
+    );
   };
 
   return (
@@ -84,17 +103,29 @@ export default function PresetsModal({
               <>
                 <AppText variant="modalSectionTitle">My Presets</AppText>
                 {savedPresets.map((p) => (
-                  <TouchableOpacity
-                    key={p.id}
-                    style={m.presetCard}
-                    onPress={() => handleSelect(p)}
-                    activeOpacity={0.7}
-                  >
-                    <AppText variant="presetName">{p.name}</AppText>
-                    <AppText variant="presetMetadata">
-                      {formatPresetMetadata(p.filters)}
-                    </AppText>
-                  </TouchableOpacity>
+                  <View key={p.id} style={m.presetCard}>
+                    <TouchableOpacity
+                      style={styles.presetCardRow}
+                      onPress={() => handleSelect(p)}
+                      activeOpacity={0.7}
+                    >
+                      <AppText variant="presetName">{p.name}</AppText>
+                      <AppText variant="presetMetadata">
+                        {formatPresetMetadata(p.filters)}
+                      </AppText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.presetDeleteIconAbsolute}
+                      onPress={(e) => handleDelete(p, e)}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Icon
+                        name="delete-outline"
+                        size={24}
+                        color={tokens.colors.textSecondary}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 ))}
               </>
             )}

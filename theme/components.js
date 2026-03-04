@@ -201,19 +201,72 @@ export function getComponentVariantStyles() {
       shadowRadius: 8,
       elevation: e.high,
     },
+    stickyPresetSection: {
+      marginTop: s.md,
+      alignItems: 'center',
+    },
+    stickyPresetAction: {
+      paddingVertical: s.sm,
+      paddingHorizontal: s.lg,
+    },
     usePresetButton: {
       paddingVertical: s.lg - 2,
       paddingHorizontal: s.xl - 4,
       borderRadius: r.md,
       borderWidth: 2,
       borderColor: c.tintMain,
-      alignSelf: 'flex-start',
+      alignSelf: 'center',
       marginBottom: s.xl,
     },
     usePresetButtonText: {
       fontSize: t.sizes.md,
       color: c.tintMain,
       fontWeight: t.weights.semibold,
+    },
+    presetHeaderRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      marginBottom: s.lg,
+      gap: s.sm,
+    },
+    presetHeaderTitle: {
+      fontSize: t.sizes.lg,
+      color: c.textMain,
+      fontWeight: t.weights.semibold,
+    },
+    presetSaveControls: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: s.md,
+      flexWrap: 'wrap',
+    },
+    presetSaveControlButton: {
+      paddingVertical: s.sm,
+      paddingHorizontal: s.lg,
+    },
+    presetSaveControlText: {
+      fontSize: t.sizes.md,
+      color: c.tintMain,
+      fontWeight: t.weights.semibold,
+    },
+    presetDeleteIcon: {
+      width: 44,
+      height: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    presetCardRow: {
+      flex: 1,
+    },
+    presetDeleteIconAbsolute: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      width: 44,
+      height: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     sectionTitle: {
       fontSize: t.sizes['2xl'],
@@ -368,6 +421,23 @@ export function getComponentVariantStyles() {
       fontSize: t.sizes.md,
       color: c.tintMain,
       marginBottom: s.md,
+    },
+    presetNameModalContent: {
+      minHeight: 340,
+      paddingBottom: s['3xl'],
+    },
+    presetNameModalBody: {
+      paddingHorizontal: s.xl,
+      paddingTop: s.lg,
+    },
+    presetNameRules: {
+      fontSize: t.sizes.sm,
+      color: c.textSecondary,
+      marginBottom: s.md,
+      lineHeight: 20,
+    },
+    presetNameError: {
+      color: c.textSecondary,
     },
     presetInputRow: {
       flexDirection: 'row',
@@ -604,7 +674,7 @@ export function getComponentVariantStyles() {
     },
     filtersScrollContent: {
       flexGrow: 1,
-      paddingBottom: s['3xl'] + s['2xl'] + s.lg,
+      paddingBottom: s['3xl'] + s['3xl'] + s['2xl'] + s.lg,
     },
     filtersContent: {
       paddingHorizontal: s.xl,
