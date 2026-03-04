@@ -41,7 +41,7 @@ export default function RankingsScreen({ navigation }) {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.softError}>Couldn't load your collection. Try again?</Text>
+        <Text style={styles.softError}>{error}</Text>
         <TouchableOpacity style={styles.retryButton} onPress={reload}>
           <Text style={styles.retryButtonText}>Try Again</Text>
         </TouchableOpacity>

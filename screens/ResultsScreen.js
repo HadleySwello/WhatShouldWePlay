@@ -5,8 +5,10 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import SpinnerScreen from './SpinnerScreen';
+import { savePreset } from '../helpers/presetsStorage';
 import colors from '../helpers/colors';
 
 function initialVotes(games) {
@@ -24,6 +26,9 @@ export default function ResultsScreen({ route, navigation }) {
   const { filteredGames = [], playerCount = 2, filters } = route.params || {};
   const [showSpinner, setShowSpinner] = useState(false);
   const [voteMode, setVoteMode] = useState(false);
+  const [showPresetInput, setShowPresetInput] = useState(false);
+  const [presetName, setPresetName] = useState('');
+  const [presetSaved, setPresetSaved] = useState(false);
   const [gameVotes, setGameVotes] = useState(() => initialVotes(filteredGames));
 
   const gameKey = filteredGames.map((g) => g.id).join(',');
@@ -80,14 +85,65 @@ export default function ResultsScreen({ route, navigation }) {
     });
   };
 
-  const listHeader = voteMode ? (
-    <Text style={styles.voteHint}>
-      One vote per player ({totalVotes} of {playerCount} assigned)
-    </Text>
-  ) : (
-    <Text style={styles.voteHint}>
-      {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'} match
-    </Text>
+  const canSavePreset = filters && filteredGames.length > 0;
+
+  const listHeader = (
+    <View>
+      {voteMode ? (
+        <Text style={styles.voteHint}>
+          One vote per player ({totalVotes} of {playerCount} assigned)
+        </Text>
+      ) : (
+        <Text style={styles.voteHint}>
+          {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'} match
+        </Text>
+      )}
+      {canSavePreset && (
+        presetSaved ? (
+          <Text style={styles.presetSavedText}>Preset saved!</Text>
+        ) : showPresetInput ? (
+          <View style={styles.presetInputRow}>
+            <TextInput
+              style={styles.presetInput}
+              placeholder="Preset name"
+              placeholderTextColor={colors.textSecondary}
+              value={presetName}
+              onChangeText={setPresetName}
+              autoCapitalize="words"
+            />
+            <TouchableOpacity
+              style={styles.presetSaveButton}
+              onPress={() => {
+                const name = presetName.trim() || 'My Preset';
+                savePreset(name, filters).then(() => {
+                  setPresetSaved(true);
+                  setShowPresetInput(false);
+                  setPresetName('');
+                });
+              }}
+            >
+              <Text style={styles.presetSaveButtonText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.presetCancelButton}
+              onPress={() => {
+                setShowPresetInput(false);
+                setPresetName('');
+              }}
+            >
+              <Text style={styles.presetCancelText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={styles.savePresetButton}
+            onPress={() => setShowPresetInput(true)}
+          >
+            <Text style={styles.savePresetButtonText}>Save as preset</Text>
+          </TouchableOpacity>
+        )
+      )}
+    </View>
   );
 
   return (
@@ -311,5 +367,52 @@ const styles = StyleSheet.create({
   textButtonText: {
     fontSize: 16,
     color: colors.textSecondary,
+  },
+  presetSavedText: {
+    fontSize: 15,
+    color: colors.tintMain,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  presetInputRow: {
+    marginTop: 12,
+    marginBottom: 16,
+  },
+  presetInput: {
+    backgroundColor: colors.cardMain,
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 16,
+    color: colors.textMain,
+    marginBottom: 12,
+  },
+  presetSaveButton: {
+    backgroundColor: colors.tintMain,
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  presetSaveButtonText: {
+    fontSize: 18,
+    color: colors.backgroundMain,
+    fontWeight: '600',
+  },
+  presetCancelButton: {
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  presetCancelText: {
+    fontSize: 16,
+    color: colors.textSecondary,
+  },
+  savePresetButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    marginTop: 8,
+  },
+  savePresetButtonText: {
+    fontSize: 16,
+    color: colors.tintMain,
   },
 });

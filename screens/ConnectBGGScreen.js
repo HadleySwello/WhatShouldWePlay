@@ -26,9 +26,12 @@ export default function ConnectBGGScreen({ navigation }) {
         const count = Array.isArray(games) ? games.length : 0;
         navigation.replace('CollectionImported', { gameCount: count });
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false);
-        setErrorMessage("Couldn't find that username. Try again?");
+        const msg = err?.message || '';
+        setErrorMessage(
+          msg || "Couldn't find that username. Try again?"
+        );
       });
   };
 

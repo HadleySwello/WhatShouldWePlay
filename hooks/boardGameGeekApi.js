@@ -11,10 +11,21 @@ const BGG_API_BASE = 'https://boardgamegeek.com/xmlapi2';
 const BGG_USERNAME_KEY = 'bggUsername';
 const BGG_COLLECTION_KEY = 'bggCollection';
 const TEST_USERNAME = 'test'; // dev only: use seed data, no API call
+const THING_API_LIMIT = 20;
 const parser = new XMLParser({ ignoreAttributes: false });
 
 function getBggApiToken() {
   return Constants.expoConfig?.extra?.bggApiToken || '';
+}
+
+function parseBggErrors(data) {
+  const err = data?.errors?.error;
+  if (!err) return null;
+  const list = Array.isArray(err) ? err : [err];
+  const messages = list
+    .map((e) => e?.message || e?.['#text'])
+    .filter(Boolean);
+  return messages.length > 0 ? messages[0] : 'Unknown BGG error';
 }
 
 // Attempt to fetch the user's collection, up to 5 retries if we get 202
@@ -38,8 +49,9 @@ const fetchCollectionForUsername = async (username, retry = 0, maxRetries = 5) =
   });
 
   if (response.status === 200) {
-    // Parse the XML -> JSON
     const data = parser.parse(response.data);
+    const errMsg = parseBggErrors(data);
+    if (errMsg) throw new Error(errMsg);
     return data;
   } else if (response.status === 202) {
     if (retry < maxRetries) {
@@ -53,13 +65,13 @@ const fetchCollectionForUsername = async (username, retry = 0, maxRetries = 5) =
   }
 };
 
-// Fetch thing details for given game IDs. One batched request. All data is merged
-// into games and saved to AsyncStorage so we avoid re-querying.
+// Fetch thing details for up to THING_API_LIMIT game IDs per request.
 // Parsed: categories, mechanics, minAge, minPlaytime, maxPlaytime, bggAverage, bggRank.
-// Other thing API data you could add: description (truncated), boardgamedesigner,
-// poll/suggested_numplayers (best/recommended player counts), language_dependence.
-const fetchThingDetails = async (ids, retry = 0, maxRetries = 5) => {
+const fetchThingDetailsBatch = async (ids, retry = 0, maxRetries = 5) => {
   if (!ids || ids.length === 0) return {};
+  if (ids.length > THING_API_LIMIT) {
+    throw new Error(`Cannot load more than ${THING_API_LIMIT} items`);
+  }
   const token = getBggApiToken();
   if (!token) return {};
 
@@ -71,13 +83,28 @@ const fetchThingDetails = async (ids, retry = 0, maxRetries = 5) => {
 
   if (response.status === 200) {
     const data = parser.parse(response.data);
+    const errMsg = parseBggErrors(data);
+    if (errMsg) throw new Error(errMsg);
     return parseThingResponse(data);
   }
   if (response.status === 202 && retry < maxRetries) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
-    return fetchThingDetails(ids, retry + 1, maxRetries);
+    return fetchThingDetailsBatch(ids, retry + 1, maxRetries);
   }
   return {};
+};
+
+// Fetch thing details for any number of IDs by batching into requests of THING_API_LIMIT.
+const fetchThingDetails = async (ids) => {
+  if (!ids || ids.length === 0) return {};
+  const idArr = Array.isArray(ids) ? [...ids] : [String(ids)];
+  const merged = {};
+  for (let i = 0; i < idArr.length; i += THING_API_LIMIT) {
+    const batch = idArr.slice(i, i + THING_API_LIMIT);
+    const batchResult = await fetchThingDetailsBatch(batch);
+    Object.assign(merged, batchResult);
+  }
+  return merged;
 };
 
 function parseThingResponse(data) {
@@ -184,7 +211,7 @@ const useBoardGameGeekCollection = () => {
             } else {
               sourceGames = seedGames;
             }
-            setError(null);
+            setError(err?.message || 'Failed to load collection');
           }
         }
       }

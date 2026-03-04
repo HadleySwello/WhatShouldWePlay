@@ -14,7 +14,7 @@ import colors from '../helpers/colors';
 const BGG_URL = 'https://boardgamegeek.com';
 
 const BGG_COLLECTION_KEY = 'bggCollection';
-const SPLASH_DELAY_MS = 5000;
+const SPLASH_DELAY_MS = 3000;
 
 export default function SplashScreen({ navigation }) {
   const [checked, setChecked] = useState(false);

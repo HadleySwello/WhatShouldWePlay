@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,22 +10,26 @@ import {
 import Slider from '@react-native-community/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 import { getPresets } from '../helpers/presetsStorage';
+import PresetsModal from '../components/PresetsModal';
 import colors from '../helpers/colors';
 
 const QUICK_PRESETS = [
   {
     id: 'party',
     name: 'Party Night',
+    description: 'Light games, short sessions—great for groups.',
     filters: { playerCount: 4, maxComplexityStars: 2, maxLength: 'under 1 hour', selectedMechanic: null, selectedCategory: null },
   },
   {
     id: 'heavy',
     name: 'Heavy Night',
+    description: 'Complex games for serious gamers.',
     filters: { playerCount: 3, maxComplexityStars: 6, maxLength: null, selectedMechanic: null, selectedCategory: null },
   },
   {
     id: 'family',
     name: 'Family',
+    description: 'Accessible games for all ages.',
     filters: { playerCount: 4, maxComplexityStars: 2, maxLength: 'under 1 hour', selectedMechanic: null, selectedCategory: null },
   },
 ];
@@ -77,6 +81,23 @@ function filterGames(
   });
 }
 
+function filterGamesByPlayersTimeComplexity(
+  games,
+  playerCount,
+  maxComplexityStars,
+  maxLength
+) {
+  return games.filter((game) => {
+    const matchPlayers =
+      playerCount >= game.playersMin && playerCount <= game.playersMax;
+    const matchComplexity =
+      maxComplexityStars == null ||
+      getComplexityWeight(game) <= maxComplexityStars;
+    const matchLength = lengthMatches(maxLength, game.length);
+    return matchPlayers && matchComplexity && matchLength;
+  });
+}
+
 function getUniqueMechanics(games) {
   const set = new Set();
   for (const g of games) {
@@ -110,38 +131,77 @@ export default function SetupScreen({ navigation }) {
   const [maxLength, setMaxLength] = useState(null);
   const [selectedMechanic, setSelectedMechanic] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [showNoMatches, setShowNoMatches] = useState(false);
+  const [showPresetsModal, setShowPresetsModal] = useState(false);
   const [savedPresets, setSavedPresets] = useState([]);
 
   useEffect(() => {
     getPresets().then(setSavedPresets);
   }, []);
 
-  const applyPreset = (preset) => {
+  const filteredGames = useMemo(
+    () =>
+      filterGames(
+        games,
+        playerCount,
+        maxComplexityStars,
+        maxLength,
+        selectedMechanic,
+        selectedCategory
+      ),
+    [
+      games,
+      playerCount,
+      maxComplexityStars,
+      maxLength,
+      selectedMechanic,
+      selectedCategory,
+    ]
+  );
+
+  const facetGames = useMemo(
+    () =>
+      filterGamesByPlayersTimeComplexity(
+        games,
+        playerCount,
+        maxComplexityStars,
+        maxLength
+      ),
+    [games, playerCount, maxComplexityStars, maxLength]
+  );
+
+  const uniqueMechanics = getUniqueMechanics(facetGames);
+  const uniqueCategories = getUniqueCategories(facetGames);
+
+  const hasNoMatches = filteredGames.length === 0;
+
+  const handlePresetSelect = (preset) => {
     const f = preset.filters || preset;
-    setPlayerCount(f.playerCount ?? 2);
-    setMaxComplexityStars(f.maxComplexityStars ?? null);
-    setMaxLength(f.maxLength ?? null);
-    setSelectedMechanic(f.selectedMechanic ?? null);
-    setSelectedCategory(f.selectedCategory ?? null);
-    setShowNoMatches(false);
+    const filtered = filterGames(
+      games,
+      f.playerCount ?? 2,
+      f.maxComplexityStars ?? null,
+      f.maxLength ?? null,
+      f.selectedMechanic ?? null,
+      f.selectedCategory ?? null
+    );
+    setShowPresetsModal(false);
+    navigation.navigate('Results', {
+      filteredGames: filtered,
+      playerCount: f.playerCount ?? 2,
+      filters: {
+        playerCount: f.playerCount ?? 2,
+        maxComplexityStars: f.maxComplexityStars ?? null,
+        maxLength: f.maxLength ?? null,
+        selectedMechanic: f.selectedMechanic ?? null,
+        selectedCategory: f.selectedCategory ?? null,
+      },
+    });
   };
 
-  const filteredCount = filterGames(
-    games,
-    playerCount,
-    maxComplexityStars,
-    maxLength,
-    selectedMechanic,
-    selectedCategory
-  ).length;
-
-  const uniqueMechanics = getUniqueMechanics(games);
-  const uniqueCategories = getUniqueCategories(games);
-
-  const goToResults = (filteredList) => {
+  const handleFindGames = () => {
+    if (filteredGames.length === 0) return;
     navigation.navigate('Results', {
-      filteredGames: filteredList,
+      filteredGames,
       playerCount,
       filters: {
         playerCount,
@@ -153,62 +213,11 @@ export default function SetupScreen({ navigation }) {
     });
   };
 
-  const handleFindGames = () => {
-    const filtered = filterGames(
-      games,
-      playerCount,
-      maxComplexityStars,
-      maxLength,
-      selectedMechanic,
-      selectedCategory
-    );
-    if (filtered.length === 0) {
-      setShowNoMatches(true);
-      return;
-    }
-    setShowNoMatches(false);
-    goToResults(filtered);
-  };
-
-  const handleSkipFilters = () => {
-    const filtered = filterGames(
-      games,
-      playerCount,
-      null,
-      null,
-      null,
-      null
-    );
-    if (filtered.length === 0) {
-      setShowNoMatches(true);
-      return;
-    }
-    setShowNoMatches(false);
-    goToResults(filtered);
-  };
-
   if (isLoading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color={colors.tintMain} />
         <Text style={styles.loadingText}>Loading your collection...</Text>
-      </View>
-    );
-  }
-
-  if (showNoMatches) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.noMatchesTitle}>No Matches</Text>
-        <Text style={styles.noMatchesBody}>
-          No games match your criteria. Try adjusting your filters.
-        </Text>
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => setShowNoMatches(false)}
-        >
-          <Text style={styles.primaryButtonText}>Adjust Filters</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -238,35 +247,44 @@ export default function SetupScreen({ navigation }) {
               <Text style={styles.stepperSymbol}>+</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.matchCount}>{filteredCount} games match</Text>
-          <Text style={styles.sectionTitle}>Quick presets</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.presetsScroll}
-            contentContainerStyle={styles.presetsScrollContent}
+          <TouchableOpacity
+            style={styles.usePresetButton}
+            onPress={() => setShowPresetsModal(true)}
           >
-            {QUICK_PRESETS.map((p) => (
+            <Text style={styles.usePresetButtonText}>Use a preset</Text>
+          </TouchableOpacity>
+          {hasNoMatches && (
+            <View style={styles.noMatchesCard}>
+              <Text style={styles.noMatchesTitle}>No matches</Text>
+              <Text style={styles.noMatchesBody}>
+                Try loosening your filters, or adding more games to your collection.
+              </Text>
+            </View>
+          )}
+          <Text style={styles.label}>Play Time</Text>
+          <Text style={styles.helper}>Maximum game length</Text>
+          <View style={styles.chipWrap}>
+            {PLAY_TIME_OPTIONS.map((opt) => (
               <TouchableOpacity
-                key={p.id}
-                style={styles.presetChip}
-                onPress={() => applyPreset(p)}
+                key={opt.value === null ? 'any' : opt.value}
+                style={[
+                  styles.presetChip,
+                  maxLength === opt.value && styles.presetChipSelected,
+                ]}
+                onPress={() => setMaxLength(opt.value)}
               >
-                <Text style={styles.presetChipText}>{p.name}</Text>
+                <Text
+                  style={[
+                    styles.presetChipText,
+                    maxLength === opt.value && styles.presetChipTextSelected,
+                  ]}
+                >
+                  {opt.label}
+                </Text>
               </TouchableOpacity>
             ))}
-            {savedPresets.map((p) => (
-              <TouchableOpacity
-                key={p.id}
-                style={styles.presetChip}
-                onPress={() => applyPreset(p)}
-              >
-                <Text style={styles.presetChipText}>{p.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-          <Text style={styles.sectionTitle}>Optional filters</Text>
-
+          </View>
+          <Text style={styles.label}>Complexity</Text>
           <Text style={styles.helper}>How complex are you willing to go?</Text>
           <View style={styles.complexitySliderWrap}>
             <Slider
@@ -293,12 +311,7 @@ export default function SetupScreen({ navigation }) {
             <>
               <Text style={styles.label}>Mechanic</Text>
               <Text style={styles.helper}>Filter by game mechanism</Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.categoryScroll}
-                contentContainerStyle={styles.categoryScrollContent}
-              >
+              <View style={styles.chipWrap}>
                 <TouchableOpacity
                   style={[
                     styles.categoryChip,
@@ -340,7 +353,7 @@ export default function SetupScreen({ navigation }) {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </ScrollView>
+              </View>
             </>
           )}
 
@@ -348,12 +361,7 @@ export default function SetupScreen({ navigation }) {
             <>
               <Text style={styles.label}>Category</Text>
               <Text style={styles.helper}>Filter by game type</Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.categoryScroll}
-                contentContainerStyle={styles.categoryScrollContent}
-              >
+              <View style={styles.chipWrap}>
                 <TouchableOpacity
                   style={[
                     styles.categoryChip,
@@ -391,38 +399,34 @@ export default function SetupScreen({ navigation }) {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </ScrollView>
+              </View>
             </>
           )}
-
-          <Text style={styles.label}>Play Time</Text>
-          <Text style={styles.helper}>Maximum game length</Text>
-          <View style={styles.playTimeRow}>
-            {PLAY_TIME_OPTIONS.map((opt) => (
-              <TouchableOpacity
-                key={opt.value === null ? 'any' : opt.value}
-                style={[
-                  styles.playTimeOption,
-                  maxLength === opt.value && styles.playTimeOptionSelected,
-                ]}
-                onPress={() => setMaxLength(opt.value)}
-              >
-                <Text style={styles.playTimeOptionText}>{opt.label}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
         </View>
-
-          <View style={styles.filtersButtons}>
-            <TouchableOpacity style={styles.primaryButton} onPress={handleFindGames}>
-              <Text style={styles.primaryButtonText}>Find Games</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.textButton} onPress={handleSkipFilters}>
-              <Text style={styles.textButtonText}>Skip Filters</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </ScrollView>
+      <View style={styles.stickyButtonContainer}>
+        <TouchableOpacity
+          style={[
+            styles.primaryButton,
+            hasNoMatches && styles.primaryButtonDisabled,
+          ]}
+          onPress={handleFindGames}
+          disabled={hasNoMatches}
+        >
+          <Text style={styles.primaryButtonText}>
+            {hasNoMatches ? 'No matches' : `View ${filteredGames.length} Games`}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <PresetsModal
+        visible={showPresetsModal}
+        onClose={() => setShowPresetsModal(false)}
+        quickPresets={QUICK_PRESETS}
+        savedPresets={savedPresets}
+        onSelectPreset={handlePresetSelect}
+      />
     </View>
   );
 }
@@ -464,7 +468,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 16,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.5,
   },
   primaryButtonText: {
     fontSize: 20,
@@ -476,31 +482,34 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontSize: 16,
   },
+  noMatchesCard: {
+    backgroundColor: colors.cardSecondary,
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 24,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.tintMain,
+  },
   noMatchesTitle: {
-    fontSize: 24,
+    fontSize: 18,
     color: colors.textMain,
-    textAlign: 'center',
-    marginBottom: 16,
+    fontWeight: '600',
+    marginBottom: 8,
   },
   noMatchesBody: {
-    fontSize: 18,
+    fontSize: 15,
     color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: 32,
   },
   matchCount: {
     fontSize: 16,
     color: colors.tintMain,
     marginBottom: 16,
   },
-  presetsScroll: {
-    marginBottom: 20,
-    minHeight: 44,
-  },
-  presetsScrollContent: {
+  chipWrap: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
-    paddingRight: 24,
+    marginBottom: 20,
   },
   presetChip: {
     paddingVertical: 10,
@@ -508,9 +517,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: colors.cardMain,
   },
+  presetChipSelected: {
+    backgroundColor: colors.tintMain,
+  },
   presetChipText: {
     fontSize: 15,
     color: colors.textMain,
+  },
+  presetChipTextSelected: {
+    color: colors.backgroundMain,
   },
   filtersContainer: {
     flex: 1,
@@ -521,7 +536,7 @@ const styles = StyleSheet.create({
   },
   filtersScrollContent: {
     flexGrow: 1,
-    paddingBottom: 32,
+    paddingBottom: 100,
   },
   filtersContent: {
     paddingHorizontal: 24,
@@ -529,8 +544,36 @@ const styles = StyleSheet.create({
   },
   filtersTop: {
   },
-  filtersButtons: {
-    paddingTop: 24,
+  stickyButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 32,
+    backgroundColor: colors.backgroundMain,
+    borderTopWidth: 1,
+    borderTopColor: colors.cardMain,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  usePresetButton: {
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: colors.tintMain,
+    alignSelf: 'flex-start',
+    marginBottom: 24,
+  },
+  usePresetButtonText: {
+    fontSize: 16,
+    color: colors.tintMain,
+    fontWeight: '600',
   },
   sectionTitle: {
     fontSize: 22,
@@ -565,15 +608,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textSecondary,
   },
-  categoryScroll: {
-    marginBottom: 20,
-    minHeight: 44,
-  },
-  categoryScrollContent: {
-    flexDirection: 'row',
-    gap: 8,
-    paddingRight: 24,
-  },
   categoryChip: {
     paddingVertical: 10,
     paddingHorizontal: 14,
@@ -589,37 +623,5 @@ const styles = StyleSheet.create({
   },
   categoryChipTextSelected: {
     color: colors.backgroundMain,
-  },
-  playTimeRow: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'space-between',
-    marginBottom: 28,
-  },
-  playTimeOption: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 4,
-    marginHorizontal: 2,
-    borderRadius: 8,
-    backgroundColor: colors.cardMain,
-  },
-  playTimeOptionSelected: {
-    backgroundColor: colors.tintSecondary,
-  },
-  playTimeOptionText: {
-    fontSize: 14,
-    color: colors.textMain,
-  },
-  textButton: {
-    alignItems: 'center',
-    marginTop: 16,
-    paddingVertical: 12,
-  },
-  textButtonText: {
-    fontSize: 18,
-    color: colors.textSecondary,
   },
 });
