@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Confetti } from '../components/ConfettiCelebration';
+import { clearVoteCache } from '../helpers/voteCache';
 import colors from '../helpers/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -87,7 +88,10 @@ export default function SelectedGameScreen({ route, navigation }) {
 
         <TouchableOpacity
           style={styles.primaryButton}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => {
+            clearVoteCache();
+            navigation.navigate('Home');
+          }}
         >
           <Text style={styles.primaryButtonText}>Start New Pick</Text>
         </TouchableOpacity>
