@@ -28,7 +28,9 @@ const Spinner = ({ slices, onSpinningEnd }) => {
     const winningIndex = Math.floor(Math.random() * NUM_SECTIONS);
     const extraSpins = 5;
     const finalAngle =
-      360 - (winningIndex * anglePerSection + anglePerSection / 2) + extraSpins * 360;
+      360 -
+      (winningIndex * anglePerSection + anglePerSection / 2) +
+      extraSpins * 360;
 
     animatedValue.setValue(0);
     setWinner(null);
@@ -47,7 +49,8 @@ const Spinner = ({ slices, onSpinningEnd }) => {
 
   const renderSlices = () => {
     const pieGenerator = d3Shape.pie().value(1).sort(null);
-    const arcGenerator = d3Shape.arc()
+    const arcGenerator = d3Shape
+      .arc()
       .outerRadius(WHEEL_SIZE / 2)
       .innerRadius(0);
 
@@ -56,8 +59,10 @@ const Spinner = ({ slices, onSpinningEnd }) => {
     return pieData.map((slice, index) => {
       const path = arcGenerator(slice);
       const labelAngle = (slice.startAngle + slice.endAngle) / 2;
-      const labelX = (WHEEL_SIZE / 2) * 0.7 * Math.cos(labelAngle - Math.PI / 2);
-      const labelY = (WHEEL_SIZE / 2) * 0.7 * Math.sin(labelAngle - Math.PI / 2);
+      const labelX =
+        (WHEEL_SIZE / 2) * 0.7 * Math.cos(labelAngle - Math.PI / 2);
+      const labelY =
+        (WHEEL_SIZE / 2) * 0.7 * Math.sin(labelAngle - Math.PI / 2);
 
       return (
         <G key={`slice-${index}`}>

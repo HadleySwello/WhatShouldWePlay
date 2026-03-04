@@ -54,7 +54,8 @@ export default function RankingsScreen({ navigation }) {
       <View style={[styles.container, styles.emptyContainer]}>
         <Text style={styles.emptyTitle}>Your collection is empty</Text>
         <Text style={styles.emptyBody}>
-          No games in your collection. Add games via BoardGameGeek or change your username.
+          No games in your collection. Add games via BoardGameGeek or change
+          your username.
         </Text>
         <TouchableOpacity
           style={styles.primaryButton}

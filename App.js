@@ -1,7 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import HomeScreen from './screens/HomeScreen';
 import Navigation from './screens/Navigation';
 
 export default function App() {
@@ -15,9 +13,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  background: {
-    flex: 1,
-    resizeMode: 'cover',
   },
 });

@@ -29,9 +29,7 @@ export default function ConnectBGGScreen({ navigation }) {
       .catch((err) => {
         setLoading(false);
         const msg = err?.message || '';
-        setErrorMessage(
-          msg || "Couldn't find that username. Try again?"
-        );
+        setErrorMessage(msg || "Couldn't find that username. Try again?");
       });
   };
 
@@ -72,7 +70,10 @@ export default function ConnectBGGScreen({ navigation }) {
         </View>
       ) : (
         <TouchableOpacity
-          style={[styles.primaryButton, !canSubmit && styles.primaryButtonDisabled]}
+          style={[
+            styles.primaryButton,
+            !canSubmit && styles.primaryButtonDisabled,
+          ]}
           onPress={handleLoad}
           disabled={!canSubmit}
         >

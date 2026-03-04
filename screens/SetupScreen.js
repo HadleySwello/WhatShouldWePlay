@@ -18,19 +18,37 @@ const QUICK_PRESETS = [
     id: 'party',
     name: 'Party Night',
     description: 'Light games, short sessions—great for groups.',
-    filters: { playerCount: 4, maxComplexityStars: 2, maxLength: 'under 1 hour', selectedMechanic: null, selectedCategory: null },
+    filters: {
+      playerCount: 4,
+      maxComplexityStars: 2,
+      maxLength: 'under 1 hour',
+      selectedMechanic: null,
+      selectedCategory: null,
+    },
   },
   {
     id: 'heavy',
     name: 'Heavy Night',
     description: 'Complex games for serious gamers.',
-    filters: { playerCount: 3, maxComplexityStars: 6, maxLength: null, selectedMechanic: null, selectedCategory: null },
+    filters: {
+      playerCount: 3,
+      maxComplexityStars: 6,
+      maxLength: null,
+      selectedMechanic: null,
+      selectedCategory: null,
+    },
   },
   {
     id: 'family',
     name: 'Family',
     description: 'Accessible games for all ages.',
-    filters: { playerCount: 4, maxComplexityStars: 2, maxLength: 'under 1 hour', selectedMechanic: null, selectedCategory: null },
+    filters: {
+      playerCount: 4,
+      maxComplexityStars: 2,
+      maxLength: 'under 1 hour',
+      selectedMechanic: null,
+      selectedCategory: null,
+    },
   },
 ];
 
@@ -231,178 +249,186 @@ export default function SetupScreen({ navigation }) {
       >
         <View style={styles.filtersContent}>
           <View style={styles.filtersTop}>
-          <Text style={styles.sectionTitle}>How many players?</Text>
-          <View style={styles.stepperRow}>
-            <TouchableOpacity
-              style={styles.stepperButton}
-              onPress={() => setPlayerCount((n) => Math.max(1, n - 1))}
-            >
-              <Text style={styles.stepperSymbol}>−</Text>
-            </TouchableOpacity>
-            <Text style={styles.stepperValue}>{playerCount}</Text>
-            <TouchableOpacity
-              style={styles.stepperButton}
-              onPress={() => setPlayerCount((n) => Math.min(10, n + 1))}
-            >
-              <Text style={styles.stepperSymbol}>+</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={styles.usePresetButton}
-            onPress={() => setShowPresetsModal(true)}
-          >
-            <Text style={styles.usePresetButtonText}>Use a preset</Text>
-          </TouchableOpacity>
-          {hasNoMatches && (
-            <View style={styles.noMatchesCard}>
-              <Text style={styles.noMatchesTitle}>No matches</Text>
-              <Text style={styles.noMatchesBody}>
-                Try loosening your filters, or adding more games to your collection.
-              </Text>
-            </View>
-          )}
-          <Text style={styles.label}>Play Time</Text>
-          <Text style={styles.helper}>Maximum game length</Text>
-          <View style={styles.chipWrap}>
-            {PLAY_TIME_OPTIONS.map((opt) => (
+            <Text style={styles.sectionTitle}>How many players?</Text>
+            <View style={styles.stepperRow}>
               <TouchableOpacity
-                key={opt.value === null ? 'any' : opt.value}
-                style={[
-                  styles.presetChip,
-                  maxLength === opt.value && styles.presetChipSelected,
-                ]}
-                onPress={() => setMaxLength(opt.value)}
+                style={styles.stepperButton}
+                onPress={() => setPlayerCount((n) => Math.max(1, n - 1))}
               >
-                <Text
-                  style={[
-                    styles.presetChipText,
-                    maxLength === opt.value && styles.presetChipTextSelected,
-                  ]}
-                >
-                  {opt.label}
-                </Text>
+                <Text style={styles.stepperSymbol}>−</Text>
               </TouchableOpacity>
-            ))}
-          </View>
-          <Text style={styles.label}>Complexity</Text>
-          <Text style={styles.helper}>How complex are you willing to go?</Text>
-          <View style={styles.complexitySliderWrap}>
-            <Slider
-              style={styles.complexitySlider}
-              minimumValue={1}
-              maximumValue={6}
-              step={1}
-              value={maxComplexityStars == null ? 6 : maxComplexityStars}
-              onValueChange={(v) => {
-                const n = Math.round(v);
-                setMaxComplexityStars(n >= 6 ? null : n);
-              }}
-              minimumTrackTintColor={colors.tintMain}
-              maximumTrackTintColor={colors.cardMain}
-              thumbTintColor={colors.tintMain}
-            />
-            <View style={styles.complexitySliderLabels}>
-              <Text style={styles.complexitySliderLabel}>Light</Text>
-              <Text style={styles.complexitySliderLabel}>Heavy</Text>
+              <Text style={styles.stepperValue}>{playerCount}</Text>
+              <TouchableOpacity
+                style={styles.stepperButton}
+                onPress={() => setPlayerCount((n) => Math.min(10, n + 1))}
+              >
+                <Text style={styles.stepperSymbol}>+</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-
-          {uniqueMechanics.length > 0 && (
-            <>
-              <Text style={styles.label}>Mechanic</Text>
-              <Text style={styles.helper}>Filter by game mechanism</Text>
-              <View style={styles.chipWrap}>
+            <TouchableOpacity
+              style={styles.usePresetButton}
+              onPress={() => setShowPresetsModal(true)}
+            >
+              <Text style={styles.usePresetButtonText}>Use a preset</Text>
+            </TouchableOpacity>
+            {hasNoMatches && (
+              <View style={styles.noMatchesCard}>
+                <Text style={styles.noMatchesTitle}>No matches</Text>
+                <Text style={styles.noMatchesBody}>
+                  Try loosening your filters, or adding more games to your
+                  collection.
+                </Text>
+              </View>
+            )}
+            <Text style={styles.label}>Play Time</Text>
+            <Text style={styles.helper}>Maximum game length</Text>
+            <View style={styles.chipWrap}>
+              {PLAY_TIME_OPTIONS.map((opt) => (
                 <TouchableOpacity
+                  key={opt.value === null ? 'any' : opt.value}
                   style={[
-                    styles.categoryChip,
-                    selectedMechanic === null && styles.categoryChipSelected,
+                    styles.presetChip,
+                    maxLength === opt.value && styles.presetChipSelected,
                   ]}
-                  onPress={() => setSelectedMechanic(null)}
+                  onPress={() => setMaxLength(opt.value)}
                 >
                   <Text
                     style={[
-                      styles.categoryChipText,
-                      selectedMechanic === null &&
-                        styles.categoryChipTextSelected,
+                      styles.presetChipText,
+                      maxLength === opt.value && styles.presetChipTextSelected,
                     ]}
                   >
-                    Any
+                    {opt.label}
                   </Text>
                 </TouchableOpacity>
-                {uniqueMechanics.map((mech) => (
+              ))}
+            </View>
+            <Text style={styles.label}>Complexity</Text>
+            <Text style={styles.helper}>
+              How complex are you willing to go?
+            </Text>
+            <View style={styles.complexitySliderWrap}>
+              <Slider
+                style={styles.complexitySlider}
+                minimumValue={1}
+                maximumValue={6}
+                step={1}
+                value={maxComplexityStars == null ? 6 : maxComplexityStars}
+                onValueChange={(v) => {
+                  const n = Math.round(v);
+                  setMaxComplexityStars(n >= 6 ? null : n);
+                }}
+                minimumTrackTintColor={colors.tintMain}
+                maximumTrackTintColor={colors.cardMain}
+                thumbTintColor={colors.tintMain}
+              />
+              <View style={styles.complexitySliderLabels}>
+                <Text style={styles.complexitySliderLabel}>Light</Text>
+                <Text style={styles.complexitySliderLabel}>Heavy</Text>
+              </View>
+            </View>
+
+            {uniqueMechanics.length > 0 && (
+              <>
+                <Text style={styles.label}>Mechanic</Text>
+                <Text style={styles.helper}>Filter by game mechanism</Text>
+                <View style={styles.chipWrap}>
                   <TouchableOpacity
-                    key={mech}
                     style={[
                       styles.categoryChip,
-                      selectedMechanic === mech && styles.categoryChipSelected,
+                      selectedMechanic === null && styles.categoryChipSelected,
                     ]}
-                    onPress={() =>
-                      setSelectedMechanic(
-                        selectedMechanic === mech ? null : mech
-                      )
-                    }
+                    onPress={() => setSelectedMechanic(null)}
                   >
                     <Text
                       style={[
                         styles.categoryChipText,
-                        selectedMechanic === mech &&
+                        selectedMechanic === null &&
                           styles.categoryChipTextSelected,
                       ]}
                     >
-                      {mech}
+                      Any
                     </Text>
                   </TouchableOpacity>
-                ))}
-              </View>
-            </>
-          )}
+                  {uniqueMechanics.map((mech) => (
+                    <TouchableOpacity
+                      key={mech}
+                      style={[
+                        styles.categoryChip,
+                        selectedMechanic === mech &&
+                          styles.categoryChipSelected,
+                      ]}
+                      onPress={() =>
+                        setSelectedMechanic(
+                          selectedMechanic === mech ? null : mech
+                        )
+                      }
+                    >
+                      <Text
+                        style={[
+                          styles.categoryChipText,
+                          selectedMechanic === mech &&
+                            styles.categoryChipTextSelected,
+                        ]}
+                      >
+                        {mech}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </>
+            )}
 
-          {uniqueCategories.length > 0 && (
-            <>
-              <Text style={styles.label}>Category</Text>
-              <Text style={styles.helper}>Filter by game type</Text>
-              <View style={styles.chipWrap}>
-                <TouchableOpacity
-                  style={[
-                    styles.categoryChip,
-                    selectedCategory === null && styles.categoryChipSelected,
-                  ]}
-                  onPress={() => setSelectedCategory(null)}
-                >
-                  <Text
-                    style={[
-                      styles.categoryChipText,
-                      selectedCategory === null && styles.categoryChipTextSelected,
-                    ]}
-                  >
-                    Any
-                  </Text>
-                </TouchableOpacity>
-                {uniqueCategories.map((cat) => (
+            {uniqueCategories.length > 0 && (
+              <>
+                <Text style={styles.label}>Category</Text>
+                <Text style={styles.helper}>Filter by game type</Text>
+                <View style={styles.chipWrap}>
                   <TouchableOpacity
-                    key={cat}
                     style={[
                       styles.categoryChip,
-                      selectedCategory === cat && styles.categoryChipSelected,
+                      selectedCategory === null && styles.categoryChipSelected,
                     ]}
-                    onPress={() =>
-                      setSelectedCategory(selectedCategory === cat ? null : cat)
-                    }
+                    onPress={() => setSelectedCategory(null)}
                   >
                     <Text
                       style={[
                         styles.categoryChipText,
-                        selectedCategory === cat && styles.categoryChipTextSelected,
+                        selectedCategory === null &&
+                          styles.categoryChipTextSelected,
                       ]}
                     >
-                      {cat}
+                      Any
                     </Text>
                   </TouchableOpacity>
-                ))}
-              </View>
-            </>
-          )}
-        </View>
+                  {uniqueCategories.map((cat) => (
+                    <TouchableOpacity
+                      key={cat}
+                      style={[
+                        styles.categoryChip,
+                        selectedCategory === cat && styles.categoryChipSelected,
+                      ]}
+                      onPress={() =>
+                        setSelectedCategory(
+                          selectedCategory === cat ? null : cat
+                        )
+                      }
+                    >
+                      <Text
+                        style={[
+                          styles.categoryChipText,
+                          selectedCategory === cat &&
+                            styles.categoryChipTextSelected,
+                        ]}
+                      >
+                        {cat}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </>
+            )}
+          </View>
         </View>
       </ScrollView>
       <View style={styles.stickyButtonContainer}>
@@ -542,8 +568,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 24,
   },
-  filtersTop: {
-  },
+  filtersTop: {},
   stickyButtonContainer: {
     position: 'absolute',
     bottom: 0,

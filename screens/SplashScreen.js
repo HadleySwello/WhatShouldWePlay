@@ -17,7 +17,7 @@ const BGG_COLLECTION_KEY = 'bggCollection';
 const SPLASH_DELAY_MS = 3000;
 
 export default function SplashScreen({ navigation }) {
-  const [checked, setChecked] = useState(false);
+  const [, setChecked] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,7 +26,8 @@ export default function SplashScreen({ navigation }) {
       try {
         const raw = await AsyncStorage.getItem(BGG_COLLECTION_KEY);
         const collection = raw ? JSON.parse(raw) : null;
-        const hasCollection = Array.isArray(collection) && collection.length > 0;
+        const hasCollection =
+          Array.isArray(collection) && collection.length > 0;
 
         if (cancelled) return;
         setChecked(true);
@@ -41,7 +42,7 @@ export default function SplashScreen({ navigation }) {
         }, SPLASH_DELAY_MS);
 
         return () => clearTimeout(timer);
-      } catch (_) {
+      } catch {
         if (!cancelled) {
           setChecked(true);
           setTimeout(() => navigation.replace('Welcome'), SPLASH_DELAY_MS);
@@ -50,7 +51,9 @@ export default function SplashScreen({ navigation }) {
     };
 
     checkAndGo();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [navigation]);
 
   return (

@@ -92,7 +92,12 @@ export default function PresetsModal({
               </>
             )}
 
-            <Text style={[styles.sectionTitle, savedPresets.length > 0 && styles.savedSectionTitle]}>
+            <Text
+              style={[
+                styles.sectionTitle,
+                savedPresets.length > 0 && styles.savedSectionTitle,
+              ]}
+            >
               Quick Presets
             </Text>
             {quickPresets.map((p) => (

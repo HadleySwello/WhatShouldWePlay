@@ -18,9 +18,9 @@ For local development and building for the App Store:
 
 - **Prerequisites:** Node.js (LTS), Expo tooling, Xcode (for iOS). For Android builds: Android Studio.
 - **Install:** `npm install`
-- **Run:**  
-  - `npm start` — Expo dev server (then `i` for iOS simulator, `a` for Android).  
-  - `npm run ios` / `npm run android` — run on simulator/device.  
+- **Run:**
+  - `npm start` — Expo dev server (then `i` for iOS simulator, `a` for Android).
+  - `npm run ios` / `npm run android` — run on simulator/device.
   - `npm run web` — run in browser.
 
 **BGG API token:** The app requires a BGG application token for the XML API. Copy `.env.example` to `.env` and add your token: `BGG_API_TOKEN=your-token-here`. Get your token at [boardgamegeek.com/applications](https://boardgamegeek.com/applications) (your app → Tokens). Never commit `.env`. For EAS Build, use `eas secret:create --name BGG_API_TOKEN --value "your-token"`.

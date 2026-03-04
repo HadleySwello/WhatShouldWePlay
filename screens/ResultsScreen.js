@@ -95,11 +95,12 @@ export default function ResultsScreen({ route, navigation }) {
         </Text>
       ) : (
         <Text style={styles.voteHint}>
-          {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'} match
+          {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'}{' '}
+          match
         </Text>
       )}
-      {canSavePreset && (
-        presetSaved ? (
+      {canSavePreset &&
+        (presetSaved ? (
           <Text style={styles.presetSavedText}>Preset saved!</Text>
         ) : showPresetInput ? (
           <View style={styles.presetInputRow}>
@@ -141,8 +142,7 @@ export default function ResultsScreen({ route, navigation }) {
           >
             <Text style={styles.savePresetButtonText}>Save as preset</Text>
           </TouchableOpacity>
-        )
-      )}
+        ))}
     </View>
   );
 
@@ -200,9 +200,7 @@ export default function ResultsScreen({ route, navigation }) {
                 style={styles.primaryButton}
                 onPress={handleQuickSpin}
               >
-                <Text style={styles.primaryButtonText}>
-                  Quick Spin
-                </Text>
+                <Text style={styles.primaryButtonText}>Quick Spin</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.secondaryButton}

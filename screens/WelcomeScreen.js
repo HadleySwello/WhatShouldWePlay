@@ -7,7 +7,8 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>What Should We Play?</Text>
       <Text style={styles.subtitle}>
-        Connect your BoardGameGeek collection to find the perfect game for your group.
+        Connect your BoardGameGeek collection to find the perfect game for your
+        group.
       </Text>
       <TouchableOpacity
         style={styles.primaryButton}

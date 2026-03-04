@@ -12,7 +12,8 @@ const seedGames = [
     complexityWeight: 2.5,
     length: 'under 2 hours',
     color: '#ec7e1f',
-    image: 'https://cf.geekdo-images.com/0bFgmykLMjqm00x7TFkzOg__original/img/1sfdc21wj1cDgvbdE32_6MhZ1pE=/0x0/filters:format(png)/pic4733688.png',
+    image:
+      'https://cf.geekdo-images.com/0bFgmykLMjqm00x7TFkzOg__original/img/1sfdc21wj1cDgvbdE32_6MhZ1pE=/0x0/filters:format(png)/pic4733688.png',
     thumbnail:
       'https://cf.geekdo-images.com/0bFgmykLMjqm00x7TFkzOg__small/img/7LV2NmjgvjeEC9kD5Muqbs0ijxg=/fit-in/200x150/filters:strip_icc()/pic4733688.png',
     yearPublished: '1991',
@@ -34,7 +35,8 @@ const seedGames = [
     complexityWeight: 1.2,
     length: 'under 1 hour',
     color: '#ec7e1f',
-    image: 'https://cf.geekdo-images.com/s2uIRb5xOjUg-m4Dpt2PlA__original/img/ZyYerPOXlqXEgbH_E6thOedaaWo=/0x0/filters:format(jpeg)/pic5813699.jpg',
+    image:
+      'https://cf.geekdo-images.com/s2uIRb5xOjUg-m4Dpt2PlA__original/img/ZyYerPOXlqXEgbH_E6thOedaaWo=/0x0/filters:format(jpeg)/pic5813699.jpg',
     thumbnail:
       'https://cf.geekdo-images.com/s2uIRb5xOjUg-m4Dpt2PlA__small/img/RiU-qx390smPvJkdB9khqHvEjx8=/fit-in/200x150/filters:strip_icc()/pic5813699.jpg',
     yearPublished: '2021',
@@ -56,7 +58,8 @@ const seedGames = [
     complexityWeight: 2.8,
     length: 'under 1 hour',
     color: '#ec7e1f',
-    image: 'https://cf.geekdo-images.com/S_-n-WRvpzgH-d8xuzJgmg__original/img/cvWVDcSUBsngibbELMhABgIyrVo=/0x0/filters:format(png)/pic1079512.png',
+    image:
+      'https://cf.geekdo-images.com/S_-n-WRvpzgH-d8xuzJgmg__original/img/cvWVDcSUBsngibbELMhABgIyrVo=/0x0/filters:format(png)/pic1079512.png',
     thumbnail:
       'https://cf.geekdo-images.com/S_-n-WRvpzgH-d8xuzJgmg__small/img/2KvAr_TOIvW-9DNxlX-KuyL0Fwo=/fit-in/200x150/filters:strip_icc()/pic1079512.png',
     yearPublished: '2005',
@@ -86,12 +89,18 @@ const seedGames = [
     complexityWeight: 1.5,
     length: 'under 30 min',
     color: '#ec7e1f',
-    image: 'https://cf.geekdo-images.com/m_RzXpHURC0_xLkvRSR_sw__original/img/hSvWgiRYJCTTuoLOWTW3c8sYtl8=/0x0/filters:format(jpeg)/pic3043734.jpg',
+    image:
+      'https://cf.geekdo-images.com/m_RzXpHURC0_xLkvRSR_sw__original/img/hSvWgiRYJCTTuoLOWTW3c8sYtl8=/0x0/filters:format(jpeg)/pic3043734.jpg',
     thumbnail:
       'https://cf.geekdo-images.com/m_RzXpHURC0_xLkvRSR_sw__small/img/OfgWmkGJj5BgOO0zFHEtP5CHfbU=/fit-in/200x150/filters:strip_icc()/pic3043734.jpg',
     yearPublished: '2011',
     rating: '9',
-    categories: ['Dice', 'Fighting', 'Movies / TV / Radio theme', 'Science Fiction'],
+    categories: [
+      'Dice',
+      'Fighting',
+      'Movies / TV / Radio theme',
+      'Science Fiction',
+    ],
     mechanics: [
       'Dice Rolling',
       'Die Icon Resolution',
@@ -117,7 +126,8 @@ const seedGames = [
     complexityWeight: 1.8,
     length: 'under 1 hour',
     color: '#ec7e1f',
-    image: 'https://cf.geekdo-images.com/P8-3HeCgEa_CODQiQxq9SQ__original/img/wpH1mGsLXafShzWDatYxmNnbvR4=/0x0/filters:format(jpeg)/pic7849476.jpg',
+    image:
+      'https://cf.geekdo-images.com/P8-3HeCgEa_CODQiQxq9SQ__original/img/wpH1mGsLXafShzWDatYxmNnbvR4=/0x0/filters:format(jpeg)/pic7849476.jpg',
     thumbnail:
       'https://cf.geekdo-images.com/P8-3HeCgEa_CODQiQxq9SQ__small/img/sggT8rR4B943r_4fVThDTeS1gko=/fit-in/200x150/filters:strip_icc()/pic7849476.jpg',
     yearPublished: '2023',
@@ -144,7 +154,8 @@ const seedGames = [
     complexityWeight: 2.4,
     length: 'under 2 hours',
     color: '#ec7e1f',
-    image: 'https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__original/img/cI782Zis9cT66j2MjSHKJGnFPNw=/0x0/filters:format(jpeg)/pic4458123.jpg',
+    image:
+      'https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__original/img/cI782Zis9cT66j2MjSHKJGnFPNw=/0x0/filters:format(jpeg)/pic4458123.jpg',
     thumbnail:
       'https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__small/img/VNToqgS2-pOGU6MuvIkMPKn_y-s=/fit-in/200x150/filters:strip_icc()/pic4458123.jpg',
     yearPublished: '2019',

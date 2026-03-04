@@ -40,10 +40,7 @@ const screenOptions = {
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Splash"
-        screenOptions={screenOptions}
-      >
+      <Stack.Navigator initialRouteName="Splash" screenOptions={screenOptions}>
         <Stack.Screen
           name="Splash"
           component={SplashScreen}

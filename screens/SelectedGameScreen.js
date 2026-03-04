@@ -32,7 +32,7 @@ export default function SelectedGameScreen({ route, navigation }) {
   const displayComplexity =
     game?.complexityWeight != null
       ? game.complexityWeight.toFixed(1)
-      : game?.complexity ?? '—';
+      : (game?.complexity ?? '—');
 
   return (
     <View style={styles.container}>
@@ -62,17 +62,13 @@ export default function SelectedGameScreen({ route, navigation }) {
             <Text style={styles.cardName} numberOfLines={2}>
               {game?.name ?? 'Selected game'}
             </Text>
-            <Text style={styles.cardDetail}>
-              {game?.yearPublished ?? '—'}
-            </Text>
+            <Text style={styles.cardDetail}>{game?.yearPublished ?? '—'}</Text>
             <Text style={styles.cardDetail}>
               {game?.playersMin != null && game?.playersMax != null
                 ? `${game.playersMin}–${game.playersMax} players`
                 : '—'}
             </Text>
-            <Text style={styles.cardDetail}>
-              {game?.length ?? '—'}
-            </Text>
+            <Text style={styles.cardDetail}>{game?.length ?? '—'}</Text>
             <Text style={styles.cardDetail}>
               Complexity: {displayComplexity}
             </Text>

@@ -9,7 +9,8 @@ export default function CollectionImportedScreen({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Collection Imported</Text>
       <Text style={styles.body}>
-        {gameCount} {gameCount === 1 ? 'game' : 'games'} added to your collection.
+        {gameCount} {gameCount === 1 ? 'game' : 'games'} added to your
+        collection.
       </Text>
       <TouchableOpacity
         style={styles.primaryButton}

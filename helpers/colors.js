@@ -18,5 +18,4 @@ const colors = {
   tintSpecial: '#4D194D', // Deep magenta for special accents
 };
 
-
 export default colors;

@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Spinner from '../components/Spinner';
 import colors from '../helpers/colors';
 
@@ -53,7 +47,8 @@ export default function SpinnerScreen({
     }
   };
 
-  const slices = participants && participants.length > 0 ? participants : ['No games'];
+  const slices =
+    participants && participants.length > 0 ? participants : ['No games'];
 
   const showCelebration = winner && !autoNavigate;
 

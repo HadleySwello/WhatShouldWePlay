@@ -22,14 +22,16 @@ function parseBggErrors(data) {
   const err = data?.errors?.error;
   if (!err) return null;
   const list = Array.isArray(err) ? err : [err];
-  const messages = list
-    .map((e) => e?.message || e?.['#text'])
-    .filter(Boolean);
+  const messages = list.map((e) => e?.message || e?.['#text']).filter(Boolean);
   return messages.length > 0 ? messages[0] : 'Unknown BGG error';
 }
 
 // Attempt to fetch the user's collection, up to 5 retries if we get 202
-const fetchCollectionForUsername = async (username, retry = 0, maxRetries = 5) => {
+const fetchCollectionForUsername = async (
+  username,
+  retry = 0,
+  maxRetries = 5
+) => {
   const token = getBggApiToken();
   if (!token) {
     throw new Error(
@@ -175,14 +177,16 @@ const useBoardGameGeekCollection = () => {
         setError(null);
       } else {
         const cachedRaw = await AsyncStorage.getItem(BGG_COLLECTION_KEY);
-        const hasCache = cachedRaw && (() => {
-          try {
-            const parsed = JSON.parse(cachedRaw);
-            return Array.isArray(parsed) && parsed.length > 0;
-          } catch {
-            return false;
-          }
-        })();
+        const hasCache =
+          cachedRaw &&
+          (() => {
+            try {
+              const parsed = JSON.parse(cachedRaw);
+              return Array.isArray(parsed) && parsed.length > 0;
+            } catch {
+              return false;
+            }
+          })();
 
         if (hasCache && !forceRefresh) {
           sourceGames = JSON.parse(cachedRaw);
@@ -204,7 +208,10 @@ const useBoardGameGeekCollection = () => {
               }));
             }
             setError(null);
-            await AsyncStorage.setItem(BGG_COLLECTION_KEY, JSON.stringify(sourceGames));
+            await AsyncStorage.setItem(
+              BGG_COLLECTION_KEY,
+              JSON.stringify(sourceGames)
+            );
           } catch (err) {
             if (hasCache) {
               sourceGames = JSON.parse(cachedRaw);
@@ -228,7 +235,9 @@ const useBoardGameGeekCollection = () => {
       bggAverage: g.bggAverage ?? null,
       bggRank: g.bggRank ?? null,
     });
-    const combined = sourceGames.map(normalized).concat(userGames.map(normalized));
+    const combined = sourceGames
+      .map(normalized)
+      .concat(userGames.map(normalized));
     setGames(combined);
     setLoading(false);
   };
@@ -282,9 +291,7 @@ function mapItemToGame(item) {
 }
 
 function parseComplexityWeight(item) {
-  return parseFloat(
-    item.stats?.rating?.averageweight?.['@_value'] || '0'
-  );
+  return parseFloat(item.stats?.rating?.averageweight?.['@_value'] || '0');
 }
 
 function parseComplexity(item) {
