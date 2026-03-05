@@ -1,0 +1,609 @@
+## Product Summary
+
+**WhatShouldWePlay?** helps board game enthusiasts quickly decide what to play from a large game library, without burning game-night energy on 20 minutes of indecision.
+
+It is built for hobbyists (often with BoardGameGeek-tracked collections) and groups that struggle with decision fatigue, social pressure, or analysis paralysis. Instead of endless back-and-forth, the app narrows the field based on the group’s constraints and preferences, then resolves the final choice in a way that feels playful, fair, and decisive.
+
+By leveraging the collection data players already maintain in BoardGameGeek (and a planned in-app BGG library dataset for users without BGG accounts), it turns an overwhelming shelf into a manageable set of real options. The weighted selection flow allows multiple people to influence the outcome, so the final pick feels structured rather than arbitrary.
+
+The goal is simple: reduce decision fatigue, preserve game-night momentum, and get to the table faster.
+
+---
+
+# Core Audience
+
+## Audience Positioning
+
+WhatShouldWePlay? is designed for people who experience cognitive load around choosing what to play — especially in group settings. This includes neurodivergent players who experience decision fatigue, anxiety around choosing “wrong,” or overwhelm when faced with too many options.
+
+The app intentionally reduces ambiguity and externalizes the burden of choice.
+
+## Primary Theme
+
+People who experience friction around choosing what to play — especially in group settings — regardless of collection size.
+
+Collection size increases overwhelm, but the real trigger is cognitive load + social pressure.
+
+---
+
+## Persona 1: The Neurodivergent Completionist with Anxiety (Primary)
+
+**Profile**
+
+- Loves systems
+- May hyperfocus on optimization
+- Can spiral when comparing too many options
+- May feel responsible for “choosing correctly”
+
+**Game Night Stress**
+
+- Choosing wrong
+- Letting someone down
+- Analysis paralysis
+- Overthinking edge cases
+
+**Motivation**
+
+- Clear narrowing steps
+- Externalized decision-making
+- Fairness and shared influence
+
+**Why They Use the App**
+
+- Offloads decision burden
+- Weighted selection feels equitable
+- Reduces emotional load of being the decider
+
+---
+
+## Persona 2: The Chaos Shelf Collector
+
+**Profile**
+
+- Owns 50–300+ games
+- Buys faster than they play
+- Forgets what’s in the collection
+- Loves browsing their shelf but dreads narrowing it down
+
+**Game Night Stress**
+
+- Wasting time deciding
+- Defaulting to the same 3 games
+- Realizing a great game hasn’t been played in a year
+
+**Motivation**
+
+- Rotate games into play
+- Rediscover hidden gems
+- Feel like the collection is alive, not stagnant
+
+**Why They Use the App**
+
+- Quick filtering
+- Surfaces forgotten games
+- Makes selection feel playful instead of stressful
+
+---
+
+## Persona 3: The Casual but Overwhelmed Owner
+
+**Profile**
+
+- Owns 10–75 games
+- Plays occasionally
+- Doesn’t remember rules complexity offhand
+- Wants game night to feel smooth, not chaotic
+
+**Game Night Stress**
+
+- Wasting 20 minutes debating
+- Someone being disappointed with the choice
+- Picking something too long or too heavy
+
+**Motivation**
+
+- Keep energy high
+- Avoid awkward group tension
+- Get to the fun part quickly
+
+**Why They Use the App**
+
+- Structured narrowing
+- Shared input via weighted selection
+- Removes social pressure from one person
+
+---
+
+# Emotional Positioning
+
+## Core Emotional Outcome
+
+When WhatShouldWePlay? works perfectly, the room feels:
+
+- Relieved
+- Energized
+- Playful
+- Ready to start playing
+
+The group moves from **indecision → anticipation → action** quickly and smoothly.
+
+Instead of debating or negotiating, the group performs a small ritual together and arrives at a decision everyone can accept.
+
+The result feels fair, satisfying, and slightly magical.
+
+---
+
+## Emotional Friction It Removes
+
+WhatShouldWePlay? reduces:
+
+- Decision fatigue
+- Social pressure around choosing the “right” game
+- Endless comparison between options
+- The awkward moment where no one wants to decide
+- Anxiety about disappointing someone
+
+The app removes the burden of personal responsibility for the choice.
+
+Instead of **someone choosing**, the group **consults the ritual.**
+
+---
+
+## Emotional Archetype
+
+### Core Archetype
+
+**The Mystic Ritual-Keeper**
+
+WhatShouldWePlay? acts like a small, benevolent oracle that appears when a group gets stuck deciding what to play.
+
+It does not judge or rush the players. Instead, it guides them through a simple ritual that leads to a fair and satisfying outcome.
+
+The app doesn’t *decide for the group* — it **consults the fates on their behalf.**
+
+---
+
+### Emotional Role in the Room
+
+When the group stalls in indecision, the app becomes the neutral third party that resolves the moment.
+
+Instead of someone having to take responsibility for choosing, the group performs a small ritual together:
+
+1. Narrow the possibilities
+2. Offer their preferences
+3. Let fate decide
+
+This transforms an awkward social negotiation into a **shared moment of anticipation and reveal**.
+
+---
+
+### Emotional Outcome
+
+When the ritual completes, the room should feel:
+
+- Relieved
+- Energized
+- Amused
+- Ready to start playing
+
+The choice feels **legitimate and fair**, because the process was structured and shared.
+
+---
+
+### Tone Characteristics
+
+The voice of the app should feel:
+
+- Mystical
+- Ceremonial
+- Playfully dramatic
+- Calmly confident
+
+It should never feel:
+
+- Snarky
+- Mocking
+- Random
+- Chaotic
+- Overly comedic
+
+The tone should suggest **ancient board-game fate magic**, but delivered lightly and clearly.
+
+---
+
+### Ritual Moments
+
+The mystical tone should appear **only at meaningful moments**:
+
+**Before filtering**
+
+“Let us consult the table.”
+
+**Before spinning**
+
+“Ready to consult the fates?”
+
+**Selection reveal**
+
+“The wheel has spoken.”
+
+**After reveal**
+
+“Tonight, you shall play…”
+
+These moments should feel like **tiny ceremonies**, not jokes.
+
+---
+
+### Personality Boundaries
+
+The ritual framing must always sit on top of a **clear and accessible interface**.
+
+Plain language remains the default for instructions and navigation.
+
+Mystical language appears only during moments of anticipation or resolution.
+
+This ensures the app stays:
+
+- readable
+- predictable
+- neurodivergent-friendly
+
+while still delivering a memorable personality.
+
+---
+
+### Brand Essence
+
+**A playful ritual that turns indecision into destiny.**
+
+# Current App Structure (v1)
+
+## Navigation Structure
+
+Single stack navigator.
+
+**Primary screens (conceptually):**
+
+- Splash
+- Welcome
+- ConnectBGG
+- CollectionImported
+- Home
+- MyGames
+- Setup
+- Results
+- SelectedGame
+
+Spinner is presented as a modal overlay during selection (implementation detail may vary), but the **product flow** is: narrow → vote/weight → spin/select → celebrate.
+
+---
+
+## First-Time User Flow
+
+1. **Splash**
+    - Title: “What Should We Play?”
+    - Subtitle: “A Board Game Decision Tool”
+    - Attribution: “Data provided by BoardGameGeek”
+    - Auto-routing based on whether collection data exists locally
+2. **Welcome** (shown when no collection exists)
+    - Copy: "Connect your BoardGameGeek collection to find the perfect game for your group."
+    - CTA: "Connect BoardGameGeek"
+3. **ConnectBGG**
+    - Username entry
+    - Loads collection from BGG API
+    - Caches locally on-device
+    - On success, navigates to CollectionImported
+4. **CollectionImported**
+    - Success confirmation: "X games added to your collection."
+    - CTA: "Start Picking" → Home
+5. **Home**
+    - Primary actions:
+        - Choose A Game
+        - Browse Collection
+        - Settings (includes Change Username)
+
+---
+
+## Core Decision Flow
+
+1. **Home**
+    - Primary CTA: **Choose A Game**
+2. **Setup**
+    - Load a Preset (optional)
+    - Player count (required)
+    - Optional filters:
+        - Play Time (max length)
+        - Complexity (“How complex are you willing to go?”)
+        - Advanced: Mechanics, Categories (collapsible)
+    - Save/overwrite presets inline
+3. **Results**
+    - Displays eligible games
+    - Supports weighted input for group fairness
+4. **Spinner / Selection Moment**
+    - Selection resolves from the weighted pool
+    - The outcome is revealed with ceremony
+5. **SelectedGame**
+    - Confetti celebration
+    - Clear outcome
+    - Actions:
+        - Start New Pick
+        - Pick Again (Same Filters)
+
+---
+
+## Quick Spin vs Vote First (v1)
+
+Both paths exist to support different group moods:
+
+### Quick Spin
+
+Used when:
+
+- the group wants speed
+- nobody wants to negotiate
+- “just pick something” is the vibe
+
+Behavior:
+
+- the filtered pool is used directly
+- the app picks via spinner/selection immediately
+
+### Vote First (Weighted)
+
+Used when:
+
+- the group wants fairness
+- people have preferences but don’t want debate
+- you want “popular is more likely” without consensus pressure
+
+Behavior:
+
+- each player contributes input (one vote per player)
+- games receive weight based on votes
+- spinner resolves with the weighted distribution
+
+This weighted ritual is a core differentiator: it preserves agency while avoiding negotiation.
+
+---
+
+## Supporting Screens (v1)
+
+- **MyGames** (header: "Browse Collection")
+    - A browsable list of games (thumbnail, name, year, rating)
+    - Refresh/sync option
+    - "Choose a Game" CTA at bottom
+    - Entry point into the choose flow
+- **Settings**
+    - Change Username
+    - TODO: Light/dark toggle (currently theme follows system)
+    - (Other small preferences as needed)
+
+## Presets (v1)
+
+Presets are a significant feature that reduce friction for returning users and common group configurations.
+
+- **Quick presets** (built-in): Party Night, Heavy Night, Family
+- **User-saved presets**: save, load, rename, overwrite, delete (max 15)
+- **Load on Setup**: "Load a Preset" opens modal with quick + saved presets
+- **Save from Setup**: save current filter state (including mechanics/categories) as new preset or overwrite existing
+- **Save from Results**: "Save as preset" after filtering (same constraints)
+
+---
+
+# Known Weaknesses / Suspected Friction
+
+## Visual Design
+
+- Overall aesthetic feels dated and flat.
+- Lacks visual personality consistent with the “mischievous but fair” tone.
+- Color system feels unintentional.
+- UI does not feel modern or cohesive.
+
+## Action Hierarchy
+
+- Primary vs secondary actions are not always clearly distinguished.
+- Some screens feel like “forms” instead of a guided ritual.
+- The moment of selection needs stronger payoff.
+
+## Copy & Tone
+
+- Copy does not consistently reflect the ritual-keeper voice.
+- Emotional payoff moments may not feel elevated enough yet.
+
+## Overall Feeling
+
+- More like a utility tool than a playful decision companion.
+- Needs stronger intentionality in hierarchy and celebration moments.
+
+---
+
+# Current Copy (for Evaluation)
+
+Documenting actual in-app copy as of v1 for comparison during copy/tone evaluation.
+
+## Current vs. Target
+
+| Context | Current Copy | Target (Ritual) |
+|---------|--------------|-----------------|
+| Before filtering | "Load a Preset", "How many players?" | "Let us consult the table." |
+| Setup CTA | "View X Games" | — |
+| Results header | "X games match", "One vote per player (X of Y assigned)", "All votes assigned." | — |
+| Results CTA | "Spin to Choose" (or "Select Game" if single) | "Ready to consult the fates?" |
+| Spinner reveal | "You're playing" + winner name | "The wheel has spoken." |
+| SelectedGame | "You're playing", game name | "Tonight, you shall play…" |
+| SelectedGame actions | "Start New Pick", "Pick Again (Same Filters)" | — |
+| Empty state | "No matches", "Try adjusting your filters." | — |
+| Presets | "Load a Preset", "Save as preset", "Save as new", "Rename", "Preset saved!" | — |
+
+## Other Current Copy
+
+- Splash: "What Should We Play?", "A Board Game Decision Tool", "Data provided by BoardGameGeek"
+- Welcome: "Connect your BoardGameGeek collection to find the perfect game for your group.", "Connect BoardGameGeek"
+- ConnectBGG: "Connect Your Collection", "Enter your BoardGameGeek username to load your games."
+- CollectionImported: "Collection Imported", "X games added to your collection.", "Start Picking"
+- Home: "Start Picking", "Choose A Game", "Browse Collection", "Settings"
+- Setup: "How many players?", "Play Time", "Maximum game length", "Complexity", "How complex are you willing to go?", "Advanced Filters", "Mechanics", "Categories", "No games match these filters."
+- MyGames: "Browse Collection", "Choose a Game", "Your collection is empty", "Change Username"
+- Settings: "Change Username"
+
+---
+
+# Design Direction Goals
+
+## Theme Foundation
+
+The app must feel **clear, calm, and intentional first**.
+
+The ritual framing adds personality, but the interface must always remain simple and understandable.
+
+Neurodivergent-friendly design principles apply:
+
+- Clear visual hierarchy
+- Predictable layouts
+- Strong contrast
+- Minimal visual noise
+- No hidden rules or surprising behavior
+
+The ritual should feel **comforting and structured**, not chaotic.
+
+---
+
+## Modes
+
+The app supports both:
+
+- **Light Mode**
+- **Dark Mode**
+
+Theme currently follows system preference. TODO: Add manual light/dark toggle in Settings.
+
+Dark mode should feel especially comfortable in game-night lighting and slightly atmospheric — supporting the ritual tone without becoming dramatic or distracting.
+
+---
+
+## Visual Personality
+
+The visual design should support the feeling of **a small ritual taking place.**
+
+This can be expressed through:
+
+- Subtle glow effects
+- Soft motion during the spinner moment
+- Confetti or celebration at the reveal
+- Slightly mystical visual accents
+
+The aesthetic should feel:
+
+- Cozy
+- Warm
+- Slightly magical
+- Intentionally calm
+
+It should never feel:
+
+- Chaotic
+- Loud
+- Overly decorative
+- Distracting
+
+---
+
+## Emotional Design Vibe
+
+Primary: **Cozy Ritual**
+
+Secondary: **Playful Anticipation**
+
+The experience should feel:
+
+- Warm
+- Inviting
+- Ceremonial
+- Lightly magical
+- Decisive
+
+The ritual builds anticipation and then resolves it quickly.
+
+---
+
+## Where the Magic Appears
+
+Mystical elements should appear **only at meaningful moments**, such as:
+
+- The spinner moment
+- The final reveal
+- Celebration states
+- Occasional microcopy
+
+Everyday interface elements should remain **clear and grounded**.
+
+This keeps the product accessible while still giving the decision moment a sense of **ceremony and delight**.
+
+---
+
+# Product Pillars
+
+## 1. Decision Ritual, Not Decision Tool
+
+WhatShouldWePlay is not just a filter or randomizer.
+
+It transforms the awkward moment of choosing a game into a **short ritual the group performs together**.
+
+The flow intentionally follows a ceremonial structure:
+
+1. Narrow the possibilities
+2. Offer preferences
+3. Let fate resolve the outcome
+
+The ritual replaces negotiation and removes the burden of choosing from any one person.
+
+If a feature does not support this ritual, it likely does not belong in the product.
+
+---
+
+## 2. Clarity Over Cleverness
+
+The primary user experiences cognitive load around decision-making.
+
+The interface must therefore be:
+
+- predictable
+- readable at a glance
+- low-friction
+- emotionally calming
+
+Mystical tone and personality should **never interfere with usability**.
+
+If personality conflicts with clarity, clarity always wins.
+
+---
+
+## 3. Shared Fairness
+
+The system must feel fair to everyone at the table.
+
+Features like weighted voting exist to ensure:
+
+- every player has a voice
+- popular choices are more likely
+- the final outcome still feels surprising and fun
+
+The result should feel like **the group decided together**, even though the ritual resolved the final choice.
+
+---
+
+## 4. Fast Path to Playing
+
+Game night energy is fragile.
+
+The entire experience should move the group from **indecision → game on the table** as quickly as possible.
+
+This means:
+
+- minimal setup friction
+- few screens
+- quick feedback
+- decisive outcomes
+
+The product should never feel like another game to play before the game.
