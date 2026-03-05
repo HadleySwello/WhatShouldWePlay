@@ -18,6 +18,11 @@ import {
 } from '../helpers/presetsStorage';
 import PresetsModal from '../components/PresetsModal';
 import PresetNameModal from '../components/PresetNameModal';
+import PlayerCountStepper from '../components/PlayerCountStepper';
+import {
+  getDefaultPlayerCount,
+  DEFAULT_PLAYER_COUNT,
+} from '../helpers/defaultPlayerCountStorage';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
@@ -171,7 +176,8 @@ function filtersMatchPreset(
   const catsEq =
     cats.length === pCats.length && cats.every((c, i) => c === pCats[i]);
   return (
-    (playerCount ?? 2) === (f.playerCount ?? 2) &&
+    (playerCount ?? DEFAULT_PLAYER_COUNT) ===
+      (f.playerCount ?? DEFAULT_PLAYER_COUNT) &&
     (complexityMin ?? null) === (f.complexityMin ?? null) &&
     (complexityMax ?? null) === (f.complexityMax ?? null) &&
     (maxLength ?? null) === (f.maxLength ?? null) &&
@@ -189,7 +195,7 @@ function getCurrentFilters(
   selectedCategories
 ) {
   return {
-    playerCount: playerCount ?? 2,
+    playerCount: playerCount ?? DEFAULT_PLAYER_COUNT,
     complexityMin: complexityMin ?? null,
     complexityMax: complexityMax ?? null,
     maxLength: maxLength ?? null,
@@ -200,7 +206,7 @@ function getCurrentFilters(
 
 export default function SetupScreen({ navigation }) {
   const { games, isLoading } = useBoardGameGeekCollection();
-  const [playerCount, setPlayerCount] = useState(2);
+  const [playerCount, setPlayerCount] = useState(DEFAULT_PLAYER_COUNT);
   const [complexityMin, setComplexityMin] = useState(null);
   const [complexityMax, setComplexityMax] = useState(null);
   const [maxLength, setMaxLength] = useState(null);
@@ -222,7 +228,10 @@ export default function SetupScreen({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       refreshPresets();
-    }, [refreshPresets])
+      if (!loadedPreset) {
+        getDefaultPlayerCount().then(setPlayerCount);
+      }
+    }, [refreshPresets, loadedPreset])
   );
 
   const filteredGames = useMemo(
@@ -276,7 +285,7 @@ export default function SetupScreen({ navigation }) {
 
   const applyPresetFilters = useCallback((f) => {
     const ff = f || {};
-    setPlayerCount(ff.playerCount ?? 2);
+    setPlayerCount(ff.playerCount ?? DEFAULT_PLAYER_COUNT);
     setComplexityMin(ff.complexityMin ?? null);
     setComplexityMax(ff.complexityMax ?? null);
     setMaxLength(ff.maxLength ?? null);
@@ -292,7 +301,7 @@ export default function SetupScreen({ navigation }) {
         id: preset.id,
         name: preset.name,
         filters: {
-          playerCount: f.playerCount ?? 2,
+          playerCount: f.playerCount ?? DEFAULT_PLAYER_COUNT,
           complexityMin: f.complexityMin ?? null,
           complexityMax: f.complexityMax ?? null,
           maxLength: f.maxLength ?? null,
@@ -407,21 +416,10 @@ export default function SetupScreen({ navigation }) {
               <AppText variant="usePresetButton">Load a Preset</AppText>
             </TouchableOpacity>
             <AppText variant="sectionTitle">How many players?</AppText>
-            <View style={styles.stepper.row}>
-              <TouchableOpacity
-                style={styles.stepper.button}
-                onPress={() => setPlayerCount((n) => Math.max(1, n - 1))}
-              >
-                <AppText variant="stepperSymbol">−</AppText>
-              </TouchableOpacity>
-              <AppText variant="stepperValue">{playerCount}</AppText>
-              <TouchableOpacity
-                style={styles.stepper.button}
-                onPress={() => setPlayerCount((n) => Math.min(10, n + 1))}
-              >
-                <AppText variant="stepperSymbol">+</AppText>
-              </TouchableOpacity>
-            </View>
+            <PlayerCountStepper
+              value={playerCount}
+              onValueChange={setPlayerCount}
+            />
             {hasNoMatches && (
               <View style={styles.noMatchesCard}>
                 <AppText variant="noMatchesTitle">
