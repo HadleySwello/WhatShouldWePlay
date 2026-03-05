@@ -1,9 +1,6 @@
-import { tokens } from './tokens';
-
-const c = tokens.colors;
-const t = tokens.typography;
-
-export function getNavigationScreenOptions() {
+export function getNavigationScreenOptions(tokens) {
+  const c = tokens.colors;
+  const t = tokens.typography;
   return {
     headerStyle: {
       backgroundColor: c.backgroundMain,

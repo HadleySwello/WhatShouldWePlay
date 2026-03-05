@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { tokens } from './tokens';
-
-const c = tokens.colors;
-const s = tokens.spacing;
-const r = tokens.radius;
-const t = tokens.typography;
-const e = tokens.elevation;
+import { tokensLight } from './tokens';
 
 // Component variant definitions - used by App* components and useAppTheme
-export function getComponentVariantStyles() {
+export function getComponentVariantStyles(tokens = tokensLight) {
+  const c = tokens.colors;
+  const s = tokens.spacing;
+  const r = tokens.radius;
+  const t = tokens.typography;
+  const e = tokens.elevation;
   return StyleSheet.create({
     button: {
       primary: {
@@ -742,8 +741,9 @@ export function getComponentVariantStyles() {
   });
 }
 
-export function getSpinnerMarkerStyle(wheelSize) {
+export function getSpinnerMarkerStyle(wheelSize, tokens = tokensLight) {
   const s = tokens.spacing;
+  const c = tokens.colors;
   return {
     position: 'absolute',
     width: 20,

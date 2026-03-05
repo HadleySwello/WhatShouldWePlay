@@ -5,12 +5,16 @@ import { View } from 'react-native';
 
 import Navigation from './screens/Navigation';
 import { lightTheme, darkTheme, layout } from './theme';
+import { ThemeModeProvider, useThemeMode } from './theme/ThemeModeContext';
 
-export default function App() {
+function AppContent() {
+  const { themeMode } = useThemeMode();
   const colorScheme = useColorScheme();
+  const effectiveScheme =
+    themeMode === 'system' ? (colorScheme || 'light') : themeMode;
   const theme = useMemo(
-    () => (colorScheme === 'light' ? lightTheme : darkTheme),
-    [colorScheme]
+    () => (effectiveScheme === 'light' ? lightTheme : darkTheme),
+    [effectiveScheme]
   );
 
   return (
@@ -19,5 +23,13 @@ export default function App() {
         <Navigation />
       </View>
     </PaperProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeModeProvider>
+      <AppContent />
+    </ThemeModeProvider>
   );
 }

@@ -1,10 +1,10 @@
 import { useTheme as usePaperTheme } from 'react-native-paper';
-import { tokens } from './tokens';
+import { tokensLight, tokensDark } from './tokens';
 import { getComponentVariantStyles } from './components';
 import { lightTheme } from './light';
 import { darkTheme } from './dark';
 
-export { tokens };
+export { tokensLight as tokens };
 export { lightTheme, darkTheme };
 export { layout } from './layout';
 export { getNavigationScreenOptions } from './navigation';
@@ -14,20 +14,30 @@ export { radius } from './radius';
 export { typography } from './typography';
 export { durations, easing } from './animations';
 
-let cachedStyles = null;
+let cachedStylesLight = null;
+let cachedStylesDark = null;
 
-function getStyles() {
-  if (!cachedStyles) {
-    cachedStyles = getComponentVariantStyles();
+function getStyles(isDark) {
+  if (isDark) {
+    if (!cachedStylesDark) {
+      cachedStylesDark = getComponentVariantStyles(tokensDark);
+    }
+    return cachedStylesDark;
   }
-  return cachedStyles;
+  if (!cachedStylesLight) {
+    cachedStylesLight = getComponentVariantStyles(tokensLight);
+  }
+  return cachedStylesLight;
 }
 
 export function useAppTheme() {
   const theme = usePaperTheme();
+  const isDark = theme.dark === true;
+  const tokens = isDark ? tokensDark : tokensLight;
+  const styles = getStyles(isDark);
   return {
     theme,
     tokens,
-    styles: getStyles(),
+    styles,
   };
 }

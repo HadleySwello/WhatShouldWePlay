@@ -142,6 +142,10 @@ export default {
     gameDetails: 'Rating: {{rating}}',
   },
   settings: {
+    appearance: 'Appearance',
+    themeLight: 'Light',
+    themeDark: 'Dark',
+    themeSystem: 'System',
     defaultPlayerCount: 'Default players at table',
     enableVotingMode: 'Let everyone weigh in',
     changeUsername: 'Connect a different shelf',

@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import copy from '../constants/copy';
+import { useAppTheme } from '../theme';
 import SplashScreen from './SplashScreen';
 import WelcomeScreen from './WelcomeScreen';
 import ConnectBGGScreen from './ConnectBGGScreen';
@@ -17,7 +18,8 @@ import { getNavigationScreenOptions } from '../theme';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
-  const screenOptions = getNavigationScreenOptions();
+  const { tokens } = useAppTheme();
+  const screenOptions = getNavigationScreenOptions(tokens);
 
   return (
     <NavigationContainer>

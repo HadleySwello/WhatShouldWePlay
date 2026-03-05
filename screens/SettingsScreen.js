@@ -6,6 +6,7 @@ import {
   Alert,
   View,
 } from 'react-native';
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -22,11 +23,15 @@ import {
   getVotingModeEnabled,
   setVotingModeEnabled,
 } from '../helpers/votingModeStorage';
+import { useThemeMode } from '../theme/ThemeModeContext';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
+const THEME_VALUES = ['light', 'dark', 'system'];
+
 export default function SettingsScreen({ navigation }) {
   const { styles, tokens } = useAppTheme();
+  const { themeMode, setThemeMode } = useThemeMode();
   const [defaultPlayerCount, setDefaultPlayerCountState] =
     useState(DEFAULT_PLAYER_COUNT);
   const [votingModeEnabled, setVotingModeEnabledState] = useState(false);
@@ -36,6 +41,17 @@ export default function SettingsScreen({ navigation }) {
       getDefaultPlayerCount().then(setDefaultPlayerCountState);
       getVotingModeEnabled().then(setVotingModeEnabledState);
     }, [])
+  );
+
+  const themeSelectedIndex = THEME_VALUES.indexOf(themeMode);
+  const handleThemeChange = useCallback(
+    (event) => {
+      const index = event.nativeEvent.selectedSegmentIndex;
+      if (index >= 0 && index < THEME_VALUES.length) {
+        setThemeMode(THEME_VALUES[index]);
+      }
+    },
+    [setThemeMode]
   );
 
   const handleDefaultPlayerCountChange = useCallback((value) => {
@@ -80,7 +96,24 @@ export default function SettingsScreen({ navigation }) {
       contentContainerStyle={layout.paddingXl}
       showsVerticalScrollIndicator={false}
     >
-      <AppText variant="sectionTitle">
+      <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
+        {copy.settings.appearance}
+      </AppText>
+      <SegmentedControl
+        values={[
+          copy.settings.themeLight,
+          copy.settings.themeDark,
+          copy.settings.themeSystem,
+        ]}
+        selectedIndex={themeSelectedIndex >= 0 ? themeSelectedIndex : 2}
+        onChange={handleThemeChange}
+        style={layout.marginBottomLg}
+        backgroundColor={tokens.colors.cardMain}
+        fontStyle={{ color: tokens.colors.textSecondary }}
+        activeFontStyle={{ color: tokens.colors.textMain }}
+        tintColor={tokens.colors.cardSecondary}
+      />
+      <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
         {copy.settings.defaultPlayerCount}
       </AppText>
       <PlayerCountStepper

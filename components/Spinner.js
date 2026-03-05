@@ -23,8 +23,8 @@ export default function Spinner({ slices, onSpinningEnd, colors }) {
   const [winner, setWinner] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const spinDuration = 5000;
-  const { styles } = useAppTheme();
-  const markerStyle = getSpinnerMarkerStyle(WHEEL_SIZE);
+  const { styles, tokens } = useAppTheme();
+  const markerStyle = getSpinnerMarkerStyle(WHEEL_SIZE, tokens);
 
   const NUM_SECTIONS = slices.length;
   const anglePerSection = NUM_SECTIONS > 0 ? 360 / NUM_SECTIONS : 360;
