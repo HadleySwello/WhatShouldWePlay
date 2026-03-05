@@ -1,10 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Switch,
+  Alert,
+} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import SpinnerScreen from './SpinnerScreen';
 import { savePreset } from '../helpers/presetsStorage';
 import { getVotes, setVotes } from '../helpers/voteCache';
+import { getVotingModeEnabled } from '../helpers/votingModeStorage';
 
 import AppText from '../components/AppText';
+import VotingModeInfoModal from '../components/VotingModeInfoModal';
 import { getComplexityTier } from '../helpers/complexity';
 import AppButton from '../components/AppButton';
 import PresetNameModal from '../components/PresetNameModal';
@@ -44,9 +55,17 @@ export default function ResultsScreen({ route, navigation }) {
     filters,
   } = route.params || {};
   const playerCount = Math.max(0, rawPlayerCount ?? 0);
-  const { styles } = useAppTheme();
+  const { styles, tokens } = useAppTheme();
 
   const [showSpinner, setShowSpinner] = useState(false);
+  const [votingModeEnabled, setVotingModeEnabled] = useState(false);
+  const [showVotingModeInfoModal, setShowVotingModeInfoModal] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      getVotingModeEnabled().then(setVotingModeEnabled);
+    }, [])
+  );
   const [showPresetNameModal, setShowPresetNameModal] = useState(false);
   const [presetSaved, setPresetSaved] = useState(false);
 
@@ -79,7 +98,9 @@ export default function ResultsScreen({ route, navigation }) {
   const isSingleGame = filteredGames.length === 1;
 
   const spinnerParticipants =
-    totalVotes > 0 && weightedParticipants.length > 0
+    votingModeEnabled &&
+    totalVotes > 0 &&
+    weightedParticipants.length > 0
       ? weightedParticipants
       : equalWeightParticipants(filteredGames);
 
@@ -125,18 +146,62 @@ export default function ResultsScreen({ route, navigation }) {
   const allVotesAssigned =
     playerCount > 0 && totalVotes >= playerCount && filteredGames.length > 0;
 
+  const isSinglePlayer = playerCount === 1;
+  const handleVotingModeToggle = (value) => {
+    if (value === false) {
+      setGameVotes(initialVotes(filteredGames));
+    }
+    setVotingModeEnabled(value);
+  };
+  const handleVotingModeRowPress = () => {
+    if (isSinglePlayer) {
+      Alert.alert(
+        'Voting Mode',
+        'Voting mode is not available for single-player games.'
+      );
+    }
+  };
+
   const listHeader = (
     <View>
       <AppText variant="voteHint">
         {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'}{' '}
         match
       </AppText>
-      {filteredGames.length > 0 && (
+      <View style={styles.votingModeRow}>
+        <TouchableOpacity
+          style={layout.flex1}
+          onPress={isSinglePlayer ? handleVotingModeRowPress : undefined}
+          activeOpacity={isSinglePlayer ? 0.7 : 1}
+        >
+          <View style={styles.votingModeRowInner}>
+            <AppText variant="body">Enable Voting Mode</AppText>
+            <Switch
+              value={isSinglePlayer ? false : votingModeEnabled}
+              onValueChange={handleVotingModeToggle}
+              disabled={isSinglePlayer}
+              trackColor={{
+                false: tokens.colors.cardMain,
+                true: tokens.colors.tintMain,
+              }}
+              thumbColor="#fff"
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setShowVotingModeInfoModal(true)}
+          style={styles.votingModeInfoIcon}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Icon name="info-outline" size={22} color={tokens.colors.textSecondary} />
+        </TouchableOpacity>
+      </View>
+      {votingModeEnabled && filteredGames.length > 0 && (
         <AppText variant="voteHint">
           One vote per player ({totalVotes} of {playerCount} assigned)
         </AppText>
       )}
-      {allVotesAssigned && (
+      {votingModeEnabled && allVotesAssigned && (
         <AppText variant="allVotesAssigned">All votes assigned.</AppText>
       )}
       {canSavePreset &&
@@ -207,23 +272,25 @@ export default function ResultsScreen({ route, navigation }) {
                   })()}
                 </AppText>
               </View>
-              <View style={styles.voteRow}>
-                <TouchableOpacity
-                  style={styles.voteButton}
-                  onPress={() => handleVote(item.name, -1)}
-                >
-                  <AppText variant="voteSymbol">−</AppText>
-                </TouchableOpacity>
-                <AppText variant="voteCount">
-                  {gameVotes[item.name] || 0}
-                </AppText>
-                <TouchableOpacity
-                  style={styles.voteButton}
-                  onPress={() => handleVote(item.name, 1)}
-                >
-                  <AppText variant="voteSymbol">+</AppText>
-                </TouchableOpacity>
-              </View>
+              {votingModeEnabled && (
+                <View style={styles.voteRow}>
+                  <TouchableOpacity
+                    style={styles.voteButton}
+                    onPress={() => handleVote(item.name, -1)}
+                  >
+                    <AppText variant="voteSymbol">−</AppText>
+                  </TouchableOpacity>
+                  <AppText variant="voteCount">
+                    {gameVotes[item.name] || 0}
+                  </AppText>
+                  <TouchableOpacity
+                    style={styles.voteButton}
+                    onPress={() => handleVote(item.name, 1)}
+                  >
+                    <AppText variant="voteSymbol">+</AppText>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
         />
@@ -258,6 +325,11 @@ export default function ResultsScreen({ route, navigation }) {
           });
         }}
         checkPresetCount
+      />
+
+      <VotingModeInfoModal
+        visible={showVotingModeInfoModal}
+        onClose={() => setShowVotingModeInfoModal(false)}
       />
     </View>
   );

@@ -9,7 +9,7 @@ const PRESETS_KEY = 'filterPresets';
 
 export const MAX_PRESETS = 15;
 export const MAX_PRESET_NAME_LENGTH = 64;
-export const QUICK_PRESET_NAMES = ['Party Night', 'Heavy Night', 'Family'];
+export { QUICK_PRESET_NAMES } from './quickPresets';
 
 export function normalizePresetName(raw) {
   if (raw == null || typeof raw !== 'string') return '';
@@ -60,7 +60,10 @@ export async function savePreset(name, filters) {
   if (!safeName) throw new Error('Preset name is required.');
   const preset = {
     id: generateId(),
-    name: safeName.length > MAX_PRESET_NAME_LENGTH ? safeName.slice(0, MAX_PRESET_NAME_LENGTH) : safeName,
+    name:
+      safeName.length > MAX_PRESET_NAME_LENGTH
+        ? safeName.slice(0, MAX_PRESET_NAME_LENGTH)
+        : safeName,
     filters: normalizeFilters(filters),
     createdAt: now,
     updatedAt: now,
@@ -75,9 +78,12 @@ export async function updatePreset(id, { name, filters }) {
   const idx = presets.findIndex((p) => p.id === id);
   if (idx < 0) return null;
   const safeName = name != null ? normalizePresetName(name) : null;
-  const finalName = safeName != null && safeName.length > 0
-    ? (safeName.length > MAX_PRESET_NAME_LENGTH ? safeName.slice(0, MAX_PRESET_NAME_LENGTH) : safeName)
-    : presets[idx].name;
+  const finalName =
+    safeName != null && safeName.length > 0
+      ? safeName.length > MAX_PRESET_NAME_LENGTH
+        ? safeName.slice(0, MAX_PRESET_NAME_LENGTH)
+        : safeName
+      : presets[idx].name;
   presets[idx] = {
     ...presets[idx],
     ...(name != null && { name: finalName }),

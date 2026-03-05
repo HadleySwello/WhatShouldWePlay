@@ -407,6 +407,29 @@ export function getComponentVariantStyles() {
       flexDirection: 'row',
       alignItems: 'center',
     },
+    votingModeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: s.md,
+    },
+    votingModeRowInner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    votingModeInfoIcon: {
+      padding: s.sm,
+      marginLeft: s.xs,
+    },
+    votingModeSettingsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: s.xl,
+    },
+    settingsSectionTitle: {
+      marginTop: s.xl,
+    },
     voteHint: {
       fontSize: t.sizes.md,
       color: c.textSecondary,
@@ -425,6 +448,16 @@ export function getComponentVariantStyles() {
     presetNameModalContent: {
       minHeight: 340,
       paddingBottom: s['3xl'],
+    },
+    votingModeInfoModalContent: {
+      paddingBottom: s['3xl'],
+    },
+    votingModeInfoModalBody: {
+      paddingHorizontal: s.xl,
+      paddingTop: s.lg,
+    },
+    votingModeInfoText: {
+      lineHeight: 22,
     },
     presetNameModalBody: {
       paddingHorizontal: s.xl,
