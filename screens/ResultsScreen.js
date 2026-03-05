@@ -10,7 +10,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SpinnerScreen from './SpinnerScreen';
-import { savePreset } from '../helpers/presetsStorage';
+import { saveRitual } from '../helpers/ritualsStorage';
 import { getVotes, setVotes } from '../helpers/voteCache';
 import { getVotingModeEnabled } from '../helpers/votingModeStorage';
 
@@ -22,7 +22,7 @@ import {
   capitalizeComplexityTier,
 } from '../helpers/complexity';
 import AppButton from '../components/AppButton';
-import PresetNameModal from '../components/PresetNameModal';
+import RitualNameModal from '../components/RitualNameModal';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -70,8 +70,8 @@ export default function ResultsScreen({ route, navigation }) {
       getVotingModeEnabled().then(setVotingModeEnabled);
     }, [])
   );
-  const [showPresetNameModal, setShowPresetNameModal] = useState(false);
-  const [presetSaved, setPresetSaved] = useState(false);
+  const [showRitualNameModal, setShowRitualNameModal] = useState(false);
+  const [ritualSaved, setRitualSaved] = useState(false);
 
   const gameKey = filteredGames.map((g) => g.id).join(',');
   const [gameVotes, setGameVotes] = useState(() => {
@@ -146,7 +146,7 @@ export default function ResultsScreen({ route, navigation }) {
     });
   };
 
-  const canSavePreset = filters && filteredGames.length > 0;
+  const canSaveRitual = filters && filteredGames.length > 0;
   const allVotesAssigned =
     playerCount > 0 && totalVotes >= playerCount && filteredGames.length > 0;
 
@@ -212,15 +212,15 @@ export default function ResultsScreen({ route, navigation }) {
       {votingModeEnabled && allVotesAssigned && (
         <AppText variant="allVotesAssigned">{copy.results.allVotesAssigned}</AppText>
       )}
-      {canSavePreset &&
-        (presetSaved ? (
-          <AppText variant="presetSavedText">{copy.results.presetSaved}</AppText>
+      {canSaveRitual &&
+        (ritualSaved ? (
+          <AppText variant="ritualSavedText">{copy.results.ritualSaved}</AppText>
         ) : (
           <TouchableOpacity
-            style={styles.savePresetButton}
-            onPress={() => setShowPresetNameModal(true)}
+            style={styles.saveRitualButton}
+            onPress={() => setShowRitualNameModal(true)}
           >
-            <AppText variant="savePresetButtonText">{copy.results.saveAsPreset}</AppText>
+            <AppText variant="saveRitualButtonText">{copy.results.saveAsRitual}</AppText>
           </TouchableOpacity>
         ))}
     </View>
@@ -324,16 +324,16 @@ export default function ResultsScreen({ route, navigation }) {
         autoNavigate={true}
       />
 
-      <PresetNameModal
-        visible={showPresetNameModal}
-        onClose={() => setShowPresetNameModal(false)}
+      <RitualNameModal
+        visible={showRitualNameModal}
+        onClose={() => setShowRitualNameModal(false)}
         onSave={(name) => {
-          savePreset(name, filters).then(() => {
-            setPresetSaved(true);
-            setShowPresetNameModal(false);
+          saveRitual(name, filters).then(() => {
+            setRitualSaved(true);
+            setShowRitualNameModal(false);
           });
         }}
-        checkPresetCount
+        checkRitualCount
       />
 
       <VotingModeInfoModal

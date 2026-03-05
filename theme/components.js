@@ -201,15 +201,15 @@ export function getComponentVariantStyles() {
       shadowRadius: 8,
       elevation: e.high,
     },
-    stickyPresetSection: {
+    stickyRitualSection: {
       marginTop: s.md,
       alignItems: 'center',
     },
-    stickyPresetAction: {
+    stickyRitualAction: {
       paddingVertical: s.sm,
       paddingHorizontal: s.lg,
     },
-    usePresetButton: {
+    useRitualButton: {
       paddingVertical: s.lg - 2,
       paddingHorizontal: s.xl - 4,
       borderRadius: r.md,
@@ -218,48 +218,48 @@ export function getComponentVariantStyles() {
       alignSelf: 'center',
       marginBottom: s.xl,
     },
-    usePresetButtonText: {
+    useRitualButtonText: {
       fontSize: t.sizes.md,
       color: c.tintMain,
       fontWeight: t.weights.semibold,
     },
-    presetHeaderRow: {
+    ritualHeaderRow: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'center',
       marginBottom: s.lg,
       gap: s.sm,
     },
-    presetHeaderTitle: {
+    ritualHeaderTitle: {
       fontSize: t.sizes.lg,
       color: c.textMain,
       fontWeight: t.weights.semibold,
     },
-    presetSaveControls: {
+    ritualSaveControls: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: s.md,
       flexWrap: 'wrap',
     },
-    presetSaveControlButton: {
+    ritualSaveControlButton: {
       paddingVertical: s.sm,
       paddingHorizontal: s.lg,
     },
-    presetSaveControlText: {
+    ritualSaveControlText: {
       fontSize: t.sizes.md,
       color: c.tintMain,
       fontWeight: t.weights.semibold,
     },
-    presetDeleteIcon: {
+    ritualDeleteIcon: {
       width: 44,
       height: 44,
       justifyContent: 'center',
       alignItems: 'center',
     },
-    presetCardRow: {
+    ritualCardRow: {
       flex: 1,
     },
-    presetDeleteIconAbsolute: {
+    ritualDeleteIconAbsolute: {
       position: 'absolute',
       right: 0,
       top: 0,
@@ -363,24 +363,24 @@ export function getComponentVariantStyles() {
       savedSectionTitle: {
         marginTop: s.xl,
       },
-      presetCard: {
+      ritualCard: {
         backgroundColor: c.cardSecondary,
         borderRadius: r.lg - 2,
         padding: s.lg,
         marginBottom: s.md + 2,
       },
-      presetName: {
+      ritualName: {
         fontSize: t.sizes.lg,
         color: c.textMain,
         fontWeight: t.weights.semibold,
         marginBottom: 4,
       },
-      presetDescription: {
+      ritualDescription: {
         fontSize: t.sizes.md - 1,
         color: c.textSecondary,
         marginBottom: s.sm,
       },
-      presetMetadata: {
+      ritualMetadata: {
         fontSize: t.sizes.sm,
         color: c.textSecondary,
       },
@@ -440,12 +440,12 @@ export function getComponentVariantStyles() {
       color: c.tintMain,
       marginBottom: s.sm,
     },
-    presetSavedText: {
+    ritualSavedText: {
       fontSize: t.sizes.md,
       color: c.tintMain,
       marginBottom: s.md,
     },
-    presetNameModalContent: {
+    ritualNameModalContent: {
       minHeight: 340,
       paddingBottom: s['3xl'],
     },
@@ -459,26 +459,26 @@ export function getComponentVariantStyles() {
     votingModeInfoText: {
       lineHeight: 22,
     },
-    presetNameModalBody: {
+    ritualNameModalBody: {
       paddingHorizontal: s.xl,
       paddingTop: s.lg,
     },
-    presetNameRules: {
+    ritualNameRules: {
       fontSize: t.sizes.sm,
       color: c.textSecondary,
       marginBottom: s.md,
       lineHeight: 20,
     },
-    presetNameError: {
+    ritualNameError: {
       color: c.textSecondary,
     },
-    presetInputRow: {
+    ritualInputRow: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: s.sm,
       marginBottom: s.md,
     },
-    presetInput: {
+    ritualInput: {
       flex: 1,
       backgroundColor: c.cardMain,
       borderRadius: r.md,
@@ -486,21 +486,21 @@ export function getComponentVariantStyles() {
       fontSize: t.sizes.md,
       color: c.textMain,
     },
-    presetSaveButton: {
+    ritualSaveButton: {
       backgroundColor: c.tintMain,
       paddingVertical: s.lg - 2,
       paddingHorizontal: s.xl,
       borderRadius: r.md,
     },
-    presetCancelButton: {
+    ritualCancelButton: {
       paddingVertical: s.lg - 2,
       paddingHorizontal: s.xl,
     },
-    presetCancelText: {
+    ritualCancelText: {
       color: c.textSecondary,
       fontSize: t.sizes.md,
     },
-    savePresetButton: {
+    saveRitualButton: {
       paddingVertical: s.lg - 2,
       paddingHorizontal: s.xl,
       borderRadius: r.md,
@@ -508,7 +508,7 @@ export function getComponentVariantStyles() {
       borderColor: c.tintMain,
       alignSelf: 'flex-start',
     },
-    savePresetButtonText: {
+    saveRitualButtonText: {
       fontSize: t.sizes.md,
       color: c.tintMain,
       fontWeight: t.weights.semibold,

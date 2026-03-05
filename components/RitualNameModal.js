@@ -7,20 +7,20 @@ import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme/layout';
 import {
-  findPresetByName,
-  getPresets,
-  MAX_PRESETS,
-  MAX_PRESET_NAME_LENGTH,
-  normalizePresetName,
-  QUICK_PRESET_NAMES,
-} from '../helpers/presetsStorage';
+  findRitualByName,
+  getRituals,
+  MAX_RITUALS,
+  MAX_RITUAL_NAME_LENGTH,
+  normalizeRitualName,
+  QUICK_RITUAL_NAMES,
+} from '../helpers/ritualsStorage';
 
-export default function PresetNameModal({
+export default function RitualNameModal({
   visible,
   onClose,
   onSave,
   excludeId,
-  checkPresetCount = false,
+  checkRitualCount = false,
 }) {
   const [name, setName] = useState('');
   const [error, setError] = useState(null);
@@ -37,50 +37,52 @@ export default function PresetNameModal({
   }, [visible]);
 
   const handleSave = () => {
-    const finalName = normalizePresetName(name);
+    const finalName = normalizeRitualName(name);
     setError(null);
     setWarning(null);
 
     if (!finalName) {
-      setError(copy.modals.presetName.errorRequired);
+      setError(copy.modals.ritualName.errorRequired);
       return;
     }
-    if (finalName.length > MAX_PRESET_NAME_LENGTH) {
+    if (finalName.length > MAX_RITUAL_NAME_LENGTH) {
       setError(
-        t(copy.modals.presetName.errorTooLong, { max: MAX_PRESET_NAME_LENGTH })
+        t(copy.modals.ritualName.errorTooLong, { max: MAX_RITUAL_NAME_LENGTH })
       );
       return;
     }
-    if (checkPresetCount) {
-      getPresets().then((presets) => {
-        if (presets.length >= MAX_PRESETS) {
+    if (checkRitualCount) {
+      getRituals().then((rituals) => {
+        if (rituals.length >= MAX_RITUALS) {
           setError(
-            t(copy.modals.presetName.errorMaxPresets, { max: MAX_PRESETS })
+            t(copy.modals.ritualName.errorMaxRituals, { max: MAX_RITUALS })
           );
           return;
         }
         trySubmit(finalName);
       });
-    } else {
-      trySubmit(finalName);
+      return;
     }
+    trySubmit(finalName);
   };
 
   function trySubmit(finalName) {
-    const matchedQuickPreset = QUICK_PRESET_NAMES.find(
+    const matchedQuickRitual = QUICK_RITUAL_NAMES.find(
       (q) => q.trim().toLowerCase() === finalName.trim().toLowerCase()
     );
-    if (matchedQuickPreset) {
-      const transformedName = 'My ' + matchedQuickPreset;
+    if (matchedQuickRitual) {
+      const transformedName = 'My ' + matchedQuickRitual;
       setName(transformedName);
       setWarning(
-        t(copy.modals.presetName.warningMatchesBuiltIn, { name: transformedName })
+        t(copy.modals.ritualName.warningMatchesBuiltIn, {
+          name: transformedName,
+        })
       );
       return;
     }
-    findPresetByName(finalName, { excludeId }).then((existing) => {
+    findRitualByName(finalName, { excludeId }).then((existing) => {
       if (existing) {
-        setError(copy.modals.presetName.errorExists);
+        setError(copy.modals.ritualName.errorExists);
         return;
       }
       onSave(finalName);
@@ -96,21 +98,24 @@ export default function PresetNameModal({
       onRequestClose={onClose}
     >
       <View style={m.overlay}>
-        <View style={[m.content, styles.presetNameModalContent]}>
+        <View style={[m.content, styles.ritualNameModalContent]}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">{copy.modals.presetName.title}</AppText>
+              <AppText variant="modalTitle">
+                {copy.modals.ritualName.title}
+              </AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
-                <AppText variant="closeButtonText">{copy.modals.presetName.cancel}</AppText>
+                <AppText variant="closeButtonText">
+                  {copy.modals.ritualName.cancel}
+                </AppText>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.presetNameModalBody}>
-            <AppText variant="helper" style={styles.presetNameRules}>
-              {copy.modals.presetName.rules}
+          <View style={styles.ritualNameModalBody}>
+            <AppText variant="helper" style={styles.ritualNameRules}>
+              {copy.modals.ritualName.rules}
             </AppText>
-            <View style={styles.presetInputRow}
-            >
+            <View style={styles.ritualInputRow}>
               <AppInput
                 value={name}
                 onChangeText={(text) => {
@@ -118,23 +123,25 @@ export default function PresetNameModal({
                   if (error) setError(null);
                   if (warning) setWarning(null);
                 }}
-                placeholder={copy.modals.presetName.placeholder}
+                placeholder={copy.modals.ritualName.placeholder}
                 autoFocus
                 autoCapitalize="words"
                 maxLength={100}
-                style={[styles.presetInput, layout.flex1]}
+                style={[styles.ritualInput, layout.flex1]}
               />
               <TouchableOpacity
-                style={styles.presetSaveButton}
+                style={styles.ritualSaveButton}
                 onPress={handleSave}
               >
-                <AppText variant="buttonPrimary">{copy.modals.presetName.save}</AppText>
+                <AppText variant="buttonPrimary">
+                  {copy.modals.ritualName.save}
+                </AppText>
               </TouchableOpacity>
             </View>
             {error ? (
               <AppText
                 variant="helper"
-                style={[layout.marginTopMd, styles.presetNameError]}
+                style={[layout.marginTopMd, styles.ritualNameError]}
               >
                 {error}
               </AppText>

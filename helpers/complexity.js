@@ -46,27 +46,27 @@ function valueToTier(val) {
 export function formatComplexitySummary(complexityMin, complexityMax) {
   const min = complexityMin ?? null;
   const max = complexityMax ?? null;
-  if (min == null && max == null) return copy.presetMetadata.any;
+  if (min == null && max == null) return copy.ritualMetadata.any;
   if (min != null && max == null) {
     const tier = valueToTier(min);
-    if (tier === 'light') return copy.presetMetadata.lightAndUp;
-    if (tier === 'medium') return copy.presetMetadata.mediumAndUp;
-    return copy.presetMetadata.heavyAndUp;
+    if (tier === 'light') return copy.ritualMetadata.lightAndUp;
+    if (tier === 'medium') return copy.ritualMetadata.mediumAndUp;
+    return copy.ritualMetadata.heavyAndUp;
   }
   if (min == null && max != null) {
     const tier = valueToTier(max);
-    if (tier === 'light') return copy.presetMetadata.upToLight;
-    if (tier === 'medium') return copy.presetMetadata.upToMedium;
-    return copy.presetMetadata.upToHeavy;
+    if (tier === 'light') return copy.ritualMetadata.upToLight;
+    if (tier === 'medium') return copy.ritualMetadata.upToMedium;
+    return copy.ritualMetadata.upToHeavy;
   }
   const minTier = valueToTier(min);
   const maxTier = valueToTier(max);
   if (minTier === maxTier) {
-    if (minTier === 'light') return copy.presetMetadata.light;
-    if (minTier === 'medium') return copy.presetMetadata.medium;
-    return copy.presetMetadata.heavy;
+    if (minTier === 'light') return copy.ritualMetadata.light;
+    if (minTier === 'medium') return copy.ritualMetadata.medium;
+    return copy.ritualMetadata.heavy;
   }
-  if (minTier === 'light' && maxTier === 'medium') return copy.presetMetadata.lightToMedium;
-  if (minTier === 'light' && maxTier === 'heavy') return copy.presetMetadata.lightToHeavy;
-  return copy.presetMetadata.mediumToHeavy;
+  if (minTier === 'light' && maxTier === 'medium') return copy.ritualMetadata.lightToMedium;
+  if (minTier === 'light' && maxTier === 'heavy') return copy.ritualMetadata.lightToHeavy;
+  return copy.ritualMetadata.mediumToHeavy;
 }

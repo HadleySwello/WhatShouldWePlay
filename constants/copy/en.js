@@ -50,7 +50,7 @@ export default {
     selectedGame: 'The wheel has chosen',
   },
   setup: {
-    loadPreset: 'Load a ritual',
+    loadRitual: 'Load a ritual',
     howManyPlayers: 'How many at the table tonight?',
     playTime: 'Max play time',
     maxLength: 'How long can the session run?',
@@ -70,10 +70,10 @@ export default {
     noMatchesBody: "Widen the filters—we'll find something.",
     ctaViewGames: 'View {{count}} games',
     ctaNoMatches: 'No matches',
-    presetHeader: 'Ritual: {{name}}',
-    presetHeaderModified: 'Ritual: {{name}} (modified)',
+    ritualHeader: 'Ritual: {{name}}',
+    ritualHeaderModified: 'Ritual: {{name}} (modified)',
     customFilters: 'Custom filters',
-    presetModified: '(modified)',
+    ritualModified: '(modified)',
     saveAsNew: 'Save as new ritual',
     save: 'Save',
     dontSave: "Don't save",
@@ -86,8 +86,8 @@ export default {
     enableVotingMode: 'Enable Voting Mode',
     votingHint: 'One vote per player ({{assigned}} of {{total}} in)',
     allVotesAssigned: 'All voices in. Ready to consult the fates.',
-    presetSaved: 'Ritual saved!',
-    saveAsPreset: 'Save as ritual',
+    ritualSaved: 'Ritual saved!',
+    saveAsRitual: 'Save as ritual',
     emptyTitle: 'Nothing on your shelf fits tonight.',
     emptyBody: "Widen the filters—we'll find something.",
     backToFilters: 'Adjust filters',
@@ -115,7 +115,7 @@ export default {
     failedToLoadCollection: 'Failed to load collection',
     unknownError: 'Unknown BGG error',
   },
-  presetMetadata: {
+  ritualMetadata: {
     any: 'Any',
     lightAndUp: 'Light and up',
     mediumAndUp: 'Medium and up',
@@ -155,17 +155,17 @@ export default {
     changeUsername: 'Connect a different shelf',
   },
   modals: {
-    presets: {
+    rituals: {
       title: 'Choose a ritual',
       headerNote: 'You can save rituals from the game list after filtering.',
-      myPresets: 'My rituals',
-      quickPresets: 'Quick rituals',
+      myRituals: 'My rituals',
+      quickRituals: 'Quick rituals',
       close: 'Close',
       deleteConfirmTitle: 'Delete ritual?',
       deleteConfirmCancel: 'Cancel',
       deleteConfirmDelete: 'Delete',
     },
-    presetName: {
+    ritualName: {
       title: 'Ritual name',
       rules:
         'Required. Max 64 characters. Multiple spaces are collapsed. Newlines and control characters are removed.',
@@ -174,7 +174,7 @@ export default {
       cancel: 'Cancel',
       errorRequired: 'Please enter a ritual name.',
       errorTooLong: 'Ritual name must be {{max}} characters or less.',
-      errorMaxPresets:
+      errorMaxRituals:
         'You can only save {{max}} rituals. Delete one to add another.',
       errorExists: 'Ritual name already exists.',
       warningMatchesBuiltIn:

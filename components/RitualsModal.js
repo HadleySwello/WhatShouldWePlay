@@ -21,12 +21,12 @@ const LENGTH_LABELS = {
   long: copy.lengthLabels.long,
 };
 
-function formatPresetMetadata(filters) {
+function formatRitualMetadata(filters) {
   const f = filters || {};
   const parts = [];
-  parts.push(t(copy.presetMetadata.players, { count: f.playerCount ?? 2 }));
+  parts.push(t(copy.ritualMetadata.players, { count: f.playerCount ?? 2 }));
   parts.push(
-    t(copy.presetMetadata.complexityLabel, {
+    t(copy.ritualMetadata.complexityLabel, {
       value: formatComplexitySummary(f.complexityMin, f.complexityMax),
     })
   );
@@ -38,33 +38,33 @@ function formatPresetMetadata(filters) {
   return parts.join(' · ');
 }
 
-export default function PresetsModal({
+export default function RitualsModal({
   visible,
   onClose,
-  quickPresets,
-  savedPresets,
-  onSelectPreset,
-  onDeletePreset,
+  quickRituals,
+  savedRituals,
+  onSelectRitual,
+  onDeleteRitual,
 }) {
   const { styles, tokens } = useAppTheme();
   const m = styles.modal;
 
-  const handleSelect = (preset) => {
-    onSelectPreset(preset);
+  const handleSelect = (ritual) => {
+    onSelectRitual(ritual);
     onClose();
   };
 
-  const handleDelete = (preset, e) => {
+  const handleDelete = (ritual, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
     Alert.alert(
-      copy.modals.presets.deleteConfirmTitle,
-      preset.name,
+      copy.modals.rituals.deleteConfirmTitle,
+      ritual.name,
       [
-        { text: copy.modals.presets.deleteConfirmCancel, style: 'cancel' },
+        { text: copy.modals.rituals.deleteConfirmCancel, style: 'cancel' },
         {
-          text: copy.modals.presets.deleteConfirmDelete,
+          text: copy.modals.rituals.deleteConfirmDelete,
           style: 'destructive',
-          onPress: () => onDeletePreset && onDeletePreset(preset),
+          onPress: () => onDeleteRitual && onDeleteRitual(ritual),
         },
       ]
     );
@@ -81,13 +81,13 @@ export default function PresetsModal({
         <View style={m.content}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">{copy.modals.presets.title}</AppText>
+              <AppText variant="modalTitle">{copy.modals.rituals.title}</AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
-                <AppText variant="closeButtonText">{copy.modals.presets.close}</AppText>
+                <AppText variant="closeButtonText">{copy.modals.rituals.close}</AppText>
               </TouchableOpacity>
             </View>
             <AppText variant="headerNote">
-              {copy.modals.presets.headerNote}
+              {copy.modals.rituals.headerNote}
             </AppText>
           </View>
 
@@ -96,23 +96,23 @@ export default function PresetsModal({
             contentContainerStyle={m.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {savedPresets.length > 0 && (
+            {savedRituals.length > 0 && (
               <>
-                <AppText variant="modalSectionTitle">{copy.modals.presets.myPresets}</AppText>
-                {savedPresets.map((p) => (
-                  <View key={p.id} style={m.presetCard}>
+                <AppText variant="modalSectionTitle">{copy.modals.rituals.myRituals}</AppText>
+                {savedRituals.map((p) => (
+                  <View key={p.id} style={m.ritualCard}>
                     <TouchableOpacity
-                      style={styles.presetCardRow}
+                      style={styles.ritualCardRow}
                       onPress={() => handleSelect(p)}
                       activeOpacity={0.7}
                     >
-                      <AppText variant="presetName">{p.name}</AppText>
-                      <AppText variant="presetMetadata">
-                        {formatPresetMetadata(p.filters)}
+                      <AppText variant="ritualName">{p.name}</AppText>
+                      <AppText variant="ritualMetadata">
+                        {formatRitualMetadata(p.filters)}
                       </AppText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={styles.presetDeleteIconAbsolute}
+                      style={styles.ritualDeleteIconAbsolute}
                       onPress={(e) => handleDelete(p, e)}
                       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
@@ -129,23 +129,23 @@ export default function PresetsModal({
 
             <AppText
               variant="modalSectionTitle"
-              style={savedPresets.length > 0 ? m.savedSectionTitle : undefined}
+              style={savedRituals.length > 0 ? m.savedSectionTitle : undefined}
             >
-              {copy.modals.presets.quickPresets}
+              {copy.modals.rituals.quickRituals}
             </AppText>
-            {quickPresets.map((p) => (
+            {quickRituals.map((p) => (
               <TouchableOpacity
                 key={p.id}
-                style={m.presetCard}
+                style={m.ritualCard}
                 onPress={() => handleSelect(p)}
                 activeOpacity={0.7}
               >
-                <AppText variant="presetName">{p.name}</AppText>
+                <AppText variant="ritualName">{p.name}</AppText>
                 {p.description ? (
-                  <AppText variant="presetDescription">{p.description}</AppText>
+                  <AppText variant="ritualDescription">{p.description}</AppText>
                 ) : null}
-                <AppText variant="presetMetadata">
-                  {formatPresetMetadata(p.filters)}
+                <AppText variant="ritualMetadata">
+                  {formatRitualMetadata(p.filters)}
                 </AppText>
               </TouchableOpacity>
             ))}

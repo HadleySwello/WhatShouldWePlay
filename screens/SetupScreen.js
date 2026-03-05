@@ -11,13 +11,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { RangeSlider } from '@sharcoux/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 import {
-  getPresets,
-  savePreset,
-  updatePreset,
-  deletePreset,
-} from '../helpers/presetsStorage';
-import PresetsModal from '../components/PresetsModal';
-import PresetNameModal from '../components/PresetNameModal';
+  getRituals,
+  saveRitual,
+  updateRitual,
+  deleteRitual,
+} from '../helpers/ritualsStorage';
+import RitualsModal from '../components/RitualsModal';
+import RitualNameModal from '../components/RitualNameModal';
 import PlayerCountStepper from '../components/PlayerCountStepper';
 import {
   getDefaultPlayerCount,
@@ -30,7 +30,7 @@ import AppChip from '../components/AppChip';
 import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
-import { QUICK_PRESETS } from '../helpers/quickPresets';
+import { QUICK_RITUALS } from '../helpers/quickRituals';
 
 const LENGTH_ORDER = ['under 30 min', 'under 1 hour', 'under 2 hours', 'long'];
 
@@ -116,16 +116,16 @@ function getUniqueCategories(games) {
   return [...set].sort();
 }
 
-function filtersMatchPreset(
+function filtersMatchRitual(
   playerCount,
   complexityMin,
   complexityMax,
   maxLength,
   selectedMechanics,
   selectedCategories,
-  presetFilters
+  ritualFilters
 ) {
-  const f = presetFilters || {};
+  const f = ritualFilters || {};
   const mechs = selectedMechanics ?? [];
   const cats = selectedCategories ?? [];
   const pMechs = f.selectedMechanics ?? [];
@@ -173,24 +173,24 @@ export default function SetupScreen({ navigation }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [mechanicsExpanded, setMechanicsExpanded] = useState(false);
   const [categoriesExpanded, setCategoriesExpanded] = useState(false);
-  const [showPresetsModal, setShowPresetsModal] = useState(false);
-  const [showPresetNameModal, setShowPresetNameModal] = useState(false);
-  const [presetNameModalMode, setPresetNameModalMode] = useState('saveAsNew'); // 'rename' | 'saveAsNew'
-  const [savedPresets, setSavedPresets] = useState([]);
-  const [loadedPreset, setLoadedPreset] = useState(null);
+  const [showRitualsModal, setShowRitualsModal] = useState(false);
+  const [showRitualNameModal, setShowRitualNameModal] = useState(false);
+  const [ritualNameModalMode, setRitualNameModalMode] = useState('saveAsNew'); // 'rename' | 'saveAsNew'
+  const [savedRituals, setSavedRituals] = useState([]);
+  const [loadedRitual, setLoadedRitual] = useState(null);
   const { tokens, styles } = useAppTheme();
 
-  const refreshPresets = useCallback(() => {
-    getPresets().then(setSavedPresets);
+  const refreshRituals = useCallback(() => {
+    getRituals().then(setSavedRituals);
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      refreshPresets();
-      if (!loadedPreset) {
+      refreshRituals();
+      if (!loadedRitual) {
         getDefaultPlayerCount().then(setPlayerCount);
       }
-    }, [refreshPresets, loadedPreset])
+    }, [refreshRituals, loadedRitual])
   );
 
   const filteredGames = useMemo(
@@ -229,20 +229,20 @@ export default function SetupScreen({ navigation }) {
     selectedCategories
   );
   const isModified =
-    loadedPreset &&
-    loadedPreset.filters &&
-    !filtersMatchPreset(
+    loadedRitual &&
+    loadedRitual.filters &&
+    !filtersMatchRitual(
       playerCount,
       complexityMin,
       complexityMax,
       maxLength,
       selectedMechanics,
       selectedCategories,
-      loadedPreset.filters
+      loadedRitual.filters
     );
-  const isMyPreset = loadedPreset && !loadedPreset.isQuick;
+  const isMyRitual = loadedRitual && !loadedRitual.isQuick;
 
-  const applyPresetFilters = useCallback((f) => {
+  const applyRitualFilters = useCallback((f) => {
     const ff = f || {};
     setPlayerCount(ff.playerCount ?? DEFAULT_PLAYER_COUNT);
     setComplexityMin(ff.complexityMin ?? null);
@@ -252,13 +252,13 @@ export default function SetupScreen({ navigation }) {
     setSelectedCategories(ff.selectedCategories ?? []);
   }, []);
 
-  const handlePresetSelect = useCallback(
-    (preset) => {
-      const f = preset.filters || preset;
-      applyPresetFilters(f);
-      setLoadedPreset({
-        id: preset.id,
-        name: preset.name,
+  const handleRitualSelect = useCallback(
+    (ritual) => {
+      const f = ritual.filters || ritual;
+      applyRitualFilters(f);
+      setLoadedRitual({
+        id: ritual.id,
+        name: ritual.name,
         filters: {
           playerCount: f.playerCount ?? DEFAULT_PLAYER_COUNT,
           complexityMin: f.complexityMin ?? null,
@@ -267,68 +267,68 @@ export default function SetupScreen({ navigation }) {
           selectedMechanics: f.selectedMechanics ?? [],
           selectedCategories: f.selectedCategories ?? [],
         },
-        isQuick: preset.isQuick === true,
+        isQuick: ritual.isQuick === true,
       });
-      setShowPresetsModal(false);
+      setShowRitualsModal(false);
     },
-    [applyPresetFilters]
+    [applyRitualFilters]
   );
 
   const handleSaveOverwrite = useCallback(() => {
-    if (!loadedPreset || !isMyPreset || !isModified) return;
-    updatePreset(loadedPreset.id, {
-      name: loadedPreset.name,
+    if (!loadedRitual || !isMyRitual || !isModified) return;
+    updateRitual(loadedRitual.id, {
+      name: loadedRitual.name,
       filters: currentFilters,
     }).then((updated) => {
       if (updated) {
-        setLoadedPreset({ ...loadedPreset, filters: currentFilters });
-        refreshPresets();
+        setLoadedRitual({ ...loadedRitual, filters: currentFilters });
+        refreshRituals();
       }
     });
-  }, [loadedPreset, isMyPreset, isModified, currentFilters, refreshPresets]);
+  }, [loadedRitual, isMyRitual, isModified, currentFilters, refreshRituals]);
 
   const handleSaveAsNew = useCallback(() => {
-    setPresetNameModalMode('saveAsNew');
-    setShowPresetNameModal(true);
+    setRitualNameModalMode('saveAsNew');
+    setShowRitualNameModal(true);
   }, []);
 
   const handleRename = useCallback(() => {
-    setPresetNameModalMode('rename');
-    setShowPresetNameModal(true);
+    setRitualNameModalMode('rename');
+    setShowRitualNameModal(true);
   }, []);
 
-  const handlePresetNameSave = useCallback(
+  const handleRitualNameSave = useCallback(
     (name) => {
-      if (presetNameModalMode === 'rename' && loadedPreset && isMyPreset) {
-        updatePreset(loadedPreset.id, {
+      if (ritualNameModalMode === 'rename' && loadedRitual && isMyRitual) {
+        updateRitual(loadedRitual.id, {
           name,
-          filters: loadedPreset.filters,
+          filters: loadedRitual.filters,
         }).then((updated) => {
           if (updated) {
-            setLoadedPreset({ ...loadedPreset, name });
-            setShowPresetNameModal(false);
-            refreshPresets();
+            setLoadedRitual({ ...loadedRitual, name });
+            setShowRitualNameModal(false);
+            refreshRituals();
           }
         });
       } else {
-        savePreset(name, currentFilters).then((preset) => {
-          setLoadedPreset({
-            id: preset.id,
-            name: preset.name,
-            filters: preset.filters,
+        saveRitual(name, currentFilters).then((ritual) => {
+          setLoadedRitual({
+            id: ritual.id,
+            name: ritual.name,
+            filters: ritual.filters,
             isQuick: false,
           });
-          setShowPresetNameModal(false);
-          refreshPresets();
+          setShowRitualNameModal(false);
+          refreshRituals();
         });
       }
     },
     [
-      presetNameModalMode,
-      loadedPreset,
-      isMyPreset,
+      ritualNameModalMode,
+      loadedRitual,
+      isMyRitual,
       currentFilters,
-      refreshPresets,
+      refreshRituals,
     ]
   );
 
@@ -369,11 +369,11 @@ export default function SetupScreen({ navigation }) {
         <View style={styles.filtersContent}>
           <View>
             <TouchableOpacity
-              style={styles.usePresetButton}
-              onPress={() => setShowPresetsModal(true)}
+              style={styles.useRitualButton}
+              onPress={() => setShowRitualsModal(true)}
             >
-              <AppText variant="usePresetButton">
-                {copy.setup.loadPreset}
+              <AppText variant="useRitualButton">
+                {copy.setup.loadRitual}
               </AppText>
             </TouchableOpacity>
             <AppText variant="sectionTitle">
@@ -620,64 +620,64 @@ export default function SetupScreen({ navigation }) {
             ? copy.setup.ctaNoMatches
             : t(copy.setup.ctaViewGames, { count: filteredGames.length })}
         </AppButton>
-        <View style={styles.stickyPresetSection}>
-          <AppText variant="presetHeaderTitle">
-            {loadedPreset
+        <View style={styles.stickyRitualSection}>
+          <AppText variant="ritualHeaderTitle">
+            {loadedRitual
               ? isModified
-                ? t(copy.setup.presetHeaderModified, {
-                    name: loadedPreset.name,
+                ? t(copy.setup.ritualHeaderModified, {
+                    name: loadedRitual.name,
                   })
-                : t(copy.setup.presetHeader, { name: loadedPreset.name })
+                : t(copy.setup.ritualHeader, { name: loadedRitual.name })
               : copy.setup.customFilters}
           </AppText>
-          {(loadedPreset == null ||
-            (isMyPreset && isModified) ||
-            (isMyPreset && !isModified) ||
-            (loadedPreset && loadedPreset.isQuick && isModified)) && (
-            <View style={styles.presetSaveControls}>
-              {loadedPreset == null ? (
+          {(loadedRitual == null ||
+            (isMyRitual && isModified) ||
+            (isMyRitual && !isModified) ||
+            (loadedRitual && loadedRitual.isQuick && isModified)) && (
+            <View style={styles.ritualSaveControls}>
+              {loadedRitual == null ? (
                 <TouchableOpacity
-                  style={styles.stickyPresetAction}
+                  style={styles.stickyRitualAction}
                   onPress={handleSaveAsNew}
                 >
-                  <AppText variant="presetSaveControlText">
+                  <AppText variant="ritualSaveControlText">
                     {copy.setup.saveAsNew}
                   </AppText>
                 </TouchableOpacity>
-              ) : isMyPreset && isModified ? (
+              ) : isMyRitual && isModified ? (
                 <React.Fragment>
                   <TouchableOpacity
-                    style={styles.stickyPresetAction}
+                    style={styles.stickyRitualAction}
                     onPress={handleSaveOverwrite}
                   >
-                    <AppText variant="presetSaveControlText">
+                    <AppText variant="ritualSaveControlText">
                       {copy.setup.save}
                     </AppText>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.stickyPresetAction}
+                    style={styles.stickyRitualAction}
                     onPress={handleSaveAsNew}
                   >
-                    <AppText variant="presetSaveControlText">
+                    <AppText variant="ritualSaveControlText">
                       {copy.setup.saveAsNew}
                     </AppText>
                   </TouchableOpacity>
                 </React.Fragment>
-              ) : isMyPreset && !isModified ? (
+              ) : isMyRitual && !isModified ? (
                 <TouchableOpacity
-                  style={styles.stickyPresetAction}
+                  style={styles.stickyRitualAction}
                   onPress={handleRename}
                 >
-                  <AppText variant="presetSaveControlText">
+                  <AppText variant="ritualSaveControlText">
                     {copy.setup.rename}
                   </AppText>
                 </TouchableOpacity>
-              ) : loadedPreset.isQuick && isModified ? (
+              ) : loadedRitual.isQuick && isModified ? (
                 <TouchableOpacity
-                  style={styles.stickyPresetAction}
+                  style={styles.stickyRitualAction}
                   onPress={handleSaveAsNew}
                 >
-                  <AppText variant="presetSaveControlText">
+                  <AppText variant="ritualSaveControlText">
                     {copy.setup.saveAsNew}
                   </AppText>
                 </TouchableOpacity>
@@ -687,31 +687,31 @@ export default function SetupScreen({ navigation }) {
         </View>
       </View>
 
-      <PresetsModal
-        visible={showPresetsModal}
-        onClose={() => setShowPresetsModal(false)}
-        quickPresets={QUICK_PRESETS}
-        savedPresets={savedPresets}
-        onSelectPreset={handlePresetSelect}
-        onDeletePreset={(preset) => {
-          deletePreset(preset.id).then(() => {
-            if (loadedPreset && loadedPreset.id === preset.id) {
-              setLoadedPreset(null);
+      <RitualsModal
+        visible={showRitualsModal}
+        onClose={() => setShowRitualsModal(false)}
+        quickRituals={QUICK_RITUALS}
+        savedRituals={savedRituals}
+        onSelectRitual={handleRitualSelect}
+        onDeleteRitual={(ritual) => {
+          deleteRitual(ritual.id).then(() => {
+            if (loadedRitual && loadedRitual.id === ritual.id) {
+              setLoadedRitual(null);
             }
-            refreshPresets();
+            refreshRituals();
           });
         }}
       />
-      <PresetNameModal
-        visible={showPresetNameModal}
-        onClose={() => setShowPresetNameModal(false)}
-        onSave={handlePresetNameSave}
+      <RitualNameModal
+        visible={showRitualNameModal}
+        onClose={() => setShowRitualNameModal(false)}
+        onSave={handleRitualNameSave}
         excludeId={
-          presetNameModalMode === 'rename' && loadedPreset
-            ? loadedPreset.id
+          ritualNameModalMode === 'rename' && loadedRitual
+            ? loadedRitual.id
             : undefined
         }
-        checkPresetCount={presetNameModalMode === 'saveAsNew'}
+        checkRitualCount={ritualNameModalMode === 'saveAsNew'}
       />
     </View>
   );
