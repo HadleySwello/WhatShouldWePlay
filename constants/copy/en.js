@@ -153,6 +153,7 @@ export default {
     defaultPlayerCount: 'Default players at table',
     enableVotingMode: 'Let everyone weigh in',
     changeUsername: 'Connect a different shelf',
+    deleteMyAccount: 'Delete my account',
   },
   modals: {
     rituals: {
@@ -214,6 +215,11 @@ Games with more votes are more likely to be chosen.`,
     votingModeSinglePlayerTitle: 'Voting Mode',
     votingModeSinglePlayerMessage:
       'Voting mode is not available for single-player games.',
+    deleteAccountTitle: 'Delete your account?',
+    deleteAccountMessage:
+      'This cannot be undone. Your shelf, saved rituals (presets), and preferences will be permanently deleted. There is no way to recover them.',
+    deleteAccountCancel: 'Cancel',
+    deleteAccountConfirm: 'Delete my account',
   },
   common: {
     close: 'Close',

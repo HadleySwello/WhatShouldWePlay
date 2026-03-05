@@ -6,6 +6,7 @@ import {
   Alert,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 import AppButton from '../components/AppButton';
@@ -54,13 +55,34 @@ export default function SettingsScreen({ navigation }) {
     }
   }, [isSinglePlayer]);
 
+  const handleDeleteAccount = useCallback(() => {
+    Alert.alert(
+      copy.alerts.deleteAccountTitle,
+      copy.alerts.deleteAccountMessage,
+      [
+        { text: copy.alerts.deleteAccountCancel, style: 'cancel' },
+        {
+          text: copy.alerts.deleteAccountConfirm,
+          style: 'destructive',
+          onPress: () => {
+            AsyncStorage.clear().then(() => {
+              navigation.reset({ index: 0, routes: [{ name: 'Welcome' }] });
+            });
+          },
+        },
+      ]
+    );
+  }, [navigation]);
+
   return (
     <ScrollView
       style={styles.screen.container}
       contentContainerStyle={layout.paddingXl}
       showsVerticalScrollIndicator={false}
     >
-      <AppText variant="sectionTitle">{copy.settings.defaultPlayerCount}</AppText>
+      <AppText variant="sectionTitle">
+        {copy.settings.defaultPlayerCount}
+      </AppText>
       <PlayerCountStepper
         value={defaultPlayerCount}
         onValueChange={handleDefaultPlayerCountChange}
@@ -91,6 +113,9 @@ export default function SettingsScreen({ navigation }) {
         onPress={() => navigation.navigate('ConnectBGG')}
       >
         {copy.settings.changeUsername}
+      </AppButton>
+      <AppButton variant="secondary" onPress={handleDeleteAccount}>
+        {copy.settings.deleteMyAccount}
       </AppButton>
     </ScrollView>
   );
