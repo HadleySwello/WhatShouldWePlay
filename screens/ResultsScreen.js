@@ -15,8 +15,12 @@ import { getVotes, setVotes } from '../helpers/voteCache';
 import { getVotingModeEnabled } from '../helpers/votingModeStorage';
 
 import AppText from '../components/AppText';
+import copy, { t } from '../constants/copy';
 import VotingModeInfoModal from '../components/VotingModeInfoModal';
-import { getComplexityTier } from '../helpers/complexity';
+import {
+  getComplexityTier,
+  capitalizeComplexityTier,
+} from '../helpers/complexity';
 import AppButton from '../components/AppButton';
 import PresetNameModal from '../components/PresetNameModal';
 import { useAppTheme } from '../theme';
@@ -156,8 +160,8 @@ export default function ResultsScreen({ route, navigation }) {
   const handleVotingModeRowPress = () => {
     if (isSinglePlayer) {
       Alert.alert(
-        'Voting Mode',
-        'Voting mode is not available for single-player games.'
+        copy.alerts.votingModeSinglePlayerTitle,
+        copy.alerts.votingModeSinglePlayerMessage
       );
     }
   };
@@ -165,8 +169,9 @@ export default function ResultsScreen({ route, navigation }) {
   const listHeader = (
     <View>
       <AppText variant="voteHint">
-        {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'}{' '}
-        match
+        {filteredGames.length === 1
+          ? t(copy.results.gameMatch, { count: filteredGames.length })
+          : t(copy.results.gamesMatchMany, { count: filteredGames.length })}
       </AppText>
       <View style={styles.votingModeRow}>
         <TouchableOpacity
@@ -175,7 +180,7 @@ export default function ResultsScreen({ route, navigation }) {
           activeOpacity={isSinglePlayer ? 0.7 : 1}
         >
           <View style={styles.votingModeRowInner}>
-            <AppText variant="body">Enable Voting Mode</AppText>
+            <AppText variant="body">{copy.results.enableVotingMode}</AppText>
             <Switch
               value={isSinglePlayer ? false : votingModeEnabled}
               onValueChange={handleVotingModeToggle}
@@ -198,21 +203,24 @@ export default function ResultsScreen({ route, navigation }) {
       </View>
       {votingModeEnabled && filteredGames.length > 0 && (
         <AppText variant="voteHint">
-          One vote per player ({totalVotes} of {playerCount} assigned)
+          {t(copy.results.votingHint, {
+            assigned: totalVotes,
+            total: playerCount,
+          })}
         </AppText>
       )}
       {votingModeEnabled && allVotesAssigned && (
-        <AppText variant="allVotesAssigned">All votes assigned.</AppText>
+        <AppText variant="allVotesAssigned">{copy.results.allVotesAssigned}</AppText>
       )}
       {canSavePreset &&
         (presetSaved ? (
-          <AppText variant="presetSavedText">Preset saved!</AppText>
+          <AppText variant="presetSavedText">{copy.results.presetSaved}</AppText>
         ) : (
           <TouchableOpacity
             style={styles.savePresetButton}
             onPress={() => setShowPresetNameModal(true)}
           >
-            <AppText variant="savePresetButtonText">Save as preset</AppText>
+            <AppText variant="savePresetButtonText">{copy.results.saveAsPreset}</AppText>
           </TouchableOpacity>
         ))}
     </View>
@@ -222,14 +230,14 @@ export default function ResultsScreen({ route, navigation }) {
     return (
       <View style={styles.screen.container}>
         <View style={styles.emptyState}>
-          <AppText variant="emptyTitle">No matches</AppText>
-          <AppText variant="emptyBody">Try adjusting your filters.</AppText>
+          <AppText variant="emptyTitle">{copy.results.emptyTitle}</AppText>
+          <AppText variant="emptyBody">{copy.results.emptyBody}</AppText>
           <AppButton
             variant="primary"
             onPress={() => navigation.goBack()}
             style={styles.button.primaryCompact}
           >
-            Back to Filters
+            {copy.results.backToFilters}
           </AppButton>
         </View>
       </View>
@@ -266,7 +274,8 @@ export default function ResultsScreen({ route, navigation }) {
                   {item.playersMin}-{item.playersMax} players · {item.length} ·
                   {(() => {
                     const tier = getComplexityTier(item.complexityWeight);
-                    if (tier != null) return ` ${tier}`;
+                    const displayTier = capitalizeComplexityTier(tier);
+                    if (displayTier != null) return ` ${displayTier}`;
                     const w = item.complexityWeight;
                     return Number.isFinite(w) ? ` ${w.toFixed(1)}` : ' —';
                   })()}
@@ -302,7 +311,7 @@ export default function ResultsScreen({ route, navigation }) {
           onPress={handleSpin}
           style={styles.button.primaryCompact}
         >
-          {isSingleGame ? 'Select Game' : 'Spin to Choose'}
+          {isSingleGame ? copy.results.ctaSelectGame : copy.results.ctaSpin}
         </AppButton>
       </View>
 

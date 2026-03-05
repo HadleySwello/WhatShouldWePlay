@@ -3,6 +3,7 @@ import { Modal, View, TouchableOpacity } from 'react-native';
 
 import AppText from './AppText';
 import AppInput from './AppInput';
+import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme/layout';
 import {
@@ -13,9 +14,6 @@ import {
   normalizePresetName,
   QUICK_PRESET_NAMES,
 } from '../helpers/presetsStorage';
-
-const PRESET_NAME_RULES =
-  'Required. Max 64 characters. Multiple spaces are collapsed. Newlines and control characters are removed.';
 
 export default function PresetNameModal({
   visible,
@@ -44,12 +42,12 @@ export default function PresetNameModal({
     setWarning(null);
 
     if (!finalName) {
-      setError('Please enter a preset name.');
+      setError(copy.modals.presetName.errorRequired);
       return;
     }
     if (finalName.length > MAX_PRESET_NAME_LENGTH) {
       setError(
-        `Preset name must be ${MAX_PRESET_NAME_LENGTH} characters or less.`
+        t(copy.modals.presetName.errorTooLong, { max: MAX_PRESET_NAME_LENGTH })
       );
       return;
     }
@@ -57,7 +55,7 @@ export default function PresetNameModal({
       getPresets().then((presets) => {
         if (presets.length >= MAX_PRESETS) {
           setError(
-            `Maximum number of presets (${MAX_PRESETS}) reached. Delete one to save a new preset.`
+            t(copy.modals.presetName.errorMaxPresets, { max: MAX_PRESETS })
           );
           return;
         }
@@ -76,13 +74,13 @@ export default function PresetNameModal({
       const transformedName = 'My ' + matchedQuickPreset;
       setName(transformedName);
       setWarning(
-        `Name matches built-in preset. Will save as "${transformedName}".`
+        t(copy.modals.presetName.warningMatchesBuiltIn, { name: transformedName })
       );
       return;
     }
     findPresetByName(finalName, { excludeId }).then((existing) => {
       if (existing) {
-        setError('Preset name already exists.');
+        setError(copy.modals.presetName.errorExists);
         return;
       }
       onSave(finalName);
@@ -101,15 +99,15 @@ export default function PresetNameModal({
         <View style={[m.content, styles.presetNameModalContent]}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">Preset name</AppText>
+              <AppText variant="modalTitle">{copy.modals.presetName.title}</AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
-                <AppText variant="closeButtonText">Cancel</AppText>
+                <AppText variant="closeButtonText">{copy.modals.presetName.cancel}</AppText>
               </TouchableOpacity>
             </View>
           </View>
           <View style={styles.presetNameModalBody}>
             <AppText variant="helper" style={styles.presetNameRules}>
-              {PRESET_NAME_RULES}
+              {copy.modals.presetName.rules}
             </AppText>
             <View style={styles.presetInputRow}
             >
@@ -120,7 +118,7 @@ export default function PresetNameModal({
                   if (error) setError(null);
                   if (warning) setWarning(null);
                 }}
-                placeholder="e.g. 2-Player Night"
+                placeholder={copy.modals.presetName.placeholder}
                 autoFocus
                 autoCapitalize="words"
                 maxLength={100}
@@ -130,7 +128,7 @@ export default function PresetNameModal({
                 style={styles.presetSaveButton}
                 onPress={handleSave}
               >
-                <AppText variant="buttonPrimary">Save</AppText>
+                <AppText variant="buttonPrimary">{copy.modals.presetName.save}</AppText>
               </TouchableOpacity>
             </View>
             {error ? (

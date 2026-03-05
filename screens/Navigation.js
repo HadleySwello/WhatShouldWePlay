@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import copy from '../constants/copy';
 import SplashScreen from './SplashScreen';
 import WelcomeScreen from './WelcomeScreen';
 import ConnectBGGScreen from './ConnectBGGScreen';
@@ -35,12 +36,12 @@ export default function Navigation() {
         <Stack.Screen
           name="ConnectBGG"
           component={ConnectBGGScreen}
-          options={{ title: 'Connect Your Collection' }}
+          options={{ title: copy.navigation.connectCollection }}
         />
         <Stack.Screen
           name="CollectionImported"
           component={CollectionImportedScreen}
-          options={{ title: 'Success' }}
+          options={{ title: copy.navigation.success }}
         />
         <Stack.Screen
           name="Home"
@@ -50,27 +51,27 @@ export default function Navigation() {
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
-          options={{ title: 'Settings' }}
+          options={{ title: copy.navigation.settings }}
         />
         <Stack.Screen
           name="MyGames"
           component={RankingsScreen}
-          options={{ title: 'Browse Collection' }}
+          options={{ title: copy.navigation.browseCollection }}
         />
         <Stack.Screen
           name="Setup"
           component={SetupScreen}
-          options={{ title: 'Choose a Game' }}
+          options={{ title: copy.navigation.chooseGame }}
         />
         <Stack.Screen
           name="Results"
           component={ResultsScreen}
-          options={{ title: 'Your Options' }}
+          options={{ title: copy.navigation.yourOptions }}
         />
         <Stack.Screen
           name="SelectedGame"
           component={SelectedGameScreen}
-          options={{ title: 'Selected Game' }}
+          options={{ title: copy.navigation.selectedGame }}
         />
       </Stack.Navigator>
     </NavigationContainer>

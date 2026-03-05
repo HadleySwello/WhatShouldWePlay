@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppText from '../components/AppText';
+import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -60,9 +61,17 @@ export default function SplashScreen({ navigation }) {
       ]}
     >
       <AppText variant="title" style={layout.marginBottomMd}>
-        What Should We Play?
+        {copy.splash.title}
       </AppText>
-      <AppText variant="subtitle">A Board Game Decision Tool</AppText>
+      <AppText variant="subtitle">{copy.splash.subtitle}</AppText>
+      {copy.splash.tagline ? (
+        <AppText
+          variant="body"
+          style={[layout.marginTopMd, { opacity: 0.8, fontSize: 14 }]}
+        >
+          {copy.splash.tagline}
+        </AppText>
+      ) : null}
       <TouchableOpacity
         style={styles.footer}
         onPress={() => Linking.openURL(BGG_URL)}
@@ -73,9 +82,9 @@ export default function SplashScreen({ navigation }) {
           style={styles.bggLogo}
           resizeMode="contain"
           accessible
-          accessibilityLabel="Powered by BoardGameGeek"
+          accessibilityLabel={copy.splash.a11y}
         />
-        <AppText variant="footer">Data provided by BoardGameGeek</AppText>
+        <AppText variant="footer">{copy.splash.attribution}</AppText>
       </TouchableOpacity>
     </View>
   );

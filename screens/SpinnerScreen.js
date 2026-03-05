@@ -4,6 +4,7 @@ import Spinner from '../components/Spinner';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
+import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -53,7 +54,7 @@ export default function SpinnerScreen({
   };
 
   const slices =
-    participants && participants.length > 0 ? participants : ['No games'];
+    participants && participants.length > 0 ? participants : [copy.spinner.noGames];
 
   const showCelebration = winner && !autoNavigate;
 
@@ -62,7 +63,7 @@ export default function SpinnerScreen({
       <View style={styles.spinnerModal}>
         {showCelebration ? (
           <View style={styles.celebration}>
-            <AppText variant="celebrationTitle">You're playing</AppText>
+            <AppText variant="celebrationTitle">{copy.spinner.celebrationTitle}</AppText>
             <AppText variant="winnerValue">{winner}</AppText>
             <View style={styles.buttonRow}>
               <AppButton
@@ -70,26 +71,26 @@ export default function SpinnerScreen({
                 onPress={handlePlayThis}
                 style={styles.button.primaryCompact}
               >
-                Play This
+                {copy.spinner.ctaPlay}
               </AppButton>
               <AppButton
                 variant="secondary"
                 onPress={handleSpinAgain}
                 style={layout.marginBottomMd}
               >
-                Spin Again
+                {copy.spinner.ctaSpinAgain}
               </AppButton>
               <TouchableOpacity
                 style={styles.textButton}
                 onPress={handleBackToList}
               >
-                <AppText variant="textButton">Back to List</AppText>
+                <AppText variant="textButton">{copy.spinner.backToList}</AppText>
               </TouchableOpacity>
             </View>
           </View>
         ) : (
           <>
-            <AppText variant="spinnerTitle">Spin the Wheel!</AppText>
+            <AppText variant="spinnerTitle">{copy.spinner.title}</AppText>
             <Spinner
               key={spinKey}
               slices={slices}

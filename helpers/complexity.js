@@ -2,6 +2,17 @@
  * Central complexity tier and summary logic.
  * Tier thresholds (BGG-aligned): low < 2.0, medium 2.0–3.49, high >= 3.5
  */
+import copy, { t } from '../constants/copy';
+
+/**
+ * Capitalize tier for display (Low, Medium, High).
+ * @param {string|null} tier - 'low' | 'medium' | 'high' | null
+ * @returns {string|null}
+ */
+export function capitalizeComplexityTier(tier) {
+  if (tier == null || typeof tier !== 'string') return null;
+  return tier.charAt(0).toUpperCase() + tier.slice(1);
+}
 
 /**
  * @param {number} weight - BGG complexity weight (e.g. 2.5)
@@ -17,15 +28,45 @@ export function getComplexityTier(weight) {
 }
 
 /**
+ * Map BGG complexity value (0-5) to tier for display.
+ * 0,1 → light; 2,3 → medium; 4,5 → heavy
+ */
+function valueToTier(val) {
+  if (val == null || val < 0) return null;
+  if (val <= 1) return 'light';
+  if (val <= 3) return 'medium';
+  return 'heavy';
+}
+
+/**
  * @param {number|null} complexityMin
  * @param {number|null} complexityMax
- * @returns {string} - For display in filter summaries
+ * @returns {string} - For display in filter summaries (tier-based, e.g. "Light and up")
  */
 export function formatComplexitySummary(complexityMin, complexityMax) {
   const min = complexityMin ?? null;
   const max = complexityMax ?? null;
-  if (min == null && max == null) return 'Any';
-  if (min != null && max == null) return `≥ ${min}`;
-  if (min == null && max != null) return `≤ ${max}`;
-  return `${min}–${max}`;
+  if (min == null && max == null) return copy.presetMetadata.any;
+  if (min != null && max == null) {
+    const tier = valueToTier(min);
+    if (tier === 'light') return copy.presetMetadata.lightAndUp;
+    if (tier === 'medium') return copy.presetMetadata.mediumAndUp;
+    return copy.presetMetadata.heavyAndUp;
+  }
+  if (min == null && max != null) {
+    const tier = valueToTier(max);
+    if (tier === 'light') return copy.presetMetadata.upToLight;
+    if (tier === 'medium') return copy.presetMetadata.upToMedium;
+    return copy.presetMetadata.upToHeavy;
+  }
+  const minTier = valueToTier(min);
+  const maxTier = valueToTier(max);
+  if (minTier === maxTier) {
+    if (minTier === 'light') return copy.presetMetadata.light;
+    if (minTier === 'medium') return copy.presetMetadata.medium;
+    return copy.presetMetadata.heavy;
+  }
+  if (minTier === 'light' && maxTier === 'medium') return copy.presetMetadata.lightToMedium;
+  if (minTier === 'light' && maxTier === 'heavy') return copy.presetMetadata.lightToHeavy;
+  return copy.presetMetadata.mediumToHeavy;
 }

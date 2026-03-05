@@ -4,7 +4,11 @@ import { Confetti } from '../components/ConfettiCelebration';
 import { clearVoteCache } from '../helpers/voteCache';
 
 import AppText from '../components/AppText';
-import { getComplexityTier } from '../helpers/complexity';
+import copy, { t } from '../constants/copy';
+import {
+  getComplexityTier,
+  capitalizeComplexityTier,
+} from '../helpers/complexity';
 import AppButton from '../components/AppButton';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
@@ -29,9 +33,10 @@ export default function SelectedGameScreen({ route, navigation }) {
   }, [navigation]);
 
   const tier = getComplexityTier(game?.complexityWeight);
+  const displayTier = capitalizeComplexityTier(tier);
   const displayComplexity =
-    tier != null
-      ? tier
+    displayTier != null
+      ? displayTier
       : Number.isFinite(game?.complexityWeight)
         ? game.complexityWeight.toFixed(1)
         : '—';
@@ -49,7 +54,7 @@ export default function SelectedGameScreen({ route, navigation }) {
 
       <View style={styles.selectedGameContent}>
         <AppText variant="title" style={layout.marginBottomXl}>
-          You're playing
+          {copy.selectedGame.title}
         </AppText>
 
         <View style={styles.selectedGameCard}>
@@ -64,17 +69,20 @@ export default function SelectedGameScreen({ route, navigation }) {
           )}
           <View style={styles.cardBody}>
             <AppText variant="cardName" numberOfLines={2} style={[layout.textCenter, layout.marginBottomMd]}>
-              {game?.name ?? 'Selected game'}
+              {game?.name ?? copy.selectedGame.fallbackGameName}
             </AppText>
             <AppText variant="cardDetail" style={layout.textCenter}>{game?.yearPublished ?? '—'}</AppText>
             <AppText variant="cardDetail" style={layout.textCenter}>
               {game?.playersMin != null && game?.playersMax != null
-                ? `${game.playersMin}–${game.playersMax} players`
+                ? t(copy.common.players, {
+                    min: game.playersMin,
+                    max: game.playersMax,
+                  })
                 : '—'}
             </AppText>
             <AppText variant="cardDetail" style={layout.textCenter}>{game?.length ?? '—'}</AppText>
             <AppText variant="cardDetail" style={layout.textCenter}>
-              Complexity: {displayComplexity}
+              {t(copy.selectedGame.complexityLabel, { value: displayComplexity })}
             </AppText>
             {game?.categories?.length > 0 && (
               <AppText variant="cardDetail" style={layout.textCenter}>
@@ -97,7 +105,7 @@ export default function SelectedGameScreen({ route, navigation }) {
           }}
           style={layout.stretch}
         >
-          Start New Pick
+          {copy.selectedGame.ctaStartNew}
         </AppButton>
 
         {canPickAgain && (
@@ -111,7 +119,7 @@ export default function SelectedGameScreen({ route, navigation }) {
               })
             }
           >
-            Pick Again (Same Filters)
+            {copy.selectedGame.ctaPickAgain}
           </AppButton>
         )}
       </View>

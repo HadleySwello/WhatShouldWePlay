@@ -9,6 +9,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 
 import AppButton from '../components/AppButton';
+import copy from '../constants/copy';
 import AppText from '../components/AppText';
 import PlayerCountStepper from '../components/PlayerCountStepper';
 import {
@@ -47,8 +48,8 @@ export default function SettingsScreen({ navigation }) {
   const handleVotingModeRowPress = useCallback(() => {
     if (isSinglePlayer) {
       Alert.alert(
-        'Voting Mode',
-        'Voting mode is not available for single-player games.'
+        copy.alerts.votingModeSinglePlayerTitle,
+        copy.alerts.votingModeSinglePlayerMessage
       );
     }
   }, [isSinglePlayer]);
@@ -59,20 +60,20 @@ export default function SettingsScreen({ navigation }) {
       contentContainerStyle={layout.paddingXl}
       showsVerticalScrollIndicator={false}
     >
-      <AppText variant="sectionTitle">Default player count</AppText>
+      <AppText variant="sectionTitle">{copy.settings.defaultPlayerCount}</AppText>
       <PlayerCountStepper
         value={defaultPlayerCount}
         onValueChange={handleDefaultPlayerCountChange}
       />
       <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
-        Enable Voting Mode
+        {copy.settings.enableVotingMode}
       </AppText>
       <TouchableOpacity
         onPress={isSinglePlayer ? handleVotingModeRowPress : undefined}
         activeOpacity={isSinglePlayer ? 0.7 : 1}
       >
         <View style={styles.votingModeSettingsRow}>
-          <AppText variant="body">Enable Voting Mode</AppText>
+          <AppText variant="body">{copy.settings.enableVotingMode}</AppText>
           <Switch
             value={isSinglePlayer ? false : votingModeEnabled}
             onValueChange={handleVotingModeChange}
@@ -89,7 +90,7 @@ export default function SettingsScreen({ navigation }) {
         variant="primary"
         onPress={() => navigation.navigate('ConnectBGG')}
       >
-        Change Username
+        {copy.settings.changeUsername}
       </AppButton>
     </ScrollView>
   );

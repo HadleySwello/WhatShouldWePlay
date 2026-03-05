@@ -5,21 +5,28 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Image,
+  Linking,
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 
 import AppText from '../components/AppText';
+import copy, { t } from '../constants/copy';
 import AppButton from '../components/AppButton';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
 export default function RankingsScreen({ navigation }) {
-  const { games, error, isLoading, reload } = useBoardGameGeekCollection();
+  const { games, username, error, isLoading, reload } =
+    useBoardGameGeekCollection();
   const { tokens, styles } = useAppTheme();
 
   useLayoutEffect(() => {
+    const title = username
+      ? t(copy.rankings.navTitleTemplate, { username })
+      : copy.navigation.browseCollection;
     navigation.setOptions({
+      title,
       headerRight: () => (
         <TouchableOpacity
           onPress={() => reload()}
@@ -34,14 +41,20 @@ export default function RankingsScreen({ navigation }) {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, reload, tokens.colors.tintMain, styles.refreshButton]);
+  }, [
+    navigation,
+    reload,
+    tokens.colors.tintMain,
+    styles.refreshButton,
+    username,
+  ]);
 
   if (isLoading) {
     return (
       <View style={[styles.screen.container, layout.center]}>
         <ActivityIndicator color={tokens.colors.tintMain} size="large" />
         <AppText variant="helper" style={layout.marginTopMd}>
-          Loading your collection...
+          {copy.rankings.loading}
         </AppText>
       </View>
     );
@@ -54,30 +67,44 @@ export default function RankingsScreen({ navigation }) {
           {error}
         </AppText>
         <TouchableOpacity style={styles.retryButton} onPress={reload}>
-          <AppText variant="retry">Try Again</AppText>
+          <AppText variant="retry">{copy.rankings.retry}</AppText>
         </TouchableOpacity>
       </View>
     );
   }
 
   if (games.length === 0) {
+    const bggUrl = username
+      ? `${copy.rankings.bggCollectionUrl}${encodeURIComponent(username)}`
+      : 'https://boardgamegeek.com';
     return (
       <View style={[styles.screen.container, styles.emptyContainer]}>
         <AppText variant="emptyTitle" style={layout.marginTop3xl}>
-          Your collection is empty
+          {copy.rankings.emptyTitle}
         </AppText>
         <AppText
           variant="emptyBody"
-          style={[layout.marginBottomXl, layout.textCenter, layout.marginHorizontalXl]}
+          style={[
+            layout.marginBottomMd,
+            layout.textCenter,
+            layout.marginHorizontalXl,
+          ]}
         >
-          No games in your collection. Add games via BoardGameGeek or change
-          your username.
+          {copy.rankings.emptyBody}
         </AppText>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(bggUrl)}
+          style={layout.marginBottomXl}
+        >
+          <AppText variant="retry" style={{ color: tokens.colors.tintMain }}>
+            {copy.rankings.emptyBodyLink}
+          </AppText>
+        </TouchableOpacity>
         <AppButton
           variant="primary"
           onPress={() => navigation.navigate('ConnectBGG')}
         >
-          Change Username
+          {copy.rankings.ctaChangeUsername}
         </AppButton>
       </View>
     );
@@ -108,7 +135,8 @@ export default function RankingsScreen({ navigation }) {
             <View style={layout.flex1}>
               <AppText variant="gameName">{item.name}</AppText>
               <AppText variant="gameDetails">
-                {item.yearPublished} · Rating: {item.rating || '—'}
+                {item.yearPublished} ·{' '}
+                {t(copy.rankings.gameDetails, { rating: item.rating || '—' })}
               </AppText>
             </View>
           </View>
@@ -123,7 +151,7 @@ export default function RankingsScreen({ navigation }) {
           layout.marginBottomXl,
         ]}
       >
-        Choose a Game
+        {copy.rankings.ctaChooseGame}
       </AppButton>
     </View>
   );

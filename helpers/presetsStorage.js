@@ -5,6 +5,8 @@
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import copy, { t } from '../constants/copy';
+
 const PRESETS_KEY = 'filterPresets';
 
 export const MAX_PRESETS = 15;
@@ -53,11 +55,11 @@ export async function getPresets() {
 export async function savePreset(name, filters) {
   const presets = await getPresets();
   if (presets.length >= MAX_PRESETS) {
-    throw new Error(`Maximum number of presets (${MAX_PRESETS}) reached.`);
+    throw new Error(t(copy.errors.maxRitualsReached, { max: MAX_PRESETS }));
   }
   const now = Date.now();
   const safeName = normalizePresetName(name);
-  if (!safeName) throw new Error('Preset name is required.');
+  if (!safeName) throw new Error(copy.errors.ritualNameRequired);
   const preset = {
     id: generateId(),
     name:

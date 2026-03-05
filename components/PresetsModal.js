@@ -9,29 +9,32 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AppText from './AppText';
+import copy, { t } from '../constants/copy';
 import { formatComplexitySummary } from '../helpers/complexity';
 import { useAppTheme } from '../theme';
 
 const LENGTH_LABELS = {
-  null: 'Any length',
-  'under 30 min': '≤30m',
-  'under 1 hour': '≤1h',
-  'under 2 hours': '≤2h',
-  long: '3h+',
+  null: copy.lengthLabels.any,
+  'under 30 min': copy.lengthLabels.under30min,
+  'under 1 hour': copy.lengthLabels.under1hour,
+  'under 2 hours': copy.lengthLabels.under2hours,
+  long: copy.lengthLabels.long,
 };
 
 function formatPresetMetadata(filters) {
   const f = filters || {};
   const parts = [];
-  parts.push(`${f.playerCount ?? 2} players`);
-  parts.push(`Complexity: ${formatComplexitySummary(f.complexityMin, f.complexityMax)}`);
+  parts.push(t(copy.presetMetadata.players, { count: f.playerCount ?? 2 }));
+  parts.push(
+    t(copy.presetMetadata.complexityLabel, {
+      value: formatComplexitySummary(f.complexityMin, f.complexityMax),
+    })
+  );
   parts.push(LENGTH_LABELS[f.maxLength] ?? LENGTH_LABELS.null);
   const mechs = f.selectedMechanics ?? [];
   const cats = f.selectedCategories ?? [];
-  if (mechs.length === 1) parts.push(mechs[0]);
-  else if (mechs.length > 1) parts.push(`${mechs.length} mechanics`);
-  if (cats.length === 1) parts.push(cats[0]);
-  else if (cats.length > 1) parts.push(`${cats.length} categories`);
+  if (mechs.length > 0) parts.push(mechs.join(', '));
+  if (cats.length > 0) parts.push(cats.join(', '));
   return parts.join(' · ');
 }
 
@@ -54,12 +57,12 @@ export default function PresetsModal({
   const handleDelete = (preset, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
     Alert.alert(
-      'Delete preset?',
+      copy.modals.presets.deleteConfirmTitle,
       preset.name,
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: copy.modals.presets.deleteConfirmCancel, style: 'cancel' },
         {
-          text: 'Delete',
+          text: copy.modals.presets.deleteConfirmDelete,
           style: 'destructive',
           onPress: () => onDeletePreset && onDeletePreset(preset),
         },
@@ -78,13 +81,13 @@ export default function PresetsModal({
         <View style={m.content}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">Choose a Preset</AppText>
+              <AppText variant="modalTitle">{copy.modals.presets.title}</AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
-                <AppText variant="closeButtonText">Close</AppText>
+                <AppText variant="closeButtonText">{copy.modals.presets.close}</AppText>
               </TouchableOpacity>
             </View>
             <AppText variant="headerNote">
-              You can save your own presets from the game list after filtering.
+              {copy.modals.presets.headerNote}
             </AppText>
           </View>
 
@@ -95,7 +98,7 @@ export default function PresetsModal({
           >
             {savedPresets.length > 0 && (
               <>
-                <AppText variant="modalSectionTitle">My Presets</AppText>
+                <AppText variant="modalSectionTitle">{copy.modals.presets.myPresets}</AppText>
                 {savedPresets.map((p) => (
                   <View key={p.id} style={m.presetCard}>
                     <TouchableOpacity
@@ -128,7 +131,7 @@ export default function PresetsModal({
               variant="modalSectionTitle"
               style={savedPresets.length > 0 ? m.savedSectionTitle : undefined}
             >
-              Quick Presets
+              {copy.modals.presets.quickPresets}
             </AppText>
             {quickPresets.map((p) => (
               <TouchableOpacity

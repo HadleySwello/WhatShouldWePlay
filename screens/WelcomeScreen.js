@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
+import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -18,18 +19,17 @@ export default function WelcomeScreen({ navigation }) {
       ]}
     >
       <AppText variant="title" style={layout.marginBottomLg}>
-        What Should We Play?
+        {copy.welcome.title}
       </AppText>
       <AppText variant="subtitle" style={layout.marginBottom3xl}>
-        Connect your BoardGameGeek collection to find the perfect game for your
-        group.
+        {copy.welcome.subtitle}
       </AppText>
       <AppButton
         variant="primary"
         onPress={() => navigation.navigate('ConnectBGG')}
         style={layout.marginBottomMd}
       >
-        Connect BoardGameGeek
+        {copy.welcome.cta}
       </AppButton>
     </View>
   );

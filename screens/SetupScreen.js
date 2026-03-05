@@ -27,11 +27,22 @@ import {
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import AppChip from '../components/AppChip';
+import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 import { QUICK_PRESETS } from '../helpers/quickPresets';
 
 const LENGTH_ORDER = ['under 30 min', 'under 1 hour', 'under 2 hours', 'long'];
+
+function getPlayTimeOptions(copy) {
+  return [
+    { value: null, label: copy.setup.any },
+    { value: 'under 30 min', label: copy.lengthLabels.under30min },
+    { value: 'under 1 hour', label: copy.lengthLabels.under1hour },
+    { value: 'under 2 hours', label: copy.lengthLabels.under2hours },
+    { value: 'long', label: copy.lengthLabels.long },
+  ];
+}
 
 function lengthMatches(maxLength, gameLength) {
   if (!maxLength) return true;
@@ -104,14 +115,6 @@ function getUniqueCategories(games) {
   }
   return [...set].sort();
 }
-
-const PLAY_TIME_OPTIONS = [
-  { value: null, label: 'Any' },
-  { value: 'under 30 min', label: '≤30m' },
-  { value: 'under 1 hour', label: '≤1h' },
-  { value: 'under 2 hours', label: '≤2h' },
-  { value: 'long', label: '3h+' },
-];
 
 function filtersMatchPreset(
   playerCount,
@@ -350,7 +353,7 @@ export default function SetupScreen({ navigation }) {
       <View style={[styles.screen.container, layout.center]}>
         <ActivityIndicator size="large" color={tokens.colors.tintMain} />
         <AppText variant="helper" style={layout.marginTopMd}>
-          Loading your collection...
+          {copy.setup.loading}
         </AppText>
       </View>
     );
@@ -369,9 +372,13 @@ export default function SetupScreen({ navigation }) {
               style={styles.usePresetButton}
               onPress={() => setShowPresetsModal(true)}
             >
-              <AppText variant="usePresetButton">Load a Preset</AppText>
+              <AppText variant="usePresetButton">
+                {copy.setup.loadPreset}
+              </AppText>
             </TouchableOpacity>
-            <AppText variant="sectionTitle">How many players?</AppText>
+            <AppText variant="sectionTitle">
+              {copy.setup.howManyPlayers}
+            </AppText>
             <PlayerCountStepper
               value={playerCount}
               onValueChange={setPlayerCount}
@@ -379,21 +386,21 @@ export default function SetupScreen({ navigation }) {
             {hasNoMatches && (
               <View style={styles.noMatchesCard}>
                 <AppText variant="noMatchesTitle">
-                  No games match these filters.
+                  {copy.setup.noMatchesTitle}
                 </AppText>
                 <AppText variant="noMatchesBody">
-                  Try adjusting your filters.
+                  {copy.setup.noMatchesBody}
                 </AppText>
               </View>
             )}
             <AppText variant="label" style={styles.label}>
-              Play Time
+              {copy.setup.playTime}
             </AppText>
             <AppText variant="helper" style={styles.helper}>
-              Maximum game length
+              {copy.setup.maxLength}
             </AppText>
             <View style={styles.chipWrap}>
-              {PLAY_TIME_OPTIONS.map((opt) => (
+              {getPlayTimeOptions(copy).map((opt) => (
                 <AppChip
                   key={opt.value === null ? 'any' : opt.value}
                   selected={maxLength === opt.value}
@@ -404,13 +411,13 @@ export default function SetupScreen({ navigation }) {
               ))}
             </View>
             <AppText variant="label" style={styles.label}>
-              Complexity
+              {copy.setup.complexity}
             </AppText>
             <AppText variant="helper" style={styles.helper}>
-              How complex are you willing to go?
+              {copy.setup.complexityHelper}
             </AppText>
             <View style={styles.complexityRow}>
-              <AppText variant="body">Any complexity</AppText>
+              <AppText variant="body">{copy.setup.anyComplexity}</AppText>
               <Switch
                 value={complexityMin == null && complexityMax == null}
                 onValueChange={(on) => {
@@ -452,19 +459,18 @@ export default function SetupScreen({ navigation }) {
                   }}
                 />
                 <AppText variant="helper" style={styles.complexityReadout}>
-                  Min: {complexityMin ?? 0} Max: {complexityMax ?? 5}
+                  {t(copy.setup.minMaxReadout, {
+                    min: complexityMin ?? 0,
+                    max: complexityMax ?? 5,
+                  })}
                 </AppText>
               </View>
-            ) : (
-              <AppText variant="helper" style={styles.complexityReadout}>
-                Any
-              </AppText>
-            )}
+            ) : null}
 
             {(uniqueMechanics.length > 0 || uniqueCategories.length > 0) && (
               <View style={styles.advancedFiltersBlock}>
                 <AppText variant="advancedFiltersLabel">
-                  Advanced Filters
+                  {copy.setup.advancedFilters}
                 </AppText>
 
                 {uniqueMechanics.length > 0 && (
@@ -474,7 +480,9 @@ export default function SetupScreen({ navigation }) {
                       onPress={() => setMechanicsExpanded((x) => !x)}
                       activeOpacity={0.7}
                     >
-                      <AppText variant="collapsibleLabel">Mechanics</AppText>
+                      <AppText variant="collapsibleLabel">
+                        {copy.setup.mechanics}
+                      </AppText>
                       <Icon
                         name={mechanicsExpanded ? 'expand-less' : 'expand-more'}
                         size={24}
@@ -484,23 +492,25 @@ export default function SetupScreen({ navigation }) {
                     {!mechanicsExpanded && (
                       <AppText variant="collapsibleSummary">
                         {selectedMechanics.length === 0
-                          ? 'Any'
+                          ? copy.setup.any
                           : selectedMechanics.length === 1
                             ? selectedMechanics[0]
-                            : `${selectedMechanics.length} selected`}
+                            : t(copy.setup.selectedCount, {
+                                count: selectedMechanics.length,
+                              })}
                       </AppText>
                     )}
                     {mechanicsExpanded && (
                       <View style={styles.collapsibleContent}>
                         <AppText variant="helper">
-                          Filter by game mechanism
+                          {copy.setup.mechanicsHelper}
                         </AppText>
                         <View style={styles.chipWrap}>
                           <AppChip
                             selected={selectedMechanics.length === 0}
                             onPress={() => setSelectedMechanics([])}
                           >
-                            Any
+                            {copy.setup.any}
                           </AppChip>
                           {uniqueMechanics.map((mech) => {
                             const isSelected = selectedMechanics.includes(mech);
@@ -533,7 +543,9 @@ export default function SetupScreen({ navigation }) {
                       onPress={() => setCategoriesExpanded((x) => !x)}
                       activeOpacity={0.7}
                     >
-                      <AppText variant="collapsibleLabel">Categories</AppText>
+                      <AppText variant="collapsibleLabel">
+                        {copy.setup.categories}
+                      </AppText>
                       <Icon
                         name={
                           categoriesExpanded ? 'expand-less' : 'expand-more'
@@ -545,21 +557,25 @@ export default function SetupScreen({ navigation }) {
                     {!categoriesExpanded && (
                       <AppText variant="collapsibleSummary">
                         {selectedCategories.length === 0
-                          ? 'Any'
+                          ? copy.setup.any
                           : selectedCategories.length === 1
                             ? selectedCategories[0]
-                            : `${selectedCategories.length} selected`}
+                            : t(copy.setup.selectedCount, {
+                                count: selectedCategories.length,
+                              })}
                       </AppText>
                     )}
                     {categoriesExpanded && (
                       <View style={styles.collapsibleContent}>
-                        <AppText variant="helper">Filter by game type</AppText>
+                        <AppText variant="helper">
+                          {copy.setup.categoriesHelper}
+                        </AppText>
                         <View style={styles.chipWrap}>
                           <AppChip
                             selected={selectedCategories.length === 0}
                             onPress={() => setSelectedCategories([])}
                           >
-                            Any
+                            {copy.setup.any}
                           </AppChip>
                           {uniqueCategories.map((cat) => {
                             const isSelected = selectedCategories.includes(cat);
@@ -600,15 +616,19 @@ export default function SetupScreen({ navigation }) {
             hasNoMatches && styles.button.disabled,
           ]}
         >
-          {hasNoMatches ? 'No matches' : `View ${filteredGames.length} Games`}
+          {hasNoMatches
+            ? copy.setup.ctaNoMatches
+            : t(copy.setup.ctaViewGames, { count: filteredGames.length })}
         </AppButton>
         <View style={styles.stickyPresetSection}>
           <AppText variant="presetHeaderTitle">
             {loadedPreset
               ? isModified
-                ? `Preset: ${loadedPreset.name} (modified)`
-                : `Preset: ${loadedPreset.name}`
-              : 'Custom filters'}
+                ? t(copy.setup.presetHeaderModified, {
+                    name: loadedPreset.name,
+                  })
+                : t(copy.setup.presetHeader, { name: loadedPreset.name })
+              : copy.setup.customFilters}
           </AppText>
           {(loadedPreset == null ||
             (isMyPreset && isModified) ||
@@ -620,7 +640,9 @@ export default function SetupScreen({ navigation }) {
                   style={styles.stickyPresetAction}
                   onPress={handleSaveAsNew}
                 >
-                  <AppText variant="presetSaveControlText">Save as new</AppText>
+                  <AppText variant="presetSaveControlText">
+                    {copy.setup.saveAsNew}
+                  </AppText>
                 </TouchableOpacity>
               ) : isMyPreset && isModified ? (
                 <React.Fragment>
@@ -628,14 +650,16 @@ export default function SetupScreen({ navigation }) {
                     style={styles.stickyPresetAction}
                     onPress={handleSaveOverwrite}
                   >
-                    <AppText variant="presetSaveControlText">Save</AppText>
+                    <AppText variant="presetSaveControlText">
+                      {copy.setup.save}
+                    </AppText>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.stickyPresetAction}
                     onPress={handleSaveAsNew}
                   >
                     <AppText variant="presetSaveControlText">
-                      Save as new
+                      {copy.setup.saveAsNew}
                     </AppText>
                   </TouchableOpacity>
                 </React.Fragment>
@@ -644,14 +668,18 @@ export default function SetupScreen({ navigation }) {
                   style={styles.stickyPresetAction}
                   onPress={handleRename}
                 >
-                  <AppText variant="presetSaveControlText">Rename</AppText>
+                  <AppText variant="presetSaveControlText">
+                    {copy.setup.rename}
+                  </AppText>
                 </TouchableOpacity>
               ) : loadedPreset.isQuick && isModified ? (
                 <TouchableOpacity
                   style={styles.stickyPresetAction}
                   onPress={handleSaveAsNew}
                 >
-                  <AppText variant="presetSaveControlText">Save as new</AppText>
+                  <AppText variant="presetSaveControlText">
+                    {copy.setup.saveAsNew}
+                  </AppText>
                 </TouchableOpacity>
               ) : null}
             </View>

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
+import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -19,17 +20,18 @@ export default function CollectionImportedScreen({ route, navigation }) {
       ]}
     >
       <AppText variant="title" style={layout.marginBottomLg}>
-        Collection Imported
+        {t(copy.collectionImported.title, { count: gameCount })}
       </AppText>
       <AppText variant="body" style={layout.marginBottom3xl}>
-        {gameCount} {gameCount === 1 ? 'game' : 'games'} added to your
-        collection.
+        {gameCount === 1
+          ? t(copy.collectionImported.bodyOne, { count: gameCount })
+          : t(copy.collectionImported.bodyMany, { count: gameCount })}
       </AppText>
       <AppButton
         variant="primary"
         onPress={() => navigation.replace('Home')}
       >
-        Start Picking
+        {copy.collectionImported.cta}
       </AppButton>
     </View>
   );

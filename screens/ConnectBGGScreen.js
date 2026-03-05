@@ -9,6 +9,7 @@ import {
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
+import copy from '../constants/copy';
 import { fetchAndSaveCollection } from '../hooks/boardGameGeekApi';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
@@ -31,7 +32,7 @@ export default function ConnectBGGScreen({ navigation }) {
       .catch((err) => {
         setLoading(false);
         const msg = err?.message || '';
-        setErrorMessage(msg || "Couldn't find that username. Try again?");
+        setErrorMessage(msg || copy.connectBGG.error);
       });
   };
 
@@ -43,14 +44,14 @@ export default function ConnectBGGScreen({ navigation }) {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <AppText variant="header" style={layout.marginBottomLg}>
-        Connect Your Collection
+        {copy.connectBGG.header}
       </AppText>
       <AppText variant="body" style={layout.marginBottomXl}>
-        Enter your BoardGameGeek username to load your games.
+        {copy.connectBGG.body}
       </AppText>
 
       <AppInput
-        placeholder="Username"
+        placeholder={copy.connectBGG.placeholder}
         value={username}
         onChangeText={(text) => {
           setUsername(text);
@@ -71,9 +72,7 @@ export default function ConnectBGGScreen({ navigation }) {
       {loading ? (
         <View style={styles.loadingRow}>
           <ActivityIndicator size="small" color={tokens.colors.tintMain} />
-          <AppText variant="helper">
-            Fetching your collection…
-          </AppText>
+          <AppText variant="helper">{copy.connectBGG.loading}</AppText>
         </View>
       ) : (
         <AppButton
@@ -82,7 +81,7 @@ export default function ConnectBGGScreen({ navigation }) {
           disabled={!canSubmit}
           style={[styles.button.primaryCompact, !canSubmit && styles.button.disabled]}
         >
-          Load My Games
+          {copy.connectBGG.cta}
         </AppButton>
       )}
     </KeyboardAvoidingView>

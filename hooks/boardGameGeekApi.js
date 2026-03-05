@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { XMLParser } from 'fast-xml-parser';
 
+import copy from '../constants/copy';
 import seedGames from '../data/seedGames';
 import * as userGamesStorage from '../helpers/userGamesStorage';
 
@@ -23,7 +24,7 @@ function parseBggErrors(data) {
   if (!err) return null;
   const list = Array.isArray(err) ? err : [err];
   const messages = list.map((e) => e?.message || e?.['#text']).filter(Boolean);
-  return messages.length > 0 ? messages[0] : 'Unknown BGG error';
+  return messages.length > 0 ? messages[0] : copy.bgg.unknownError;
 }
 
 // Attempt to fetch the user's collection, up to 5 retries if we get 202
@@ -162,6 +163,7 @@ function parseThingResponse(data) {
  */
 const useBoardGameGeekCollection = () => {
   const [games, setGames] = useState([]);
+  const [username, setUsername] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -220,7 +222,7 @@ const useBoardGameGeekCollection = () => {
             } else {
               sourceGames = seedGames;
             }
-            setError(err?.message || 'Failed to load collection');
+            setError(err?.message || copy.bgg.failedToLoadCollection);
           }
         }
       }
@@ -241,6 +243,7 @@ const useBoardGameGeekCollection = () => {
       .map(normalized)
       .concat(userGames.map(normalized));
     setGames(combined);
+    setUsername(storedUsername || null);
     setLoading(false);
   };
 
@@ -258,6 +261,7 @@ const useBoardGameGeekCollection = () => {
 
   return {
     games,
+    username,
     isLoading,
     error,
     reload: () => loadData(true),
@@ -269,7 +273,7 @@ const useBoardGameGeekCollection = () => {
 function mapItemToGame(item) {
   const rawName = item.name;
   const gameName =
-    typeof rawName === 'object' ? rawName['#text'] : rawName || 'Unknown Game';
+    typeof rawName === 'object' ? rawName['#text'] : rawName || copy.common.unknownGame;
   const minPlayers = parseInt(item.stats?.['@_minplayers'] || '1', 10);
   const maxPlayers = parseInt(item.stats?.['@_maxplayers'] || '1', 10);
   const ratingValue = item.stats?.rating?.['@_value'] || null;
@@ -314,7 +318,7 @@ function parseLength(item) {
  */
 export async function fetchAndSaveCollection(username) {
   const trimmed = (username || '').trim();
-  if (!trimmed) throw new Error('Username required');
+  if (!trimmed) throw new Error(copy.connectBGG.usernameRequired);
 
   if (trimmed.toLowerCase() === TEST_USERNAME) {
     await AsyncStorage.setItem(BGG_USERNAME_KEY, TEST_USERNAME);
