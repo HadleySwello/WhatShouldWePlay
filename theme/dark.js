@@ -1,24 +1,57 @@
 import { MD3DarkTheme } from 'react-native-paper';
-import { tokens } from './tokens';
+import { tokensDark } from './tokens';
 
-const c = tokens.colors;
+const c = tokensDark.colors;
 
 export const darkTheme = {
   ...MD3DarkTheme,
   dark: true,
   colors: {
     ...MD3DarkTheme.colors,
+
     primary: c.tintMain,
-    primaryContainer: c.cardMain,
+    onPrimary: c.onTintMain,
+    primaryContainer: c.primaryContainer,
+    onPrimaryContainer: c.onPrimaryContainer,
+
     secondary: c.tintSecondary,
-    secondaryContainer: c.cardSecondary,
-    surface: c.backgroundMain,
+    onSecondary: c.onTintSecondary,
+    secondaryContainer: c.secondaryContainer,
+    onSecondaryContainer: c.onSecondaryContainer,
+
+    tertiary: c.tintSpecial,
+    onTertiary: c.onTintSpecial,
+    tertiaryContainer: c.tertiaryContainer,
+    onTertiaryContainer: c.onTertiaryContainer,
+
     background: c.backgroundMain,
-    onPrimary: c.backgroundMain,
-    onSecondary: c.textMain,
-    onSurface: c.textMain,
-    onSurfaceVariant: c.textSecondary,
     onBackground: c.textMain,
-    outline: c.tintMain,
+
+    surface: c.cardMain,
+    onSurface: c.textMain,
+    surfaceVariant: c.cardSecondary,
+    onSurfaceVariant: c.textSecondary,
+
+    outline: c.border,
+    outlineVariant: c.divider,
+
+    error: c.error,
+    onError: c.onTintMain,
+    errorContainer: c.secondaryContainer,
+    onErrorContainer: c.textMain,
+
+    inverseSurface: c.inverseSurface,
+    inverseOnSurface: c.inverseOnSurface,
+    inversePrimary: c.inversePrimary,
+
+    elevation: {
+      ...MD3DarkTheme.colors.elevation,
+      level0: c.elevation0,
+      level1: c.elevation1,
+      level2: c.elevation2,
+      level3: c.elevation3,
+      level4: c.elevation4,
+      level5: c.elevation5,
+    },
   },
 };
