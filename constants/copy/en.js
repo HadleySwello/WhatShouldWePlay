@@ -26,13 +26,6 @@ export default {
     usernameRequired: 'Please enter a username.',
     cta: 'Load Shelf',
   },
-  collectionImported: {
-    navTitle: 'Your shelf is ready',
-    title: '{{count}} games on your shelf',
-    bodyOne: "Your shelf holds 1 game. Let's consult the wheel.",
-    bodyMany: "Your shelf holds {{count}} games. Let's consult the wheel.",
-    cta: 'Start the ritual',
-  },
   home: {
     title: 'What shall we play?',
     ctaChoose: 'Choose a game',
@@ -41,7 +34,6 @@ export default {
   },
   navigation: {
     connectCollection: 'Load Your Shelf',
-    success: 'Shelf ready',
     settings: 'Settings',
     browseCollection: 'Browse Shelf',
     browseCollectionTemplate: "{{username}}'s Shelf",
@@ -217,7 +209,7 @@ Games with more votes are more likely to be chosen.`,
       'Voting mode is not available for single-player games.',
     deleteAccountTitle: 'Delete your account?',
     deleteAccountMessage:
-      'This cannot be undone. Your shelf, saved rituals (presets), and preferences will be permanently deleted. There is no way to recover them.',
+      'This cannot be undone. Your shelf, saved rituals, and preferences will be permanently deleted. There is no way to recover them.',
     deleteAccountCancel: 'Cancel',
     deleteAccountConfirm: 'Delete my account',
   },

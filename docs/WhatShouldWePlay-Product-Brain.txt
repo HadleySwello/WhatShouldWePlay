@@ -268,7 +268,6 @@ Single stack navigator.
 - Splash
 - Welcome
 - ConnectBGG
-- CollectionImported
 - Home
 - MyGames
 - Setup
@@ -293,11 +292,8 @@ Spinner is presented as a modal overlay during selection (implementation detail 
     - Username entry
     - Loads shelf from BGG API
     - Caches locally on-device
-    - On success, navigates to CollectionImported
-4. **CollectionImported**
-    - Success confirmation: "Your shelf holds X games. Let's consult the wheel."
-    - CTA: "Start the ritual" → Home
-5. **Home**
+    - On success, navigates to Home
+4. **Home**
     - Primary actions:
         - Choose a game
         - Browse your shelf
@@ -427,7 +423,6 @@ Documenting actual in-app copy — aligned with `constants/copy/en.js`.
 - **Splash**: "What Should We Play?", "A calm ritual for choosing what to play.", "Consult the wheel. Let the fates decide.", "Data provided by BoardGameGeek"
 - **Welcome**: "Import your shelf, set tonight's constraints, and we'll guide the pick.", "Connect BoardGameGeek"
 - **ConnectBGG**: "Load Your Shelf", "Connect your BoardGameGeek shelf", "Enter your BoardGameGeek username to load your shelf.", "Load Shelf"
-- **CollectionImported**: "Your shelf is ready", "{{count}} games on your shelf", "Your shelf holds X games. Let's consult the wheel.", "Start the ritual"
 - **Home**: "What shall we play?", "Choose a game", "Browse your shelf", "Settings"
 - **Setup**: "Load a ritual", "How many at the table tonight?", "Max play time", "How long can the session run?", "Complexity", "How complex? Set the range.", "View {{count}} games"
 - **Results**: "{{count}} games fit tonight.", "Let everyone weigh in", "All voices in. Ready to consult the fates.", "Ritual saved!", "Save as ritual", "Let the wheel speak", "This one."

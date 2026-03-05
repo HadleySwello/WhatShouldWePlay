@@ -6,7 +6,6 @@ import copy from '../constants/copy';
 import SplashScreen from './SplashScreen';
 import WelcomeScreen from './WelcomeScreen';
 import ConnectBGGScreen from './ConnectBGGScreen';
-import CollectionImportedScreen from './CollectionImportedScreen';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen';
 import RankingsScreen from './RankingsScreen';
@@ -37,11 +36,6 @@ export default function Navigation() {
           name="ConnectBGG"
           component={ConnectBGGScreen}
           options={{ title: copy.navigation.connectCollection }}
-        />
-        <Stack.Screen
-          name="CollectionImported"
-          component={CollectionImportedScreen}
-          options={{ title: copy.navigation.success }}
         />
         <Stack.Screen
           name="Home"

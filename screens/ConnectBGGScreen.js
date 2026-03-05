@@ -27,7 +27,7 @@ export default function ConnectBGGScreen({ navigation }) {
       .then((games) => {
         setLoading(false);
         const count = Array.isArray(games) ? games.length : 0;
-        navigation.replace('CollectionImported', { gameCount: count });
+        navigation.replace('Home');
       })
       .catch((err) => {
         setLoading(false);

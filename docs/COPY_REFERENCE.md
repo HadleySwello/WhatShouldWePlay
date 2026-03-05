@@ -75,16 +75,6 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | maxRitualsReached  | You can only save {{max}} rituals. Delete one to add another. | max           |
 | ritualNameRequired | Ritual name is required.                                      |               |
 
-### collectionImported
-
-| Key      | Value                                     | Interpolation |
-| -------- | ----------------------------------------- | ------------- |
-| navTitle | Collection received                       |               |
-| title    | Collection received                       |               |
-| bodyOne  | {{count}} game added to your collection.  | count         |
-| bodyMany | {{count}} games added to your collection. | count         |
-| cta      | Start the ritual                          |               |
-
 ### home
 
 | Key         | Value             |
@@ -99,7 +89,6 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | Key               | Value                   |
 | ----------------- | ----------------------- |
 | connectCollection | Connect Your Collection |
-| success           | Collection received     |
 | settings          | Settings                |
 | browseCollection  | Browse Collection       |
 | chooseGame        | Choose a Game           |

@@ -53,7 +53,7 @@ eas secret:create --name BGG_API_TOKEN --value "your-token"
 ## Project structure
 
 - `App.js` — Root component; renders main navigation.
-- `screens/` — `SplashScreen`, `WelcomeScreen`, `ConnectBGGScreen`, `CollectionImportedScreen`, `HomeScreen`, `SetupScreen`, `ResultsScreen`, `SelectedGameScreen`, `SpinnerScreen`, `RankingsScreen`, `SettingsScreen`, `Navigation.js`.
+- `screens/` — `SplashScreen`, `WelcomeScreen`, `ConnectBGGScreen`, `HomeScreen`, `SetupScreen`, `ResultsScreen`, `SelectedGameScreen`, `SpinnerScreen`, `RankingsScreen`, `SettingsScreen`, `Navigation.js`.
 - `hooks/boardGameGeekApi.js` — Fetches BGG collection + thing API (categories, mechanics, minAge, bggAverage, bggRank). All data cached in AsyncStorage.
 - `components/` — `Spinner`, `Button`, `GameCard`, `ConfettiCelebration`, `PresetsModal`.
 - `helpers/` — Shared colors, filters, presets storage, and utilities.
