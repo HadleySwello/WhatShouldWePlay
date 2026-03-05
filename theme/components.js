@@ -31,6 +31,7 @@ export function getComponentVariantStyles() {
         fontSize: t.sizes.lg,
         color: c.backgroundMain,
         fontWeight: t.weights.semibold,
+        textAlign: 'center',
       },
       secondary: {
         paddingVertical: s.lg - 2,
@@ -45,6 +46,7 @@ export function getComponentVariantStyles() {
       secondaryText: {
         fontSize: t.sizes.md,
         color: c.tintMain,
+        textAlign: 'center',
       },
       tertiary: {
         paddingVertical: s.md,
@@ -52,6 +54,7 @@ export function getComponentVariantStyles() {
       tertiaryText: {
         fontSize: t.sizes.md,
         color: c.textSecondary,
+        textAlign: 'center',
       },
       disabled: {
         opacity: 0.5,

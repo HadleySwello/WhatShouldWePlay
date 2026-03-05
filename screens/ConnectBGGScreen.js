@@ -79,7 +79,10 @@ export default function ConnectBGGScreen({ navigation }) {
           variant="primary"
           onPress={handleLoad}
           disabled={!canSubmit}
-          style={[styles.button.primaryCompact, !canSubmit && styles.button.disabled]}
+          style={[
+            styles.button.primaryCompact,
+            !canSubmit && styles.button.disabled,
+          ]}
         >
           {copy.connectBGG.cta}
         </AppButton>

@@ -1,11 +1,13 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Image, TouchableOpacity, Linking } from 'react-native';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
+
+const BGG_URL = 'https://boardgamegeek.com';
 
 export default function WelcomeScreen({ navigation }) {
   const { styles } = useAppTheme();
@@ -31,6 +33,20 @@ export default function WelcomeScreen({ navigation }) {
       >
         {copy.welcome.cta}
       </AppButton>
+      <TouchableOpacity
+        style={styles.footer}
+        onPress={() => Linking.openURL(BGG_URL)}
+        activeOpacity={0.7}
+      >
+        <Image
+          source={require('../assets/powered-by-bgg.jpg')}
+          style={styles.bggLogo}
+          resizeMode="contain"
+          accessible
+          accessibilityLabel={copy.splash.a11y}
+        />
+        <AppText variant="footer">{copy.splash.attribution}</AppText>
+      </TouchableOpacity>
     </View>
   );
 }
