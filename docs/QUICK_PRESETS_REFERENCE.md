@@ -192,17 +192,21 @@ Full preset structure (quick presets and user-saved presets):
 
 ## Current quick presets
 
-| Preset       | playerCount | complexityMin | complexityMax | maxLength       | selectedMechanics | selectedCategories |
-|-------------|-------------|---------------|---------------|-----------------|-------------------|--------------------|
-| Party Night | 4           | 0             | 2             | 'under 1 hour'  | []                | []                 |
-| Heavy Night | 3           | null          | null          | null            | []                | []                 |
-| Family      | 4           | 0             | 2             | 'under 1 hour'  | []                | []                 |
+Persona-aligned presets based on `docs/quick-presets-deep-research-report.md`:
 
-**Implications:**
+| Preset                 | playerCount | complexityMin | complexityMax | maxLength       |
+|------------------------|-------------|---------------|---------------|-----------------|
+| Family Weeknight Win   | 4           | 0             | 2             | under 1 hour    |
+| Family Game Night Plus | 4           | 2             | 3             | under 2 hours   |
+| Anytime Crowd-Pleaser  | 4           | null          | 3             | under 2 hours   |
+| Big Table Icebreakers  | 5           | 0             | 2             | under 30 min    |
+| Social Deduction Light | 6           | 0             | 2             | under 30 min    |
+| Thinky Euro Night      | 4           | 3             | 4             | under 2 hours   |
+| Deep Strategy Epic     | 4           | 4             | null          | long            |
+| Two-Player Duel        | 2           | null          | 3             | under 1 hour    |
+| Solo or Co-op Brainburn| 1           | 3             | null          | under 2 hours   |
 
-- **Party Night:** 4 players, light–medium (0–2), ≤1 hour. No mechanics/categories.
-- **Heavy Night:** 3 players, any complexity, any length. No mechanics/categories.
-- **Family:** Same as Party Night (4 players, 0–2, ≤1 hour). No mechanics/categories.
+All presets use empty `selectedMechanics` and `selectedCategories` to avoid over-filtering.
 
 ---
 
