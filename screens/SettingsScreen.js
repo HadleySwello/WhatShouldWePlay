@@ -30,7 +30,7 @@ import { layout } from '../theme';
 const THEME_VALUES = ['light', 'dark', 'system'];
 
 export default function SettingsScreen({ navigation }) {
-  const { styles, tokens } = useAppTheme();
+  const { styles, tokens, theme } = useAppTheme();
   const { themeMode, setThemeMode } = useThemeMode();
   const [defaultPlayerCount, setDefaultPlayerCountState] =
     useState(DEFAULT_PLAYER_COUNT);
@@ -108,7 +108,8 @@ export default function SettingsScreen({ navigation }) {
         selectedIndex={themeSelectedIndex >= 0 ? themeSelectedIndex : 2}
         onChange={handleThemeChange}
         style={layout.marginBottomLg}
-        backgroundColor={tokens.colors.cardMain}
+        appearance={theme.dark ? 'dark' : 'light'}
+        backgroundColor={tokens.colors.backgroundMain}
         fontStyle={{ color: tokens.colors.textSecondary }}
         activeFontStyle={{ color: tokens.colors.textMain }}
         tintColor={tokens.colors.cardSecondary}
