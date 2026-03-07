@@ -96,7 +96,7 @@ export default function RankingsScreen({ navigation }) {
           onPress={() => Linking.openURL(bggUrl)}
           style={layout.marginBottomXl}
         >
-          <AppText variant="retry" style={{ color: tokens.colors.tintMain }}>
+          <AppText variant="retry" style={styles.retryButtonText}>
             {copy.rankings.emptyBodyLink}
           </AppText>
         </TouchableOpacity>

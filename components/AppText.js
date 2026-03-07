@@ -20,6 +20,13 @@ export default function AppText({
       color: c.textMain,
       textAlign: 'center',
     },
+    heroTitle: {
+      fontSize: t.sizes['5xl'] || 38,
+      fontWeight: t.weights.bold,
+      color: c.textMain,
+      textAlign: 'center',
+      lineHeight: (t.sizes['5xl'] || 38) * 1.1,
+    },
     title: {
       fontSize: t.sizes['3xl'],
       color: c.textMain,

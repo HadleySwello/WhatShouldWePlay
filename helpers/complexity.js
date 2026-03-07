@@ -2,7 +2,7 @@
  * Central complexity tier and summary logic.
  * Tier thresholds (BGG-aligned): low < 2.0, medium 2.0–3.49, high >= 3.5
  */
-import copy, { t } from '../constants/copy';
+import copy from '../constants/copy';
 
 /**
  * Capitalize tier for display (Low, Medium, High).

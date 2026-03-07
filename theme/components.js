@@ -114,6 +114,32 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         shadowRadius: 16,
         shadowOffset: { width: 0, height: 8 },
       },
+      settingsIcon: {
+        position: 'absolute',
+        top: s['3xl'],
+        right: s.xl,
+        zIndex: 10,
+        padding: s.sm,
+      },
+      homeFooterContainer: {
+        position: 'absolute',
+        bottom: s['2xl'],
+        width: '100%',
+        alignItems: 'center',
+      },
+      settingsIcon: {
+        position: 'absolute',
+        top: s['3xl'],
+        right: s.xl,
+        zIndex: 10,
+        padding: s.sm,
+      },
+      homeFooterContainer: {
+        position: 'absolute',
+        bottom: s['2xl'],
+        width: '100%',
+        alignItems: 'center',
+      },
     },
     listItem: {
       default: {
@@ -441,6 +467,24 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: s.xl,
+    },
+    settingsRowInfo: {
+      flex: 1,
+      paddingRight: s.md,
+    },
+    settingsRowTitle: {
+      textAlign: 'left',
+      color: c.textMain,
+      fontWeight: t.weights.semibold,
+    },
+    settingsRowDesc: {
+      textAlign: 'left',
+      marginTop: s.xs,
+    },
+    homeButtonContainer: {
+      width: '100%',
+      maxWidth: 320,
+      alignSelf: 'center',
     },
     settingsSectionTitle: {
       marginTop: s.xl,

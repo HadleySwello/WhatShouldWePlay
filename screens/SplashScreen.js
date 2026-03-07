@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, TouchableOpacity, Linking, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient, Defs, Stop, Svg, Rect } from 'react-native-svg';
 
+import AppGradientBackground from '../components/AppGradientBackground';
 import AppText from '../components/AppText';
 import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
@@ -14,7 +14,7 @@ const SPLASH_DELAY_MS = 3000;
 
 export default function SplashScreen({ navigation }) {
   const [, setChecked] = useState(false);
-  const { styles, tokens } = useAppTheme();
+  const { styles } = useAppTheme();
 
   useEffect(() => {
     let cancelled = false;
@@ -55,22 +55,13 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={styles.screen.wrapper}>
-      <Svg height="100%" width="100%" style={StyleSheet.absoluteFill}>
-        <Defs>
-          <LinearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor={tokens.colors.backgroundMain} stopOpacity="1" />
-            <Stop offset="0.75" stopColor={tokens.colors.tintSecondary} stopOpacity="0.15" />
-            <Stop offset="1" stopColor={tokens.colors.tintMain} stopOpacity="0.25" />
-          </LinearGradient>
-        </Defs>
-        <Rect width="100%" height="100%" fill="url(#grad)" />
-      </Svg>
+      <AppGradientBackground />
       <View
         style={[
           styles.screen.container,
           layout.center,
           layout.paddingLg,
-          { backgroundColor: 'transparent' }
+          { backgroundColor: 'transparent' },
         ]}
       >
         <View style={[styles.card.default, styles.screen.splashCard]}>
@@ -105,4 +96,3 @@ export default function SplashScreen({ navigation }) {
     </View>
   );
 }
-

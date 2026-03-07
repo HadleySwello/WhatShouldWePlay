@@ -27,7 +27,8 @@ export default {
     cta: 'Load Shelf',
   },
   home: {
-    title: 'What shall we play?',
+    heroTitle: 'What Should We Play?',
+    heroDescription: 'Set your constraints and let the wheel decide.',
     ctaChoose: 'Choose a game',
     ctaBrowse: 'Browse your shelf',
     ctaSettings: 'Settings',

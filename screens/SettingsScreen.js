@@ -137,12 +137,12 @@ export default function SettingsScreen({ navigation }) {
           onPress={isSinglePlayer ? handleVotingModeRowPress : undefined}
           activeOpacity={isSinglePlayer ? 0.7 : 1}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <View style={{ flex: 1, paddingRight: tokens.spacing.md }}>
-              <AppText variant="body" style={{ textAlign: 'left', color: tokens.colors.textMain, fontWeight: tokens.typography.weights.semibold }}>
+          <View style={styles.votingModeRowInner}>
+            <View style={styles.settingsRowInfo}>
+              <AppText variant="body" style={styles.settingsRowTitle}>
                 {copy.settings.enableVotingMode}
               </AppText>
-              <AppText variant="helper" style={{ textAlign: 'left', marginTop: tokens.spacing.xs }}>
+              <AppText variant="helper" style={styles.settingsRowDesc}>
                 {copy.settings.enableVotingModeDescription}
               </AppText>
             </View>

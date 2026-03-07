@@ -24,9 +24,8 @@ export default function ConnectBGGScreen({ navigation }) {
     setErrorMessage(null);
     setLoading(true);
     fetchAndSaveCollection(username)
-      .then((games) => {
+      .then(() => {
         setLoading(false);
-        const count = Array.isArray(games) ? games.length : 0;
         navigation.replace('Home');
       })
       .catch((err) => {

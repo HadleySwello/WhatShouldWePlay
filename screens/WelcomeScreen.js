@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  Linking,
-  StyleSheet,
-  Alert,
-} from 'react-native';
-import { LinearGradient, Defs, Stop, Svg, Rect } from 'react-native-svg';
+import { View, Image, TouchableOpacity, Linking } from 'react-native';
+import AppGradientBackground from '../components/AppGradientBackground';
 
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
@@ -18,32 +11,11 @@ import { layout } from '../theme';
 const BGG_URL = 'https://boardgamegeek.com';
 
 export default function WelcomeScreen({ navigation }) {
-  const { styles, tokens } = useAppTheme();
+  const { styles } = useAppTheme();
 
   return (
     <View style={styles.screen.wrapper}>
-      <Svg height="100%" width="100%" style={StyleSheet.absoluteFill}>
-        <Defs>
-          <LinearGradient id="gradW" x1="0" y1="0" x2="0" y2="1">
-            <Stop
-              offset="0"
-              stopColor={tokens.colors.backgroundMain}
-              stopOpacity="1"
-            />
-            <Stop
-              offset="0.75"
-              stopColor={tokens.colors.tintSecondary}
-              stopOpacity="0.15"
-            />
-            <Stop
-              offset="1"
-              stopColor={tokens.colors.tintMain}
-              stopOpacity="0.25"
-            />
-          </LinearGradient>
-        </Defs>
-        <Rect width="100%" height="100%" fill="url(#gradW)" />
-      </Svg>
+      <AppGradientBackground />
       <View
         style={[
           styles.screen.container,
@@ -59,7 +31,7 @@ export default function WelcomeScreen({ navigation }) {
           <AppText variant="subtitle" style={layout.marginBottom3xl}>
             {copy.welcome.subtitle}
           </AppText>
-          <View style={{ width: '100%', alignItems: 'center' }}>
+          <View style={styles.buttonRow}>
             <AppButton
               variant="primary"
               onPress={() => navigation.navigate('ConnectBGG')}
