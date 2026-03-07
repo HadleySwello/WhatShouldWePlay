@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import SpinnerScreen from './SpinnerScreen';
 import { saveRitual } from '../helpers/ritualsStorage';
 import { getVotes, setVotes } from '../helpers/voteCache';
 import { getVotingModeEnabled } from '../helpers/votingModeStorage';
@@ -61,7 +60,6 @@ export default function ResultsScreen({ route, navigation }) {
   const playerCount = Math.max(0, rawPlayerCount ?? 0);
   const { styles, tokens } = useAppTheme();
 
-  const [showSpinner, setShowSpinner] = useState(false);
   const [votingModeEnabled, setVotingModeEnabled] = useState(false);
   const [showVotingModeInfoModal, setShowVotingModeInfoModal] = useState(false);
 
@@ -118,19 +116,15 @@ export default function ResultsScreen({ route, navigation }) {
       });
       return;
     }
-    setShowSpinner(true);
-  };
-
-  const handleSpinnerComplete = (winnerName) => {
-    setShowSpinner(false);
-    const game = filteredGames.find((g) => g.name === winnerName);
-    navigation.navigate('SelectedGame', {
-      game: game ?? null,
-      filters,
+    navigation.navigate('Spinner', {
+      participants: spinnerParticipants,
       filteredGames,
+      filters,
       playerCount,
+      autoNavigate: true,
     });
   };
+
 
   const handleVote = (gameName, change) => {
     setGameVotes((prev) => {
@@ -318,14 +312,6 @@ export default function ResultsScreen({ route, navigation }) {
         </AppButton>
       </View>
 
-      <SpinnerScreen
-        showSpinner={showSpinner}
-        closeSpinner={() => setShowSpinner(false)}
-        participants={spinnerParticipants}
-        onBackToList={() => setShowSpinner(false)}
-        onPlayThis={handleSpinnerComplete}
-        autoNavigate={true}
-      />
 
       <RitualNameModal
         visible={showRitualNameModal}

@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, Button, Animated, Dimensions } from 'react-native';
+import { View, Animated, Dimensions } from 'react-native';
 import Svg, { G, Path, Text as SvgText } from 'react-native-svg';
 import * as d3Shape from 'd3-shape';
 import { Easing } from 'react-native';
 
 import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
-import { getSpinnerMarkerStyle } from '../theme';
+import { getSpinnerMarkerStyle, getSpinnerWheelStyle } from '../theme';
 import { layout } from '../theme';
 import AppButton from './AppButton';
 import AppText from './AppText';
@@ -14,13 +14,13 @@ import AppText from './AppText';
 const { width } = Dimensions.get('window');
 const WHEEL_SIZE = width * 0.8;
 
-export default function Spinner({ slices, onSpinningEnd, colors }) {
-  const c = colors || {};
+export default function Spinner({ slices, onSpinningEnd }) {
   const [winner, setWinner] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const spinDuration = 5000;
   const { styles, tokens } = useAppTheme();
   const markerStyle = getSpinnerMarkerStyle(WHEEL_SIZE, tokens);
+  const wheelStyle = getSpinnerWheelStyle(WHEEL_SIZE);
 
   const NUM_SECTIONS = slices.length;
   const anglePerSection = NUM_SECTIONS > 0 ? 360 / NUM_SECTIONS : 360;
@@ -99,12 +99,10 @@ export default function Spinner({ slices, onSpinningEnd, colors }) {
           <SvgText
             x={labelX}
             y={labelY}
-            fill="#FFFFFF"
-            fontSize="10"
-            fontWeight="700"
             textAnchor="end" // Text ends at the outer radius, pointing outwards
             alignmentBaseline="middle"
             transform={`rotate(${rotationDegrees}, ${labelX}, ${labelY})`}
+            style={styles.spinnerSliceText}
           >
             {slices[index].length > 18
               ? `${slices[index].substring(0, 15)}...`
@@ -120,7 +118,7 @@ export default function Spinner({ slices, onSpinningEnd, colors }) {
       <View style={styles.spinnerWheelContainer}>
         <Animated.View
           style={[
-            { width: WHEEL_SIZE, height: WHEEL_SIZE },
+            wheelStyle,
             {
               transform: [
                 {

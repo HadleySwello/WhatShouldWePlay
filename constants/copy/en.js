@@ -60,6 +60,7 @@ export default {
     chooseGame: 'Consult the wheel',
     yourOptions: 'What fits tonight',
     selectedGame: 'The wheel has chosen',
+    spinnerScreen: 'Spin the wheel',
   },
   setup: {
     loadRitual: 'Load a ritual',

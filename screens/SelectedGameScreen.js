@@ -58,9 +58,9 @@ export default function SelectedGameScreen({ route, navigation }) {
         </AppText>
 
         <View style={styles.selectedGameCard}>
-          {game?.thumbnail ? (
+          {game?.image ? (
             <Image
-              source={{ uri: game.thumbnail }}
+              source={{ uri: game.image }}
               style={styles.cardImage}
               resizeMode="cover"
             />

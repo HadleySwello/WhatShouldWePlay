@@ -1096,7 +1096,20 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       fontFamily: t.families.subheader,
       color: c.textSpecial,
     },
+    spinnerSliceText: {
+      fill: '#FFFFFF',
+      fontSize: 11,
+      fontFamily: t.families.body,
+      fontWeight: '700',
+    },
   });
+}
+
+export function getSpinnerWheelStyle(wheelSize) {
+  return {
+    width: wheelSize,
+    height: wheelSize,
+  };
 }
 
 export function getSpinnerMarkerStyle(wheelSize, tokens = tokensLight) {

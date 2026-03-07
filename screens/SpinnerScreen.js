@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, View, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import Spinner from '../components/Spinner';
 
 import AppText from '../components/AppText';
@@ -8,28 +8,32 @@ import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
-export default function SpinnerScreen({
-  showSpinner,
-  closeSpinner,
-  participants,
-  onBackToList,
-  onPlayThis,
-  autoNavigate = false,
-}) {
+export default function SpinnerScreen({ route, navigation }) {
+  const {
+    participants = [],
+    filteredGames = [],
+    filters,
+    playerCount,
+    autoNavigate = false,
+  } = route.params || {};
+
   const [winner, setWinner] = useState(null);
   const [spinKey, setSpinKey] = useState(0);
-  const { tokens, styles } = useAppTheme();
+  const { styles } = useAppTheme();
 
-  useEffect(() => {
-    if (showSpinner) {
-      setWinner(null);
-      setSpinKey((k) => k + 1);
-    }
-  }, [showSpinner]);
+  const navigateToSelectedGame = (winnerName) => {
+    const game = filteredGames.find((g) => g.name === winnerName);
+    navigation.replace('SelectedGame', {
+      game: game ?? null,
+      filters,
+      filteredGames,
+      playerCount,
+    });
+  };
 
   const handleSpinningEnd = (w) => {
-    if (autoNavigate && onPlayThis && w) {
-      onPlayThis(w);
+    if (autoNavigate && w) {
+      navigateToSelectedGame(w);
       return;
     }
     setWinner(w);
@@ -42,12 +46,12 @@ export default function SpinnerScreen({
 
   const handleBackToList = () => {
     setWinner(null);
-    (onBackToList || closeSpinner)();
+    navigation.goBack();
   };
 
   const handlePlayThis = () => {
-    if (onPlayThis && winner) {
-      onPlayThis(winner);
+    if (winner) {
+      navigateToSelectedGame(winner);
     } else {
       handleBackToList();
     }
@@ -61,47 +65,42 @@ export default function SpinnerScreen({
   const showCelebration = winner && !autoNavigate;
 
   return (
-    <Modal visible={showSpinner} animationType="slide" transparent={true}>
-      <View style={styles.spinnerModal}>
-        {showCelebration ? (
-          <View style={styles.celebration}>
-            <AppText variant="celebrationTitle">
-              {copy.spinner.celebrationTitle}
-            </AppText>
-            <AppText variant="winnerValue">{winner}</AppText>
-            <View style={styles.buttonRow}>
-              <AppButton variant="primaryCompact" onPress={handlePlayThis}>
-                {copy.spinner.ctaPlay}
-              </AppButton>
-              <AppButton
-                variant="secondary"
-                onPress={handleSpinAgain}
-                style={layout.marginBottomMd}
-              >
-                {copy.spinner.ctaSpinAgain}
-              </AppButton>
-              <TouchableOpacity
-                style={styles.textButton}
-                onPress={handleBackToList}
-              >
-                <AppText variant="textButton">
-                  {copy.spinner.backToList}
-                </AppText>
-              </TouchableOpacity>
-            </View>
+    <View style={styles.spinnerModal}>
+      {showCelebration ? (
+        <View style={styles.celebration}>
+          <AppText variant="celebrationTitle">
+            {copy.spinner.celebrationTitle}
+          </AppText>
+          <AppText variant="winnerValue">{winner}</AppText>
+          <View style={styles.buttonRow}>
+            <AppButton variant="primaryCompact" onPress={handlePlayThis}>
+              {copy.spinner.ctaPlay}
+            </AppButton>
+            <AppButton
+              variant="secondary"
+              onPress={handleSpinAgain}
+              style={layout.marginBottomMd}
+            >
+              {copy.spinner.ctaSpinAgain}
+            </AppButton>
+            <TouchableOpacity
+              style={styles.textButton}
+              onPress={handleBackToList}
+            >
+              <AppText variant="textButton">{copy.spinner.backToList}</AppText>
+            </TouchableOpacity>
           </View>
-        ) : (
-          <>
-            <AppText variant="spinnerTitle">{copy.spinner.title}</AppText>
-            <Spinner
-              key={spinKey}
-              slices={slices}
-              onSpinningEnd={handleSpinningEnd}
-              colors={tokens.colors}
-            />
-          </>
-        )}
-      </View>
-    </Modal>
+        </View>
+      ) : (
+        <>
+          <AppText variant="spinnerTitle">{copy.spinner.title}</AppText>
+          <Spinner
+            key={spinKey}
+            slices={slices}
+            onSpinningEnd={handleSpinningEnd}
+          />
+        </>
+      )}
+    </View>
   );
 }

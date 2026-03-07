@@ -13,6 +13,7 @@ import RankingsScreen from './RankingsScreen';
 import SetupScreen from './SetupScreen';
 import ResultsScreen from './ResultsScreen';
 import SelectedGameScreen from './SelectedGameScreen';
+import SpinnerScreen from './SpinnerScreen';
 import { getNavigationScreenOptions } from '../theme';
 
 const Stack = createNativeStackNavigator();
@@ -68,6 +69,11 @@ export default function Navigation() {
           name="SelectedGame"
           component={SelectedGameScreen}
           options={{ title: copy.navigation.selectedGame }}
+        />
+        <Stack.Screen
+          name="Spinner"
+          component={SpinnerScreen}
+          options={{ title: copy.navigation.spinnerScreen }}
         />
       </Stack.Navigator>
     </NavigationContainer>

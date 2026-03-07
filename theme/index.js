@@ -11,7 +11,11 @@ export { tokensLight as tokens };
 export { lightTheme, darkTheme };
 export { layout } from './layout';
 export { getNavigationScreenOptions } from './navigation';
-export { getSpinnerMarkerStyle, getLoadingGradientStyle } from './components';
+export {
+  getSpinnerMarkerStyle,
+  getSpinnerWheelStyle,
+  getLoadingGradientStyle,
+} from './components';
 export { spacing } from './spacing';
 export { radius } from './radius';
 export { typography } from './typography';
