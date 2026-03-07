@@ -11,7 +11,6 @@ const seedGames = [
     complexity: 'medium',
     complexityWeight: 2.5,
     length: 'under 2 hours',
-    color: '#ec7e1f',
     image:
       'https://cf.geekdo-images.com/0bFgmykLMjqm00x7TFkzOg__original/img/1sfdc21wj1cDgvbdE32_6MhZ1pE=/0x0/filters:format(png)/pic4733688.png',
     thumbnail:
@@ -36,7 +35,6 @@ const seedGames = [
     complexity: 'low',
     complexityWeight: 1.2,
     length: 'under 1 hour',
-    color: '#ec7e1f',
     image:
       'https://cf.geekdo-images.com/s2uIRb5xOjUg-m4Dpt2PlA__original/img/ZyYerPOXlqXEgbH_E6thOedaaWo=/0x0/filters:format(jpeg)/pic5813699.jpg',
     thumbnail:
@@ -61,7 +59,6 @@ const seedGames = [
     complexity: 'medium',
     complexityWeight: 2.8,
     length: 'under 1 hour',
-    color: '#ec7e1f',
     image:
       'https://cf.geekdo-images.com/S_-n-WRvpzgH-d8xuzJgmg__original/img/cvWVDcSUBsngibbELMhABgIyrVo=/0x0/filters:format(png)/pic1079512.png',
     thumbnail:
@@ -94,7 +91,6 @@ const seedGames = [
     complexity: 'low',
     complexityWeight: 1.5,
     length: 'under 30 min',
-    color: '#ec7e1f',
     image:
       'https://cf.geekdo-images.com/m_RzXpHURC0_xLkvRSR_sw__original/img/hSvWgiRYJCTTuoLOWTW3c8sYtl8=/0x0/filters:format(jpeg)/pic3043734.jpg',
     thumbnail:
@@ -133,7 +129,6 @@ const seedGames = [
     complexity: 'low',
     complexityWeight: 1.8,
     length: 'under 1 hour',
-    color: '#ec7e1f',
     image:
       'https://cf.geekdo-images.com/P8-3HeCgEa_CODQiQxq9SQ__original/img/wpH1mGsLXafShzWDatYxmNnbvR4=/0x0/filters:format(jpeg)/pic7849476.jpg',
     thumbnail:
@@ -163,7 +158,6 @@ const seedGames = [
     complexity: 'medium',
     complexityWeight: 2.4,
     length: 'under 2 hours',
-    color: '#ec7e1f',
     image:
       'https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__original/img/cI782Zis9cT66j2MjSHKJGnFPNw=/0x0/filters:format(jpeg)/pic4458123.jpg',
     thumbnail:

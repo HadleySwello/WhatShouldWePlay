@@ -66,6 +66,15 @@ const colors = {
     elevation5: '#C7AF9E',
 
     shadow: '#000000',
+
+    // Gemstone Ritual Palette (Wheel)
+    ritual: {
+      wheel1: '#542E71', // Deep Amethyst
+      wheel2: '#A77B0E', // Gilded Gold
+      wheel3: '#2D5D4E', // Ancient Teal
+      wheel4: '#264653', // Midnight Navy
+      wheel5: '#9B2226', // Venetian Red
+    },
   },
 
   dark: {
@@ -135,6 +144,15 @@ const colors = {
     elevation5: '#2A575A',
 
     shadow: '#000000',
+
+    // Gemstone Ritual Palette (Wheel)
+    ritual: {
+      wheel1: '#542E71', // Deep Amethyst
+      wheel2: '#A77B0E', // Gilded Gold
+      wheel3: '#2D5D4E', // Ancient Teal
+      wheel4: '#264653', // Midnight Navy
+      wheel5: '#9B2226', // Venetian Red
+    },
   },
 };
 

@@ -62,6 +62,7 @@ const makeTokens = (palette) => ({
     elevation5: palette.elevation5,
 
     shadow: palette.shadow,
+    ritual: palette.ritual,
   },
 
   spacing,

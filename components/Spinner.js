@@ -8,6 +8,8 @@ import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { getSpinnerMarkerStyle } from '../theme';
 import { layout } from '../theme';
+import AppButton from './AppButton';
+import AppText from './AppText';
 
 const { width } = Dimensions.get('window');
 const WHEEL_SIZE = width * 0.8;
@@ -56,28 +58,57 @@ export default function Spinner({ slices, onSpinningEnd, colors }) {
 
     const pieData = pieGenerator(slices);
 
+    // Use the Gemstone Ritual Palette from tokens
+    const WHEEL_PALETTE = [
+      tokens.colors.ritual.wheel1,
+      tokens.colors.ritual.wheel2,
+      tokens.colors.ritual.wheel3,
+      tokens.colors.ritual.wheel4,
+      tokens.colors.ritual.wheel5,
+    ];
+
     return pieData.map((slice, index) => {
       const path = arcGenerator(slice);
       const labelAngle = (slice.startAngle + slice.endAngle) / 2;
+
+      // Spoke-style rotation: the text points outward from the center.
+      // We align the text along the radius.
       const labelX =
-        (WHEEL_SIZE / 2) * 0.7 * Math.cos(labelAngle - Math.PI / 2);
+        (WHEEL_SIZE / 2) * 0.9 * Math.cos(labelAngle - Math.PI / 2);
       const labelY =
-        (WHEEL_SIZE / 2) * 0.7 * Math.sin(labelAngle - Math.PI / 2);
+        (WHEEL_SIZE / 2) * 0.9 * Math.sin(labelAngle - Math.PI / 2);
+
+      // Determine color with adjacency logic
+      let colorIndex = index % WHEEL_PALETTE.length;
+
+      // Ensure the last slice never matches the first slice (index 0)
+      if (index === slices.length - 1 && index > 0 && colorIndex === 0) {
+        colorIndex = 1;
+      }
+
+      const sliceColor = WHEEL_PALETTE[colorIndex];
+
+      // Point from center outwards like a spoke:
+      // We subtract 90 degrees because SVG text starts horizontal (3 o'clock)
+      // and our angle starts at the top (12 o'clock).
+      const rotationDegrees = (labelAngle * 180) / Math.PI - 90;
 
       return (
         <G key={`slice-${index}`}>
-          <Path
-            d={path}
-            fill={index % 2 === 0 ? c.tintSecondary : c.tintSpecial}
-          />
+          <Path d={path} fill={sliceColor} />
           <SvgText
             x={labelX}
             y={labelY}
-            fill={c.textMain}
-            fontSize="14"
-            textAnchor="middle"
+            fill="#FFFFFF"
+            fontSize="10"
+            fontWeight="700"
+            textAnchor="end" // Text ends at the outer radius, pointing outwards
+            alignmentBaseline="middle"
+            transform={`rotate(${rotationDegrees}, ${labelX}, ${labelY})`}
           >
-            {slices[index]}
+            {slices[index].length > 18
+              ? `${slices[index].substring(0, 15)}...`
+              : slices[index]}
           </SvgText>
         </G>
       );
@@ -115,16 +146,18 @@ export default function Spinner({ slices, onSpinningEnd, colors }) {
         <View style={markerStyle} />
       </View>
       {NUM_SECTIONS > 0 && (
-        <Button
-          title={copy.spinner.spinButton}
+        <AppButton
+          variant="primary"
           onPress={spinWheel}
-          color={c.tintMain}
-        />
+          style={layout.marginTopLg}
+        >
+          {copy.spinner.spinButton}
+        </AppButton>
       )}
       {winner && (
-        <Text style={styles.spinnerWinnerText}>
+        <AppText variant="spinnerWinnerText" style={styles.spinnerWinnerText}>
           {t(copy.spinner.winnerLabel, { name: winner })}
-        </Text>
+        </AppText>
       )}
     </View>
   );

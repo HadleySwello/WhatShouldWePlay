@@ -33,7 +33,11 @@ export default function RankingsScreen({ navigation }) {
           style={styles.refreshButton}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
-          <FontAwesome5 name="sync-alt" size={20} color={tokens.colors.tintMain} />
+          <FontAwesome5
+            name="sync-alt"
+            size={20}
+            color={tokens.colors.tintMain}
+          />
         </TouchableOpacity>
       ),
     });

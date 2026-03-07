@@ -289,7 +289,6 @@ function mapItemToGame(item) {
     playersMax: maxPlayers,
     complexityWeight,
     length: parseLength(item),
-    color: '#ec7e1f',
     image: item.image || '',
     thumbnail: item.thumbnail || '',
     yearPublished: item.yearpublished || 'N/A',
