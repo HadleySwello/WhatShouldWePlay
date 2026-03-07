@@ -70,10 +70,7 @@ export default function SpinnerScreen({
             </AppText>
             <AppText variant="winnerValue">{winner}</AppText>
             <View style={styles.buttonRow}>
-              <AppButton
-                variant="primaryCompact"
-                onPress={handlePlayThis}
-              >
+              <AppButton variant="primaryCompact" onPress={handlePlayThis}>
                 {copy.spinner.ctaPlay}
               </AppButton>
               <AppButton

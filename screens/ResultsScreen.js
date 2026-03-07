@@ -313,10 +313,7 @@ export default function ResultsScreen({ route, navigation }) {
       </View>
 
       <View style={styles.bottomBar}>
-        <AppButton
-          variant="primaryCompact"
-          onPress={handleSpin}
-        >
+        <AppButton variant="primaryCompact" onPress={handleSpin}>
           {isSingleGame ? copy.results.ctaSelectGame : copy.results.ctaSpin}
         </AppButton>
       </View>

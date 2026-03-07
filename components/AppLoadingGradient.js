@@ -4,19 +4,27 @@ import { Svg, Defs, LinearGradient, Stop, Circle } from 'react-native-svg';
 import { useAppTheme } from '../theme';
 
 export default function AppLoadingGradient({ size = 48 }) {
-  const { tokens, styles } = useAppTheme();
+  const { tokens, styles, reduceMovement } = useAppTheme();
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.loop(
+    if (reduceMovement) {
+      spinValue.setValue(0);
+      return;
+    }
+
+    const animation = Animated.loop(
       Animated.timing(spinValue, {
         toValue: 1,
-        duration: 1500,
+        duration: 3000, // Slow, ceremonial rotation
         easing: Easing.linear,
         useNativeDriver: true,
       })
-    ).start();
-  }, [spinValue]);
+    );
+    animation.start();
+
+    return () => animation.stop();
+  }, [spinValue, reduceMovement]);
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],

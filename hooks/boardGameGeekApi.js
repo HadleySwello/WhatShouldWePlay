@@ -142,7 +142,9 @@ function parseThingResponse(data) {
     const bggRank = boardGameRank
       ? parseInt(boardGameRank['@_value'], 10)
       : null;
+    const description = item.description;
     result[id] = {
+      description,
       categories,
       mechanics,
       minAge: minAge ? parseInt(minAge, 10) : null,

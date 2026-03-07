@@ -310,6 +310,133 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         marginTop: 2,
       },
     },
+    gameCard: {
+      container: {
+        backgroundColor: c.cardMain,
+        borderRadius: r.lg,
+        padding: s.md,
+        marginBottom: s.xl,
+        borderWidth: 1,
+        borderColor: c.border,
+        overflow: 'hidden',
+        // Card appearance
+        shadowColor: c.shadow,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: e.medium,
+      },
+      interactive: {
+        // can be used for pressable feedback
+      },
+      content: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      image: {
+        width: 80,
+        height: 80,
+        borderRadius: r.md,
+        marginRight: s.lg,
+      },
+      info: {
+        flex: 1,
+        justifyContent: 'center',
+      },
+      name: {
+        fontSize: t.sizes.lg + 2, // Sized between lg and xl
+        fontFamily: t.families.header,
+        color: c.textMain,
+        marginBottom: 2,
+      },
+      ratingRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 4,
+      },
+      statsRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: s.lg,
+        marginTop: s.sm,
+      },
+      statItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+      },
+      statText: {
+        fontSize: t.sizes.sm,
+        fontFamily: t.families.body,
+        color: c.textSecondary,
+      },
+      expanded: {
+        marginTop: s.lg,
+        paddingTop: s.lg,
+        borderTopWidth: 1,
+        borderTopColor: c.divider,
+      },
+      expandedDataGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: s.md,
+        marginBottom: s.md,
+      },
+      expandedDataItem: {
+        borderRadius: r.sm,
+        backgroundColor: c.cardSecondary,
+        paddingHorizontal: s.md,
+        paddingVertical: 4,
+        marginBottom: s.xs,
+      },
+      label: {
+        fontSize: t.sizes.xs,
+        fontFamily: t.families.subheader,
+        color: c.textSecondary,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+      },
+      value: {
+        fontSize: t.sizes.sm,
+        fontFamily: t.families.bodyBold,
+        color: c.textMain,
+      },
+      sectionTitle: {
+        fontSize: t.sizes.sm,
+        fontFamily: t.families.header,
+        color: c.textMain,
+        marginBottom: s.xs,
+        marginTop: s.sm,
+      },
+      tagCloud: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: s.xs,
+      },
+      tag: {
+        backgroundColor: c.cardSecondary,
+        paddingHorizontal: s.md,
+        paddingVertical: 4,
+        borderRadius: r.sm,
+        borderWidth: 1,
+        borderColor: c.divider,
+        marginBottom: 2,
+      },
+      tagText: {
+        fontSize: t.sizes.xs,
+        fontFamily: t.families.body,
+        color: c.textSecondary,
+      },
+      description: {
+        fontSize: t.sizes.sm,
+        fontFamily: t.families.body,
+        color: c.textSecondary,
+        lineHeight: 20,
+        marginTop: s.md,
+        marginBottom: s.md,
+        textAlign: 'left',
+      },
+    },
     stepper: {
       row: {
         flexDirection: 'row',
@@ -441,6 +568,15 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       height: 44,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    starRating: {
+      container: {
+        flexDirection: 'row',
+        gap: 2,
+      },
+      icon: {
+        // Opacity will be handled logically in the component
+      },
     },
     ritualCardRow: {
       flex: 1,
@@ -915,15 +1051,6 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     complexitySliderWrap: {
       marginBottom: s['2xl'] - 4,
-    },
-    complexityReadout: {
-      marginTop: s.sm,
-    },
-    complexitySliderLabels: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: 4,
-      marginTop: s.sm,
     },
     complexitySliderLabel: {
       fontSize: t.sizes.sm,

@@ -4,7 +4,6 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Image,
   Linking,
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -13,6 +12,7 @@ import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 import AppText from '../components/AppText';
 import copy, { t } from '../constants/copy';
 import AppButton from '../components/AppButton';
+import GameCard from '../components/GameCard';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -33,11 +33,7 @@ export default function RankingsScreen({ navigation }) {
           style={styles.refreshButton}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
-          <FontAwesome5
-            name="sync-alt"
-            size={20}
-            color={tokens.colors.tintMain}
-          />
+          <FontAwesome5 name="sync-alt" size={20} color={tokens.colors.tintMain} />
         </TouchableOpacity>
       ),
     });
@@ -115,40 +111,16 @@ export default function RankingsScreen({ navigation }) {
       <FlatList
         data={games}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <View style={styles.gameItem}>
-            {item.thumbnail ? (
-              <Image
-                source={{ uri: item.thumbnail }}
-                style={styles.listItem.thumbnail}
-                resizeMode="cover"
-              />
-            ) : (
-              <View
-                style={[
-                  styles.listItem.thumbnail,
-                  styles.listItem.thumbnailPlaceholder,
-                ]}
-              />
-            )}
-            <View style={layout.flex1}>
-              <AppText variant="gameName">{item.name}</AppText>
-              <AppText variant="gameDetails">
-                {item.yearPublished} ·{' '}
-                {t(copy.rankings.gameDetails, { rating: item.rating || '—' })}
-              </AppText>
-            </View>
-          </View>
-        )}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingHorizontal: tokens.spacing.lg },
+        ]}
+        renderItem={({ item }) => <GameCard game={item} />}
       />
       <AppButton
         variant="primaryCompact"
         onPress={() => navigation.navigate('Setup')}
-        style={[
-          layout.marginHorizontalLg,
-          layout.marginBottomXl,
-        ]}
+        style={[layout.marginHorizontalLg, layout.marginBottomXl]}
       >
         {copy.rankings.ctaChooseGame}
       </AppButton>

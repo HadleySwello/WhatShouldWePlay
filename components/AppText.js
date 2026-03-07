@@ -134,6 +134,15 @@ export default function AppText({
       minWidth: s['3xl'],
       textAlign: 'center',
     },
+    gameCardName: styles.gameCard?.name,
+    gameCardStat: styles.gameCard?.statText,
+    gameCardLabel: styles.gameCard?.label,
+    gameCardValue: styles.gameCard?.value,
+    gameCardComplexity: styles.gameCard?.complexityText,
+    gameCardComplexityLabel: styles.gameCard?.complexityLabel,
+    gameCardSectionTitle: styles.gameCard?.sectionTitle,
+    gameCardTag: styles.gameCard?.tagText,
+    gameCardDescription: styles.gameCard?.description,
   };
 
   const baseStyle = variantStyles[variant] || variantStyles.body;

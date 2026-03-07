@@ -25,6 +25,8 @@ const seedGames = [
     maxPlaytime: 90,
     bggAverage: 6.18,
     bggRank: 11927,
+    description:
+      'In Castle of Magic, you play as a wizard seeking to cast spells and defeat your opponents. Collect resources, cast spells, and race to defeat your opponents before they defeat you.',
   },
   {
     id: '325409',
@@ -48,6 +50,8 @@ const seedGames = [
     maxPlaytime: 40,
     bggAverage: 6.89,
     bggRank: 8694,
+    description:
+      'In Fantasy Fluxx, you play as a wizard seeking to cast spells and defeat your opponents. Collect resources, cast spells, and race to defeat your opponents before they defeat you.',
   },
   {
     id: '19857',
@@ -79,6 +83,8 @@ const seedGames = [
     maxPlaytime: 60,
     bggAverage: 7.49,
     bggRank: 292,
+    description:
+      'In Glory to Rome, you play as a Roman citizen seeking to build the most glorious city. Collect resources, recruit citizens, and construct buildings to earn victory points.',
   },
   {
     id: '70323',
@@ -116,6 +122,8 @@ const seedGames = [
     maxPlaytime: 30,
     bggAverage: 7.12,
     bggRank: 482,
+    description:
+      'In King of Tokyo, you play mutant monsters, gigantic robots, and strange aliens — all of whom are destroying Tokyo and whacking each other in order to become the one and only King of Tokyo.',
   },
   {
     id: '392023',
@@ -144,6 +152,8 @@ const seedGames = [
     maxPlaytime: 45,
     bggAverage: 7.38,
     bggRank: 1444,
+    description:
+      'In Mycelia, you play as a mushroom spreading your mycelial network across the forest floor. Collect nutrients, grow your network, and race to connect to the Great Tree before your opponents.',
   },
   {
     id: '266192',
@@ -177,6 +187,8 @@ const seedGames = [
     maxPlaytime: 70,
     bggAverage: 8.0,
     bggRank: 38,
+    description:
+      'Wingspan is a competitive, medium-weight, card-driven, engine-building board game from Stonemaier Games. You are bird enthusiasts — researchers, bird watchers, ornithologists, and collectors — seeking to discover and attract the best birds to your network of wildlife preserves.',
   },
 ];
 
