@@ -13,11 +13,10 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       primary: {
         backgroundColor: c.tintSecondary,
         paddingVertical: s.lg,
-        paddingHorizontal: s['3xl'],
+        paddingHorizontal: s.xl,
         borderRadius: r.md,
         alignItems: 'center',
         alignSelf: 'stretch',
-        marginHorizontal: s.xl,
         marginBottom: s.lg,
       },
       primaryCompact: {
@@ -100,6 +99,20 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       container: {
         flex: 1,
         backgroundColor: c.backgroundMain,
+      },
+      wrapper: {
+        flex: 1,
+      },
+      splashCard: {
+        paddingVertical: s['3xl'],
+        paddingHorizontal: s.xl,
+        alignItems: 'center',
+        width: '100%',
+        maxWidth: 400,
+        elevation: e.high,
+        shadowOpacity: 0.15,
+        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 8 },
       },
     },
     listItem: {

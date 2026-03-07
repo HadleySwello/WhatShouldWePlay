@@ -611,7 +611,7 @@ export default function SetupScreen({ navigation }) {
           onPress={handleFindGames}
           disabled={hasNoMatches}
           style={[
-            styles.button.primaryCompact,
+            styles.button.primary,
             layout.stretch,
             hasNoMatches && styles.button.disabled,
           ]}

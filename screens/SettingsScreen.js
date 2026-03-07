@@ -96,61 +96,86 @@ export default function SettingsScreen({ navigation }) {
       contentContainerStyle={layout.paddingXl}
       showsVerticalScrollIndicator={false}
     >
-      <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
-        {copy.settings.appearance}
-      </AppText>
-      <SegmentedControl
-        values={[
-          copy.settings.themeLight,
-          copy.settings.themeDark,
-          copy.settings.themeSystem,
-        ]}
-        selectedIndex={themeSelectedIndex >= 0 ? themeSelectedIndex : 2}
-        onChange={handleThemeChange}
-        style={layout.marginBottomLg}
-        appearance={theme.dark ? 'dark' : 'light'}
-        backgroundColor={tokens.colors.backgroundMain}
-        fontStyle={{ color: tokens.colors.textSecondary }}
-        activeFontStyle={{ color: tokens.colors.onTintSecondary }}
-        tintColor={tokens.colors.tintSecondary}
-      />
-      <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
-        {copy.settings.defaultPlayerCount}
-      </AppText>
-      <PlayerCountStepper
-        value={defaultPlayerCount}
-        onValueChange={handleDefaultPlayerCountChange}
-      />
-      <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
-        {copy.settings.enableVotingMode}
-      </AppText>
-      <TouchableOpacity
-        onPress={isSinglePlayer ? handleVotingModeRowPress : undefined}
-        activeOpacity={isSinglePlayer ? 0.7 : 1}
-      >
-        <View style={styles.votingModeSettingsRow}>
-          <AppText variant="body">{copy.settings.enableVotingMode}</AppText>
-          <Switch
-            value={isSinglePlayer ? false : votingModeEnabled}
-            onValueChange={handleVotingModeChange}
-            disabled={isSinglePlayer}
-            trackColor={{
-              false: tokens.colors.cardMain,
-              true: tokens.colors.tintMain,
-            }}
-            thumbColor="#fff"
+      <View style={[styles.card.default, styles.card.body, layout.marginBottomLg]}>
+        <AppText variant="sectionTitle" style={layout.marginBottomSm}>
+          {copy.settings.appearance}
+        </AppText>
+        <AppText variant="helper" style={layout.marginBottomLg}>
+          {copy.settings.appearanceDescription}
+        </AppText>
+        <SegmentedControl
+          values={[
+            copy.settings.themeLight,
+            copy.settings.themeDark,
+            copy.settings.themeSystem,
+          ]}
+          selectedIndex={themeSelectedIndex >= 0 ? themeSelectedIndex : 2}
+          onChange={handleThemeChange}
+          appearance={theme.dark ? 'dark' : 'light'}
+          backgroundColor={tokens.colors.backgroundMain}
+          fontStyle={{ color: tokens.colors.textSecondary }}
+          activeFontStyle={{ color: tokens.colors.onTintSecondary }}
+          tintColor={tokens.colors.tintSecondary}
+        />
+      </View>
+
+      <View style={[styles.card.default, styles.card.body, layout.marginBottomLg]}>
+        <AppText variant="sectionTitle" style={layout.marginBottomSm}>
+          {copy.settings.theRitual}
+        </AppText>
+        <AppText variant="helper" style={layout.marginBottomLg}>
+          {copy.settings.defaultPlayerCountDescription}
+        </AppText>
+        <View style={layout.marginBottomLg}>
+          <PlayerCountStepper
+            value={defaultPlayerCount}
+            onValueChange={handleDefaultPlayerCountChange}
           />
         </View>
-      </TouchableOpacity>
-      <AppButton
-        variant="primary"
-        onPress={() => navigation.navigate('ConnectBGG')}
-      >
-        {copy.settings.changeUsername}
-      </AppButton>
-      <AppButton variant="secondary" onPress={handleDeleteAccount}>
-        {copy.settings.deleteMyAccount}
-      </AppButton>
+
+        <TouchableOpacity
+          onPress={isSinglePlayer ? handleVotingModeRowPress : undefined}
+          activeOpacity={isSinglePlayer ? 0.7 : 1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ flex: 1, paddingRight: tokens.spacing.md }}>
+              <AppText variant="body" style={{ textAlign: 'left', color: tokens.colors.textMain, fontWeight: tokens.typography.weights.semibold }}>
+                {copy.settings.enableVotingMode}
+              </AppText>
+              <AppText variant="helper" style={{ textAlign: 'left', marginTop: tokens.spacing.xs }}>
+                {copy.settings.enableVotingModeDescription}
+              </AppText>
+            </View>
+            <View pointerEvents={isSinglePlayer ? 'none' : 'auto'}>
+              <Switch
+                value={isSinglePlayer ? false : votingModeEnabled}
+                onValueChange={handleVotingModeChange}
+                disabled={isSinglePlayer}
+                trackColor={{
+                  false: tokens.colors.cardMain,
+                  true: tokens.colors.tintMain,
+                }}
+                thumbColor="#fff"
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View style={[styles.card.default, styles.card.body, layout.marginBottomLg]}>
+        <AppText variant="sectionTitle" style={layout.marginBottomLg}>
+          {copy.settings.account}
+        </AppText>
+        <AppButton
+          variant="primary"
+          onPress={() => navigation.navigate('ConnectBGG')}
+        >
+          {copy.settings.changeUsername}
+        </AppButton>
+        <AppButton variant="tertiary" onPress={handleDeleteAccount}>
+          {copy.settings.deleteMyAccount}
+        </AppButton>
+      </View>
     </ScrollView>
   );
 }

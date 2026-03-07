@@ -125,7 +125,8 @@ export default {
     complexityLabel: 'Complexity: {{value}}',
   },
   errors: {
-    maxRitualsReached: 'You can only save {{max}} rituals. Delete one to add another.',
+    maxRitualsReached:
+      'You can only save {{max}} rituals. Delete one to add another.',
     ritualNameRequired: 'Ritual name is required.',
   },
   rankings: {
@@ -143,11 +144,17 @@ export default {
   },
   settings: {
     appearance: 'Appearance',
+    appearanceDescription: 'Choose how the wheel reveals itself to you.',
     themeLight: 'Light',
     themeDark: 'Dark',
     themeSystem: 'System',
+    theRitual: 'The Ritual',
     defaultPlayerCount: 'Default players at table',
+    defaultPlayerCountDescription: 'The number of voices at your table.',
     enableVotingMode: 'Let everyone weigh in',
+    enableVotingModeDescription:
+      "When enabled, everyone gets a say. We'll add extra weight to the games your group wants to play most.",
+    account: 'Account',
     changeUsername: 'Connect a different shelf',
     deleteMyAccount: 'Delete my account',
   },
