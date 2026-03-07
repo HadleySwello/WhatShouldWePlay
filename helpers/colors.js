@@ -79,7 +79,7 @@ const colors = {
 
     // Text - Powder Petal on Dark Jade
     textMain: '#ECD7C7',
-    textSecondary: '#E2CCBC',
+    textSecondary: '#A8BDBA', // Soft Sage Green
     textSpecial: '#AA4465',
 
     // Accents (10%) - Inverted Ritual Primary (Powder Petal)

@@ -107,17 +107,20 @@ export default function SettingsScreen({ navigation }) {
       <View
         style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
       >
-        <AppText variant="sectionTitle" style={layout.marginBottomSm}>
-          {copy.settings.appearance}
+        <AppText variant="sectionTitle" style={layout.marginBottomLg}>
+          {copy.settings.appearanceSectionTitle}
         </AppText>
-        <AppText variant="helper" style={layout.marginBottomLg}>
-          {copy.settings.appearanceDescription}
+        <AppText variant="body" style={styles.settingsRowTitle}>
+          {copy.settings.chooseThemeLabel}
+        </AppText>
+        <AppText variant="helper" style={layout.marginBottomMd}>
+          {copy.settings.chooseThemeHelper}
         </AppText>
         <SegmentedControl
           values={[
-            copy.settings.themeLight,
-            copy.settings.themeDark,
-            copy.settings.themeSystem,
+            copy.settings.themeLightLabel,
+            copy.settings.themeDarkLabel,
+            copy.settings.themeSystemLabel,
           ]}
           selectedIndex={themeSelectedIndex >= 0 ? themeSelectedIndex : 2}
           onChange={handleThemeChange}
@@ -132,16 +135,16 @@ export default function SettingsScreen({ navigation }) {
       <View
         style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
       >
-        <AppText variant="sectionTitle" style={layout.marginBottomSm}>
-          {copy.settings.accessibility}
-        </AppText>
-        <AppText variant="helper" style={layout.marginBottomLg}>
-          {copy.settings.reduceMovementDescription}
+        <AppText variant="sectionTitle" style={layout.marginBottomLg}>
+          {copy.settings.accessibilitySectionTitle}
         </AppText>
         <View style={styles.votingModeRowInner}>
           <View style={styles.settingsRowInfo}>
             <AppText variant="body" style={styles.settingsRowTitle}>
-              {copy.settings.reduceMovement}
+              {copy.settings.reduceMovementLabel}
+            </AppText>
+            <AppText variant="helper" style={styles.settingsRowDesc}>
+              {copy.settings.reduceMovementHelper}
             </AppText>
           </View>
           <Switch
@@ -151,7 +154,7 @@ export default function SettingsScreen({ navigation }) {
               false: tokens.colors.cardMain,
               true: tokens.colors.tintMain,
             }}
-            thumbColor="#fff"
+            thumbColor={tokens.colors.onTintSecondary}
           />
         </View>
       </View>
@@ -159,13 +162,19 @@ export default function SettingsScreen({ navigation }) {
       <View
         style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
       >
-        <AppText variant="sectionTitle" style={layout.marginBottomSm}>
-          {copy.settings.theRitual}
+        <AppText variant="sectionTitle" style={layout.marginBottomLg}>
+          {copy.settings.theRitualSectionTitle}
         </AppText>
-        <AppText variant="helper" style={layout.marginBottomLg}>
-          {copy.settings.defaultPlayerCountDescription}
-        </AppText>
-        <View style={layout.marginBottomLg}>
+
+        <View style={layout.marginBottomMd}>
+          <AppText variant="body" style={styles.settingsRowTitle}>
+            {copy.settings.defaultPlayerCountLabel}
+          </AppText>
+          <AppText variant="helper">
+            {copy.settings.defaultPlayerCountHelper}
+          </AppText>
+        </View>
+        <View style={layout.marginBottomXl}>
           <PlayerCountStepper
             value={defaultPlayerCount}
             onValueChange={handleDefaultPlayerCountChange}
@@ -179,10 +188,10 @@ export default function SettingsScreen({ navigation }) {
           <View style={styles.votingModeRowInner}>
             <View style={styles.settingsRowInfo}>
               <AppText variant="body" style={styles.settingsRowTitle}>
-                {copy.settings.enableVotingMode}
+                {copy.settings.enableVotingModeLabel}
               </AppText>
               <AppText variant="helper" style={styles.settingsRowDesc}>
-                {copy.settings.enableVotingModeDescription}
+                {copy.settings.enableVotingModeHelper}
               </AppText>
             </View>
             <View pointerEvents={isSinglePlayer ? 'none' : 'auto'}>
@@ -194,7 +203,7 @@ export default function SettingsScreen({ navigation }) {
                   false: tokens.colors.cardMain,
                   true: tokens.colors.tintMain,
                 }}
-                thumbColor="#fff"
+                thumbColor={tokens.colors.onTintSecondary}
               />
             </View>
           </View>
@@ -205,17 +214,17 @@ export default function SettingsScreen({ navigation }) {
         style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
       >
         <AppText variant="sectionTitle" style={layout.marginBottomLg}>
-          {copy.settings.account}
+          {copy.settings.accountSectionTitle}
         </AppText>
         <AppButton
           variant="primary"
           onPress={() => navigation.navigate('ConnectBGG')}
           style={layout.marginBottomMd}
         >
-          {copy.settings.changeUsername}
+          {copy.settings.changeUsernameLabel}
         </AppButton>
         <AppButton variant="tertiary" onPress={handleDeleteAccount}>
-          {copy.settings.deleteMyAccount}
+          {copy.settings.deleteMyAccountLabel}
         </AppButton>
       </View>
     </ScrollView>
