@@ -31,8 +31,14 @@ const THEME_VALUES = ['light', 'dark', 'system'];
 
 export default function SettingsScreen({ navigation }) {
   const { styles, tokens, theme } = useAppTheme();
-  const { themeMode, setThemeMode, reduceMovement, setReduceMovement } =
-    useThemeMode();
+  const {
+    themeMode,
+    setThemeMode,
+    reduceMovement,
+    setReduceMovement,
+    largeText,
+    setLargeText,
+  } = useThemeMode();
   const [defaultPlayerCount, setDefaultPlayerCountState] =
     useState(DEFAULT_PLAYER_COUNT);
   const [votingModeEnabled, setVotingModeEnabledState] = useState(false);
@@ -60,6 +66,13 @@ export default function SettingsScreen({ navigation }) {
       setReduceMovement(value);
     },
     [setReduceMovement]
+  );
+
+  const handleLargeTextChange = useCallback(
+    (value) => {
+      setLargeText(value);
+    },
+    [setLargeText]
   );
 
   const handleDefaultPlayerCountChange = useCallback((value) => {
@@ -125,7 +138,7 @@ export default function SettingsScreen({ navigation }) {
           selectedIndex={themeSelectedIndex >= 0 ? themeSelectedIndex : 2}
           onChange={handleThemeChange}
           appearance={theme.dark ? 'dark' : 'light'}
-          backgroundColor={tokens.colors.backgroundMain}
+          backgroundColor={tokens.colors.cardMain}
           fontStyle={{ color: tokens.colors.textSecondary }}
           activeFontStyle={{ color: tokens.colors.onTintSecondary }}
           tintColor={tokens.colors.tintSecondary}
@@ -138,7 +151,8 @@ export default function SettingsScreen({ navigation }) {
         <AppText variant="sectionTitle" style={layout.marginBottomLg}>
           {copy.settings.accessibilitySectionTitle}
         </AppText>
-        <View style={styles.votingModeRowInner}>
+
+        <View style={[styles.votingModeRowInner, layout.marginBottomLg]}>
           <View style={styles.settingsRowInfo}>
             <AppText variant="body" style={styles.settingsRowTitle}>
               {copy.settings.reduceMovementLabel}
@@ -150,6 +164,26 @@ export default function SettingsScreen({ navigation }) {
           <Switch
             value={reduceMovement}
             onValueChange={handleReduceMovementChange}
+            trackColor={{
+              false: tokens.colors.cardMain,
+              true: tokens.colors.tintMain,
+            }}
+            thumbColor={tokens.colors.onTintSecondary}
+          />
+        </View>
+
+        <View style={styles.votingModeRowInner}>
+          <View style={styles.settingsRowInfo}>
+            <AppText variant="body" style={styles.settingsRowTitle}>
+              {copy.settings.largeTextLabel}
+            </AppText>
+            <AppText variant="helper" style={styles.settingsRowDesc}>
+              {copy.settings.largeTextHelper}
+            </AppText>
+          </View>
+          <Switch
+            value={largeText}
+            onValueChange={handleLargeTextChange}
             trackColor={{
               false: tokens.colors.cardMain,
               true: tokens.colors.tintMain,

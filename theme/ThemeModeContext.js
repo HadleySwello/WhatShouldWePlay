@@ -13,16 +13,22 @@ import {
   getReduceMovement,
   setReduceMovement as persistReduceMovement,
 } from '../helpers/reduceMovementStorage';
+import {
+  getLargeText,
+  setLargeText as persistLargeText,
+} from '../helpers/largeTextStorage';
 
 const ThemeModeContext = createContext(null);
 
 export function ThemeModeProvider({ children }) {
   const [themeMode, setThemeModeState] = useState('system');
   const [reduceMovement, setReduceMovementState] = useState(false);
+  const [largeText, setLargeTextState] = useState(false);
 
   useEffect(() => {
     getThemeMode().then(setThemeModeState);
     getReduceMovement().then(setReduceMovementState);
+    getLargeText().then(setLargeTextState);
   }, []);
 
   const setThemeMode = useCallback((value) => {
@@ -35,9 +41,21 @@ export function ThemeModeProvider({ children }) {
     persistReduceMovement(value);
   }, []);
 
+  const setLargeText = useCallback((value) => {
+    setLargeTextState(value);
+    persistLargeText(value);
+  }, []);
+
   return (
     <ThemeModeContext.Provider
-      value={{ themeMode, setThemeMode, reduceMovement, setReduceMovement }}
+      value={{
+        themeMode,
+        setThemeMode,
+        reduceMovement,
+        setReduceMovement,
+        largeText,
+        setLargeText,
+      }}
     >
       {children}
     </ThemeModeContext.Provider>

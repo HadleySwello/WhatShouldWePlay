@@ -17,32 +17,54 @@ export { radius } from './radius';
 export { typography } from './typography';
 export { durations, easing } from './animations';
 
-let cachedStylesLight = null;
-let cachedStylesDark = null;
+const cachedStyles = {
+  light: null,
+  dark: null,
+  lightLarge: null,
+  darkLarge: null,
+};
 
-function getStyles(isDark) {
-  if (isDark) {
-    if (!cachedStylesDark) {
-      cachedStylesDark = getComponentVariantStyles(tokensDark);
-    }
-    return cachedStylesDark;
+function getStyles(isDark, isLarge) {
+  const key = `${isDark ? 'dark' : 'light'}${isLarge ? 'Large' : ''}`;
+  if (!cachedStyles[key]) {
+    const rawTokens = isDark ? tokensDark : tokensLight;
+    const tokensForStyles = {
+      ...rawTokens,
+      typography: {
+        ...rawTokens.typography,
+        sizes: isLarge
+          ? rawTokens.typography.sizesLargeText
+          : rawTokens.typography.sizes,
+      },
+    };
+    cachedStyles[key] = getComponentVariantStyles(tokensForStyles);
   }
-  if (!cachedStylesLight) {
-    cachedStylesLight = getComponentVariantStyles(tokensLight);
-  }
-  return cachedStylesLight;
+  return cachedStyles[key];
 }
 
 export function useAppTheme() {
   const theme = usePaperTheme();
-  const { reduceMovement } = useThemeMode();
+  const { reduceMovement, largeText } = useThemeMode();
   const isDark = theme.dark === true;
-  const tokens = isDark ? tokensDark : tokensLight;
-  const styles = getStyles(isDark);
+  const rawTokens = isDark ? tokensDark : tokensLight;
+
+  // Dynamically select typography sizes based on preference
+  const tokens = {
+    ...rawTokens,
+    typography: {
+      ...rawTokens.typography,
+      sizes: largeText
+        ? rawTokens.typography.sizesLargeText
+        : rawTokens.typography.sizes,
+    },
+  };
+
+  const styles = getStyles(isDark, largeText);
   return {
     theme,
     tokens,
     styles,
     reduceMovement,
+    largeText,
   };
 }

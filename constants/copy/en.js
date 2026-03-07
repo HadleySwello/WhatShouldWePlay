@@ -164,7 +164,7 @@ export default {
   },
   settings: {
     appearanceSectionTitle: 'Appearance',
-    chooseThemeLabel: 'Choose a theme',
+    chooseThemeLabel: 'Theme',
     chooseThemeHelper: 'Choose how the wheel reveals itself to you.',
     themeLightLabel: 'Light',
     themeDarkLabel: 'Dark',
@@ -174,10 +174,12 @@ export default {
     defaultPlayerCountHelper: 'The number of players at your table.',
     enableVotingModeLabel: 'Enable Voting Mode by Default',
     enableVotingModeHelper:
-      "When enabled, everyone gets to select a game to put forward, or vote for someone elses. We'll create a custom wheel just for the selected games.",
+      "When in voting mode, everyone gets to select a game to put forward, or vote for someone elses. We'll create a custom wheel just for the selected games.",
     accessibilitySectionTitle: 'Accessibility',
     reduceMovementLabel: 'Reduce Movement',
     reduceMovementHelper: 'Minimizes animations and screen transitions.',
+    largeTextLabel: 'Larger Text',
+    largeTextHelper: 'Grows the app’s text for easier reading.',
     accountSectionTitle: 'Account',
     changeUsernameLabel: 'Connect a different shelf',
     deleteMyAccountLabel: 'Unlink My Account',
