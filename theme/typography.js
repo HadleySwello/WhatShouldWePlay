@@ -13,6 +13,7 @@ export const typography = {
   },
   families: {
     header: 'PlayfairDisplay_700Bold',
+    title: 'PlayfairDisplay_700Bold',
     subheader: 'Montserrat_600SemiBold',
     body: 'OpenSans_400Regular',
     bodyMedium: 'OpenSans_500Medium',

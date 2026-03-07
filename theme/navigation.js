@@ -9,7 +9,8 @@ export function getNavigationScreenOptions(tokens) {
     },
     headerTitleStyle: {
       color: c.textMain,
-      fontSize: t.sizes.xl,
+      fontSize: t.sizes['3xl'],
+      fontFamily: t.families.header,
     },
     headerTitleAlign: 'center',
     headerTintColor: c.tintMain,
