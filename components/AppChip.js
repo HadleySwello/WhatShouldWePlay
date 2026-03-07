@@ -13,7 +13,9 @@ export default function AppChip({
   const containerStyle = selected
     ? [styles.chip.default, styles.chip.selected]
     : styles.chip.default;
-  const textStyle = selected ? styles.chip.selectedText : styles.chip.defaultText;
+  const textStyle = selected
+    ? styles.chip.selectedText
+    : styles.chip.defaultText;
 
   return (
     <TouchableOpacity

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Modal,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import { Modal, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import AppText from './AppText';
@@ -56,18 +50,14 @@ export default function RitualsModal({
 
   const handleDelete = (ritual, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    Alert.alert(
-      copy.modals.rituals.deleteConfirmTitle,
-      ritual.name,
-      [
-        { text: copy.modals.rituals.deleteConfirmCancel, style: 'cancel' },
-        {
-          text: copy.modals.rituals.deleteConfirmDelete,
-          style: 'destructive',
-          onPress: () => onDeleteRitual && onDeleteRitual(ritual),
-        },
-      ]
-    );
+    Alert.alert(copy.modals.rituals.deleteConfirmTitle, ritual.name, [
+      { text: copy.modals.rituals.deleteConfirmCancel, style: 'cancel' },
+      {
+        text: copy.modals.rituals.deleteConfirmDelete,
+        style: 'destructive',
+        onPress: () => onDeleteRitual && onDeleteRitual(ritual),
+      },
+    ]);
   };
 
   return (
@@ -81,9 +71,13 @@ export default function RitualsModal({
         <View style={m.content}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">{copy.modals.rituals.title}</AppText>
+              <AppText variant="modalTitle">
+                {copy.modals.rituals.title}
+              </AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
-                <AppText variant="closeButtonText">{copy.modals.rituals.close}</AppText>
+                <AppText variant="closeButtonText">
+                  {copy.modals.rituals.close}
+                </AppText>
               </TouchableOpacity>
             </View>
             <AppText variant="headerNote">
@@ -98,7 +92,9 @@ export default function RitualsModal({
           >
             {savedRituals.length > 0 && (
               <>
-                <AppText variant="modalSectionTitle">{copy.modals.rituals.myRituals}</AppText>
+                <AppText variant="modalSectionTitle">
+                  {copy.modals.rituals.myRituals}
+                </AppText>
                 {savedRituals.map((p) => (
                   <View key={p.id} style={m.ritualCard}>
                     <TouchableOpacity

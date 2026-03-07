@@ -11,6 +11,13 @@ export const typography = {
     '4xl': 28,
     '5xl': 38,
   },
+  families: {
+    header: 'PlayfairDisplay_700Bold',
+    subheader: 'Montserrat_600SemiBold',
+    body: 'OpenSans_400Regular',
+    bodyMedium: 'OpenSans_500Medium',
+    bodyBold: 'OpenSans_700Bold',
+  },
   weights: {
     regular: '400',
     medium: '500',

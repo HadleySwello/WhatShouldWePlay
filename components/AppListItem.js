@@ -17,19 +17,24 @@ export default function AppListItem({
   return (
     <View style={[styles.listItem.default, style]} {...rest}>
       {thumbnail ? (
-        <Image source={{ uri: thumbnail }} style={styles.listItem.thumbnail} resizeMode="cover" />
+        <Image
+          source={{ uri: thumbnail }}
+          style={styles.listItem.thumbnail}
+          resizeMode="cover"
+        />
       ) : (
-        <View style={[styles.listItem.thumbnail, styles.listItem.thumbnailPlaceholder]} />
+        <View
+          style={[
+            styles.listItem.thumbnail,
+            styles.listItem.thumbnailPlaceholder,
+          ]}
+        />
       )}
       <View style={layout.flex1}>
         <AppText variant="gameName" numberOfLines={1}>
           {name}
         </AppText>
-        {details != null && (
-          <AppText variant="gameDetails">
-            {details}
-          </AppText>
-        )}
+        {details != null && <AppText variant="gameDetails">{details}</AppText>}
       </View>
       {children}
     </View>

@@ -4,17 +4,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppGradientBackground from '../components/AppGradientBackground';
 import AppText from '../components/AppText';
+import AppLoadingGradient from '../components/AppLoadingGradient';
 import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
+import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
+import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
+
 const BGG_URL = 'https://boardgamegeek.com';
 const BGG_COLLECTION_KEY = 'bggCollection';
-const SPLASH_DELAY_MS = 3000;
 
 export default function SplashScreen({ navigation }) {
   const [, setChecked] = useState(false);
-  const { styles } = useAppTheme();
+  const { styles, theme } = useAppTheme();
+  const isDark = theme.dark === true;
+  const Logo = isDark ? LogoDark : LogoLight;
 
   useEffect(() => {
     let cancelled = false;
@@ -29,20 +34,15 @@ export default function SplashScreen({ navigation }) {
         if (cancelled) return;
         setChecked(true);
 
-        const timer = setTimeout(() => {
-          if (cancelled) return;
-          if (hasCollection) {
-            navigation.replace('Home');
-          } else {
-            navigation.replace('Welcome');
-          }
-        }, SPLASH_DELAY_MS);
-
-        return () => clearTimeout(timer);
+        if (hasCollection) {
+          navigation.replace('Home');
+        } else {
+          navigation.replace('Welcome');
+        }
       } catch {
         if (!cancelled) {
           setChecked(true);
-          setTimeout(() => navigation.replace('Welcome'), SPLASH_DELAY_MS);
+          navigation.replace('Welcome');
         }
       }
     };
@@ -64,16 +64,18 @@ export default function SplashScreen({ navigation }) {
           { backgroundColor: 'transparent' },
         ]}
       >
-        <View style={[styles.card.default, styles.screen.splashCard]}>
-          <AppText variant="title" style={layout.marginBottomLg}>
-            {copy.splash.title}
+        <View style={layout.center}>
+          <View style={styles.splash.loadingContainer}>
+            <AppLoadingGradient size={80} />
+          </View>
+          <View style={styles.splash.logoContainer}>
+            <Logo width={280} height={280} />
+          </View>
+          <AppText variant="subtitle">
+            {copy.splash.subtitle}
           </AppText>
-          <AppText variant="subtitle">{copy.splash.subtitle}</AppText>
           {copy.splash.tagline ? (
-            <AppText
-              variant="body"
-              style={[layout.marginTopMd, { opacity: 0.8, fontSize: 14 }]}
-            >
+            <AppText variant="body" style={styles.splash.tagline}>
               {copy.splash.tagline}
             </AppText>
           ) : null}
@@ -90,7 +92,6 @@ export default function SplashScreen({ navigation }) {
             accessible
             accessibilityLabel={copy.splash.a11y}
           />
-          <AppText variant="footer">{copy.splash.attribution}</AppText>
         </TouchableOpacity>
       </View>
     </View>

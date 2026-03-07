@@ -10,7 +10,8 @@ export default function AppInput({
 }) {
   const { tokens, styles } = useAppTheme();
   const c = tokens.colors;
-  const inputStyle = variant === 'default' ? styles.input.default : styles.input.default;
+  const inputStyle =
+    variant === 'default' ? styles.input.default : styles.input.default;
   return (
     <TextInput
       style={[inputStyle, style]}

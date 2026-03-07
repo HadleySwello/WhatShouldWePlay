@@ -80,13 +80,13 @@ So `complexityMax: 2` roughly means "low to light-medium" games.
 
 **Behavior:** Each game has a derived `length` string. Matching is based on an ordered scale:
 
-| Filter value   | Label in UI | Game passes if its `length` is…        |
-|----------------|-------------|----------------------------------------|
-| `null`         | Any length  | Any                                    |
-| `'under 30 min'` | ≤30m      | `'under 30 min'` only                  |
-| `'under 1 hour'` | ≤1h       | `'under 30 min'` or `'under 1 hour'`   |
-| `'under 2 hours'`| ≤2h      | `'under 30 min'`, `'under 1 hour'`, or `'under 2 hours'` |
-| `'long'`       | 3h+         | `'long'` only                          |
+| Filter value      | Label in UI | Game passes if its `length` is…                          |
+| ----------------- | ----------- | -------------------------------------------------------- |
+| `null`            | Any length  | Any                                                      |
+| `'under 30 min'`  | ≤30m        | `'under 30 min'` only                                    |
+| `'under 1 hour'`  | ≤1h         | `'under 30 min'` or `'under 1 hour'`                     |
+| `'under 2 hours'` | ≤2h         | `'under 30 min'`, `'under 1 hour'`, or `'under 2 hours'` |
+| `'long'`          | 3h+         | `'long'` only                                            |
 
 **How `game.length` is derived (BGG `playingtime`):**
 
@@ -194,17 +194,17 @@ Full preset structure (quick presets and user-saved presets):
 
 Persona-aligned presets based on `docs/quick-presets-deep-research-report.md`:
 
-| Preset                 | playerCount | complexityMin | complexityMax | maxLength       |
-|------------------------|-------------|---------------|---------------|-----------------|
-| Family Weeknight Win   | 4           | 0             | 2             | under 1 hour    |
-| Family Game Night Plus | 4           | 2             | 3             | under 2 hours   |
-| Anytime Crowd-Pleaser  | 4           | null          | 3             | under 2 hours   |
-| Big Table Icebreakers  | 5           | 0             | 2             | under 30 min    |
-| Social Deduction Light | 6           | 0             | 2             | under 30 min    |
-| Thinky Euro Night      | 4           | 3             | 4             | under 2 hours   |
-| Deep Strategy Epic     | 4           | 4             | null          | long            |
-| Two-Player Duel        | 2           | null          | 3             | under 1 hour    |
-| Solo or Co-op Brainburn| 1           | 3             | null          | under 2 hours   |
+| Preset                  | playerCount | complexityMin | complexityMax | maxLength     |
+| ----------------------- | ----------- | ------------- | ------------- | ------------- |
+| Family Weeknight Win    | 4           | 0             | 2             | under 1 hour  |
+| Family Game Night Plus  | 4           | 2             | 3             | under 2 hours |
+| Anytime Crowd-Pleaser   | 4           | null          | 3             | under 2 hours |
+| Big Table Icebreakers   | 5           | 0             | 2             | under 30 min  |
+| Social Deduction Light  | 6           | 0             | 2             | under 30 min  |
+| Thinky Euro Night       | 4           | 3             | 4             | under 2 hours |
+| Deep Strategy Epic      | 4           | 4             | null          | long          |
+| Two-Player Duel         | 2           | null          | 3             | under 1 hour  |
+| Solo or Co-op Brainburn | 1           | 3             | null          | under 2 hours |
 
 All presets use empty `selectedMechanics` and `selectedCategories` to avoid over-filtering.
 

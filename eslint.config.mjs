@@ -38,7 +38,11 @@ export default [
         {
           patterns: [
             {
-              group: ['**/helpers/colors', '../helpers/colors', '../../helpers/colors'],
+              group: [
+                '**/helpers/colors',
+                '../helpers/colors',
+                '../../helpers/colors',
+              ],
               message:
                 'Import colors via useAppTheme() or theme tokens. Only theme/tokens.js may import helpers/colors.',
             },

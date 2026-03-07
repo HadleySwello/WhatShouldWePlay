@@ -273,7 +273,9 @@ const useBoardGameGeekCollection = () => {
 function mapItemToGame(item) {
   const rawName = item.name;
   const gameName =
-    typeof rawName === 'object' ? rawName['#text'] : rawName || copy.common.unknownGame;
+    typeof rawName === 'object'
+      ? rawName['#text']
+      : rawName || copy.common.unknownGame;
   const minPlayers = parseInt(item.stats?.['@_minplayers'] || '1', 10);
   const maxPlayers = parseInt(item.stats?.['@_maxplayers'] || '1', 10);
   const ratingValue = item.stats?.rating?.['@_value'] || null;

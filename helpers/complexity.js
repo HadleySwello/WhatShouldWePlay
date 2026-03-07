@@ -19,7 +19,11 @@ export function capitalizeComplexityTier(tier) {
  * @returns {'low'|'medium'|'high'|null}
  */
 export function getComplexityTier(weight) {
-  if (weight == null || typeof weight !== 'number' || !Number.isFinite(weight)) {
+  if (
+    weight == null ||
+    typeof weight !== 'number' ||
+    !Number.isFinite(weight)
+  ) {
     return null;
   }
   if (weight < 2.0) return 'low';
@@ -66,7 +70,9 @@ export function formatComplexitySummary(complexityMin, complexityMax) {
     if (minTier === 'medium') return copy.ritualMetadata.medium;
     return copy.ritualMetadata.heavy;
   }
-  if (minTier === 'light' && maxTier === 'medium') return copy.ritualMetadata.lightToMedium;
-  if (minTier === 'light' && maxTier === 'heavy') return copy.ritualMetadata.lightToHeavy;
+  if (minTier === 'light' && maxTier === 'medium')
+    return copy.ritualMetadata.lightToMedium;
+  if (minTier === 'light' && maxTier === 'heavy')
+    return copy.ritualMetadata.lightToHeavy;
   return copy.ritualMetadata.mediumToHeavy;
 }

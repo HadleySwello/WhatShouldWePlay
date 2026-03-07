@@ -96,7 +96,9 @@ export default function SettingsScreen({ navigation }) {
       contentContainerStyle={layout.paddingXl}
       showsVerticalScrollIndicator={false}
     >
-      <View style={[styles.card.default, styles.card.body, layout.marginBottomLg]}>
+      <View
+        style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
+      >
         <AppText variant="sectionTitle" style={layout.marginBottomSm}>
           {copy.settings.appearance}
         </AppText>
@@ -119,7 +121,9 @@ export default function SettingsScreen({ navigation }) {
         />
       </View>
 
-      <View style={[styles.card.default, styles.card.body, layout.marginBottomLg]}>
+      <View
+        style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
+      >
         <AppText variant="sectionTitle" style={layout.marginBottomSm}>
           {copy.settings.theRitual}
         </AppText>
@@ -162,7 +166,9 @@ export default function SettingsScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.card.default, styles.card.body, layout.marginBottomLg]}>
+      <View
+        style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
+      >
         <AppText variant="sectionTitle" style={layout.marginBottomLg}>
           {copy.settings.account}
         </AppText>

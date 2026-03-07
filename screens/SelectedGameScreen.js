@@ -68,10 +68,16 @@ export default function SelectedGameScreen({ route, navigation }) {
             <View style={[styles.cardImage, styles.cardImagePlaceholder]} />
           )}
           <View style={styles.cardBody}>
-            <AppText variant="cardName" numberOfLines={2} style={[layout.textCenter, layout.marginBottomMd]}>
+            <AppText
+              variant="cardName"
+              numberOfLines={2}
+              style={[layout.textCenter, layout.marginBottomMd]}
+            >
               {game?.name ?? copy.selectedGame.fallbackGameName}
             </AppText>
-            <AppText variant="cardDetail" style={layout.textCenter}>{game?.yearPublished ?? '—'}</AppText>
+            <AppText variant="cardDetail" style={layout.textCenter}>
+              {game?.yearPublished ?? '—'}
+            </AppText>
             <AppText variant="cardDetail" style={layout.textCenter}>
               {game?.playersMin != null && game?.playersMax != null
                 ? t(copy.common.players, {
@@ -80,9 +86,13 @@ export default function SelectedGameScreen({ route, navigation }) {
                   })
                 : '—'}
             </AppText>
-            <AppText variant="cardDetail" style={layout.textCenter}>{game?.length ?? '—'}</AppText>
             <AppText variant="cardDetail" style={layout.textCenter}>
-              {t(copy.selectedGame.complexityLabel, { value: displayComplexity })}
+              {game?.length ?? '—'}
+            </AppText>
+            <AppText variant="cardDetail" style={layout.textCenter}>
+              {t(copy.selectedGame.complexityLabel, {
+                value: displayComplexity,
+              })}
             </AppText>
             {game?.categories?.length > 0 && (
               <AppText variant="cardDetail" style={layout.textCenter}>

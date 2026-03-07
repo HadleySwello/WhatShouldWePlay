@@ -1,11 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  Animated,
-  Dimensions,
-} from 'react-native';
+import { View, Text, Button, Animated, Dimensions } from 'react-native';
 import Svg, { G, Path, Text as SvgText } from 'react-native-svg';
 import * as d3Shape from 'd3-shape';
 import { Easing } from 'react-native';
@@ -121,7 +115,11 @@ export default function Spinner({ slices, onSpinningEnd, colors }) {
         <View style={markerStyle} />
       </View>
       {NUM_SECTIONS > 0 && (
-        <Button title={copy.spinner.spinButton} onPress={spinWheel} color={c.tintMain} />
+        <Button
+          title={copy.spinner.spinButton}
+          onPress={spinWheel}
+          color={c.tintMain}
+        />
       )}
       {winner && (
         <Text style={styles.spinnerWinnerText}>

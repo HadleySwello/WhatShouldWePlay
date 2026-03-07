@@ -8,10 +8,15 @@ import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
+import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
+import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
+
 const BGG_URL = 'https://boardgamegeek.com';
 
 export default function WelcomeScreen({ navigation }) {
-  const { styles } = useAppTheme();
+  const { styles, theme } = useAppTheme();
+  const isDark = theme.dark === true;
+  const Logo = isDark ? LogoDark : LogoLight;
 
   return (
     <View style={styles.screen.wrapper}>
@@ -24,11 +29,11 @@ export default function WelcomeScreen({ navigation }) {
           { backgroundColor: 'transparent' },
         ]}
       >
-        <View style={[styles.card.default, styles.screen.splashCard]}>
-          <AppText variant="title" style={layout.marginBottomLg}>
-            {copy.welcome.title}
-          </AppText>
-          <AppText variant="subtitle" style={layout.marginBottom3xl}>
+        <View style={layout.center}>
+          <View style={styles.welcome.logoContainer}>
+            <Logo width={280} height={280} />
+          </View>
+          <AppText variant="subtitle" style={styles.welcome.subtitle}>
             {copy.welcome.subtitle}
           </AppText>
           <View style={styles.buttonRow}>
@@ -52,7 +57,6 @@ export default function WelcomeScreen({ navigation }) {
             accessible
             accessibilityLabel={copy.splash.a11y}
           />
-          <AppText variant="footer">{copy.splash.attribution}</AppText>
         </TouchableOpacity>
       </View>
     </View>

@@ -1,5 +1,14 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { getThemeMode, setThemeMode as persistThemeMode } from '../helpers/themeStorage';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
+import {
+  getThemeMode,
+  setThemeMode as persistThemeMode,
+} from '../helpers/themeStorage';
 
 const ThemeModeContext = createContext(null);
 

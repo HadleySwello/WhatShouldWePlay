@@ -27,8 +27,8 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       primaryText: {
         fontSize: t.sizes.lg,
+        fontFamily: t.families.subheader,
         color: c.onTintSecondary,
-        fontWeight: t.weights.semibold,
         textAlign: 'center',
       },
       secondary: {
@@ -43,6 +43,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       secondaryText: {
         fontSize: t.sizes.md,
+        fontFamily: t.families.subheader,
         color: c.tintMain,
         textAlign: 'center',
       },
@@ -51,6 +52,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       tertiaryText: {
         fontSize: t.sizes.md,
+        fontFamily: t.families.subheader,
         color: c.textSecondary,
         textAlign: 'center',
       },
@@ -74,6 +76,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         borderRadius: r.md,
         padding: s.lg - 2,
         fontSize: t.sizes.md,
+        fontFamily: t.families.body,
         color: c.textMain,
       },
     },
@@ -89,6 +92,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       defaultText: {
         fontSize: t.sizes.md - 1,
+        fontFamily: t.families.subheader,
         color: c.textMain,
       },
       selectedText: {
@@ -127,18 +131,33 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         width: '100%',
         alignItems: 'center',
       },
-      settingsIcon: {
-        position: 'absolute',
-        top: s['3xl'],
-        right: s.xl,
-        zIndex: 10,
-        padding: s.sm,
+    },
+    splash: {
+      logoContainer: {
+        marginBottom: s.lg,
       },
-      homeFooterContainer: {
-        position: 'absolute',
-        bottom: s['2xl'],
-        width: '100%',
+      loadingContainer: {
+        marginBottom: s['2xl'],
         alignItems: 'center',
+      },
+      tagline: {
+        marginTop: s.md,
+        opacity: 0.8,
+        fontSize: 14,
+      },
+    },
+    welcome: {
+      logoContainer: {
+        marginBottom: s.lg,
+      },
+      subtitle: {
+        marginBottom: s['3xl'],
+      },
+    },
+    loadingGradient: {
+      container: {
+        alignItems: 'center',
+        justifyContent: 'center',
       },
     },
     listItem: {
@@ -161,10 +180,12 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       gameName: {
         fontSize: t.sizes.lg,
+        fontFamily: t.families.header,
         color: c.textMain,
       },
       gameDetails: {
         fontSize: t.sizes.sm,
+        fontFamily: t.families.body,
         color: c.textSecondary,
         marginTop: 2,
       },
@@ -186,10 +207,12 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       symbol: {
         fontSize: 28,
+        fontFamily: t.families.header,
         color: c.textMain,
       },
       value: {
         fontSize: 38,
+        fontFamily: t.families.header,
         color: c.textMain,
         marginHorizontal: s['2xl'],
         minWidth: 48,
@@ -206,16 +229,18 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     noMatchesTitle: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.header,
       color: c.textMain,
-      fontWeight: t.weights.semibold,
       marginBottom: s.sm,
     },
     noMatchesBody: {
       fontSize: t.sizes.md - 1,
+      fontFamily: t.families.body,
       color: c.textSecondary,
     },
     matchCount: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.header,
       color: c.tintMain,
       marginBottom: s.lg,
     },
@@ -261,8 +286,8 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     useRitualButtonText: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
       color: c.tintMain,
-      fontWeight: t.weights.semibold,
     },
     ritualHeaderRow: {
       flexDirection: 'row',
@@ -273,8 +298,8 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     ritualHeaderTitle: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.header,
       color: c.textMain,
-      fontWeight: t.weights.semibold,
     },
     ritualSaveControls: {
       flexDirection: 'row',
@@ -288,8 +313,8 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     ritualSaveControlText: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
       color: c.tintMain,
-      fontWeight: t.weights.semibold,
     },
     ritualDeleteIcon: {
       width: 44,
@@ -311,17 +336,20 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     sectionTitle: {
       fontSize: t.sizes['2xl'],
+      fontFamily: t.families.header,
       color: c.textMain,
       marginBottom: s.xl,
     },
     label: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.subheader,
       color: c.textMain,
       marginTop: s.xl,
       marginBottom: 6,
     },
     helper: {
       fontSize: t.sizes.md - 1,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       marginBottom: s.md,
     },
@@ -336,10 +364,12 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     collapsibleLabel: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.subheader,
       color: c.textMain,
     },
     collapsibleSummary: {
       fontSize: t.sizes.md - 1,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       paddingBottom: s.sm,
     },
@@ -372,14 +402,15 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       headerNote: {
         fontSize: t.sizes.sm,
+        fontFamily: t.families.body,
         color: c.textSecondary,
         marginTop: s.md,
         lineHeight: 20,
       },
       title: {
         fontSize: t.sizes['2xl'],
+        fontFamily: t.families.header,
         color: c.textMain,
-        fontWeight: t.weights.semibold,
       },
       closeButton: {
         paddingVertical: s.sm,
@@ -387,6 +418,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       closeButtonText: {
         fontSize: t.sizes.md,
+        fontFamily: t.families.subheader,
         color: c.tintMain,
       },
       scroll: {
@@ -398,6 +430,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       sectionTitle: {
         fontSize: t.sizes.lg,
+        fontFamily: t.families.header,
         color: c.textSecondary,
         marginBottom: s.md,
       },
@@ -412,17 +445,19 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       ritualName: {
         fontSize: t.sizes.lg,
+        fontFamily: t.families.header,
         color: c.textMain,
-        fontWeight: t.weights.semibold,
         marginBottom: 4,
       },
       ritualDescription: {
         fontSize: t.sizes.md - 1,
+        fontFamily: t.families.body,
         color: c.textSecondary,
         marginBottom: s.sm,
       },
       ritualMetadata: {
         fontSize: t.sizes.sm,
+        fontFamily: t.families.body,
         color: c.textSecondary,
       },
     },
@@ -436,10 +471,12 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     voteSymbol: {
       fontSize: 20,
+      fontFamily: t.families.header,
       color: c.textMain,
     },
     voteCount: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.header,
       color: c.textMain,
       minWidth: 32,
       textAlign: 'center',
@@ -475,7 +512,6 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     settingsRowTitle: {
       textAlign: 'left',
       color: c.textMain,
-      fontWeight: t.weights.semibold,
     },
     settingsRowDesc: {
       textAlign: 'left',
@@ -491,16 +527,19 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     voteHint: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       marginBottom: s.sm,
     },
     allVotesAssigned: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.body,
       color: c.tintMain,
       marginBottom: s.sm,
     },
     ritualSavedText: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
       color: c.tintMain,
       marginBottom: s.md,
     },
@@ -524,6 +563,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     ritualNameRules: {
       fontSize: t.sizes.sm,
+      fontFamily: t.families.header,
       color: c.textSecondary,
       marginBottom: s.md,
       lineHeight: 20,
@@ -543,6 +583,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       borderRadius: r.md,
       padding: s.lg - 2,
       fontSize: t.sizes.md,
+      fontFamily: t.families.body,
       color: c.textMain,
     },
     ritualSaveButton: {
@@ -558,6 +599,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     ritualCancelText: {
       color: c.textSecondary,
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
     },
     saveRitualButton: {
       paddingVertical: s.lg - 2,
@@ -569,8 +611,8 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     saveRitualButtonText: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
       color: c.tintMain,
-      fontWeight: t.weights.semibold,
     },
     gameItem: {
       flexDirection: 'row',
@@ -622,11 +664,12 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     cardName: {
       fontSize: t.sizes.xl,
+      fontFamily: t.families.header,
       color: c.textMain,
-      fontWeight: t.weights.semibold,
     },
     cardDetail: {
       fontSize: t.sizes.md - 1,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       marginTop: s.xs,
     },
@@ -641,11 +684,13 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     emptyTitle: {
       fontSize: t.sizes['2xl'],
+      fontFamily: t.families.header,
       color: c.textMain,
       marginBottom: s.md,
     },
     emptyBody: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       marginBottom: s['2xl'],
     },
@@ -657,6 +702,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     loadingText: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
       color: c.textSecondary,
     },
     retryButton: {
@@ -667,6 +713,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     retryButtonText: {
       color: c.tintMain,
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
     },
     spinnerModal: {
       flex: 1,
@@ -677,6 +724,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     spinnerTitle: {
       fontSize: t.sizes['2xl'],
+      fontFamily: t.families.header,
       color: c.textMain,
       marginBottom: s.lg,
     },
@@ -685,13 +733,14 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     celebrationTitle: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.header,
       color: c.textSecondary,
       marginBottom: s.sm,
     },
     winnerValue: {
       fontSize: t.sizes['3xl'] - 2,
+      fontFamily: t.families.header,
       color: c.tintMain,
-      fontWeight: t.weights.bold,
       textAlign: 'center',
       marginBottom: s['2xl'],
     },
@@ -704,19 +753,22 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     textButtonText: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
       color: c.textSecondary,
     },
     footer: {
       position: 'absolute',
       bottom: s['3xl'],
       alignItems: 'center',
+      marginBottom: 12,
     },
     bggLogo: {
-      marginBottom: 4,
-      width: '100%',
+      width: 160,
+      height: 47,
     },
     footerText: {
       fontSize: t.sizes.xs,
+      fontFamily: t.families.subheader,
       color: c.textSecondary,
     },
     listContent: {
@@ -755,6 +807,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     complexitySliderLabel: {
       fontSize: t.sizes.sm,
+      fontFamily: t.families.subheader,
       color: c.textSecondary,
     },
     advancedFiltersBlock: {
@@ -762,9 +815,9 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     },
     advancedFiltersLabel: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.subheader,
       color: c.textMain,
       marginBottom: s.md,
-      fontWeight: t.weights.semibold,
     },
     filtersContainer: {
       flex: 1,
@@ -793,6 +846,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
     spinnerWinnerText: {
       marginTop: s.xl,
       fontSize: t.sizes.lg,
+      fontFamily: t.families.subheader,
       color: c.textSpecial,
     },
   });

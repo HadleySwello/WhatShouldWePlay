@@ -54,7 +54,9 @@ export default function SpinnerScreen({
   };
 
   const slices =
-    participants && participants.length > 0 ? participants : [copy.spinner.noGames];
+    participants && participants.length > 0
+      ? participants
+      : [copy.spinner.noGames];
 
   const showCelebration = winner && !autoNavigate;
 
@@ -63,7 +65,9 @@ export default function SpinnerScreen({
       <View style={styles.spinnerModal}>
         {showCelebration ? (
           <View style={styles.celebration}>
-            <AppText variant="celebrationTitle">{copy.spinner.celebrationTitle}</AppText>
+            <AppText variant="celebrationTitle">
+              {copy.spinner.celebrationTitle}
+            </AppText>
             <AppText variant="winnerValue">{winner}</AppText>
             <View style={styles.buttonRow}>
               <AppButton
@@ -84,7 +88,9 @@ export default function SpinnerScreen({
                 style={styles.textButton}
                 onPress={handleBackToList}
               >
-                <AppText variant="textButton">{copy.spinner.backToList}</AppText>
+                <AppText variant="textButton">
+                  {copy.spinner.backToList}
+                </AppText>
               </TouchableOpacity>
             </View>
           </View>

@@ -20,9 +20,13 @@ export default function VotingModeInfoModal({ visible, onClose }) {
         <View style={[m.content, styles.votingModeInfoModalContent]}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">{copy.modals.votingMode.title}</AppText>
+              <AppText variant="modalTitle">
+                {copy.modals.votingMode.title}
+              </AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
-                <AppText variant="closeButtonText">{copy.modals.votingMode.close}</AppText>
+                <AppText variant="closeButtonText">
+                  {copy.modals.votingMode.close}
+                </AppText>
               </TouchableOpacity>
             </View>
           </View>

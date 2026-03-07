@@ -8,7 +8,7 @@ export { tokensLight as tokens };
 export { lightTheme, darkTheme };
 export { layout } from './layout';
 export { getNavigationScreenOptions } from './navigation';
-export { getSpinnerMarkerStyle } from './components';
+export { getSpinnerMarkerStyle, getLoadingGradientStyle } from './components';
 export { spacing } from './spacing';
 export { radius } from './radius';
 export { typography } from './typography';

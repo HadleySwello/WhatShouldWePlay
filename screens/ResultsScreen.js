@@ -102,9 +102,7 @@ export default function ResultsScreen({ route, navigation }) {
   const isSingleGame = filteredGames.length === 1;
 
   const spinnerParticipants =
-    votingModeEnabled &&
-    totalVotes > 0 &&
-    weightedParticipants.length > 0
+    votingModeEnabled && totalVotes > 0 && weightedParticipants.length > 0
       ? weightedParticipants
       : equalWeightParticipants(filteredGames);
 
@@ -198,7 +196,11 @@ export default function ResultsScreen({ route, navigation }) {
           style={styles.votingModeInfoIcon}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Icon name="info-outline" size={22} color={tokens.colors.textSecondary} />
+          <Icon
+            name="info-outline"
+            size={22}
+            color={tokens.colors.textSecondary}
+          />
         </TouchableOpacity>
       </View>
       {votingModeEnabled && filteredGames.length > 0 && (
@@ -210,17 +212,23 @@ export default function ResultsScreen({ route, navigation }) {
         </AppText>
       )}
       {votingModeEnabled && allVotesAssigned && (
-        <AppText variant="allVotesAssigned">{copy.results.allVotesAssigned}</AppText>
+        <AppText variant="allVotesAssigned">
+          {copy.results.allVotesAssigned}
+        </AppText>
       )}
       {canSaveRitual &&
         (ritualSaved ? (
-          <AppText variant="ritualSavedText">{copy.results.ritualSaved}</AppText>
+          <AppText variant="ritualSavedText">
+            {copy.results.ritualSaved}
+          </AppText>
         ) : (
           <TouchableOpacity
             style={styles.saveRitualButton}
             onPress={() => setShowRitualNameModal(true)}
           >
-            <AppText variant="saveRitualButtonText">{copy.results.saveAsRitual}</AppText>
+            <AppText variant="saveRitualButtonText">
+              {copy.results.saveAsRitual}
+            </AppText>
           </TouchableOpacity>
         ))}
     </View>
