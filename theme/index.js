@@ -4,6 +4,9 @@ import { getComponentVariantStyles } from './components';
 import { lightTheme } from './light';
 import { darkTheme } from './dark';
 
+import { useThemeMode } from './ThemeModeContext';
+
+export { useThemeMode };
 export { tokensLight as tokens };
 export { lightTheme, darkTheme };
 export { layout } from './layout';
@@ -32,6 +35,7 @@ function getStyles(isDark) {
 
 export function useAppTheme() {
   const theme = usePaperTheme();
+  const { reduceMovement } = useThemeMode();
   const isDark = theme.dark === true;
   const tokens = isDark ? tokensDark : tokensLight;
   const styles = getStyles(isDark);
@@ -39,5 +43,6 @@ export function useAppTheme() {
     theme,
     tokens,
     styles,
+    reduceMovement,
   };
 }

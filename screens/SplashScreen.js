@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, TouchableOpacity, Linking } from 'react-native';
+import { View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppGradientBackground from '../components/AppGradientBackground';
@@ -9,17 +9,14 @@ import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
-import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
-import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
+import AppLogo from '../components/AppLogo';
+import PoweredByBGG from '../components/PoweredByBGG';
 
-const BGG_URL = 'https://boardgamegeek.com';
 const BGG_COLLECTION_KEY = 'bggCollection';
 
 export default function SplashScreen({ navigation }) {
   const [, setChecked] = useState(false);
-  const { styles, theme } = useAppTheme();
-  const isDark = theme.dark === true;
-  const Logo = isDark ? LogoDark : LogoLight;
+  const { styles } = useAppTheme();
 
   useEffect(() => {
     let cancelled = false;
@@ -69,30 +66,16 @@ export default function SplashScreen({ navigation }) {
             <AppLoadingGradient size={80} />
           </View>
           <View style={styles.splash.logoContainer}>
-            <Logo width={280} height={280} />
+            <AppLogo width={280} height={280} />
           </View>
-          <AppText variant="subtitle">
-            {copy.splash.subtitle}
-          </AppText>
+          <AppText variant="subtitle">{copy.splash.subtitle}</AppText>
           {copy.splash.tagline ? (
             <AppText variant="body" style={styles.splash.tagline}>
               {copy.splash.tagline}
             </AppText>
           ) : null}
         </View>
-        <TouchableOpacity
-          style={styles.footer}
-          onPress={() => Linking.openURL(BGG_URL)}
-          activeOpacity={0.7}
-        >
-          <Image
-            source={require('../assets/powered-by-bgg.jpg')}
-            style={styles.bggLogo}
-            resizeMode="contain"
-            accessible
-            accessibilityLabel={copy.splash.a11y}
-          />
-        </TouchableOpacity>
+        <PoweredByBGG style={styles.splash.footerAttribution} />
       </View>
     </View>
   );

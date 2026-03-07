@@ -22,6 +22,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       primaryCompact: {
         backgroundColor: c.tintMain,
         paddingVertical: s.lg,
+        paddingHorizontal: s.xl,
         borderRadius: r.md,
         alignItems: 'center',
       },
@@ -31,12 +32,19 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         color: c.onTintSecondary,
         textAlign: 'center',
       },
+      primaryCompactText: {
+        fontSize: t.sizes.md, // Slightly smaller for compact
+        fontFamily: t.families.subheader,
+        color: c.backgroundMain,
+        textAlign: 'center',
+      },
       secondary: {
         paddingVertical: s.lg - 2,
         paddingHorizontal: s['2xl'] - 4,
         borderRadius: r.md,
         borderWidth: 1,
         borderColor: c.tintMain,
+        color: c.backgroundMain,
         alignItems: 'center',
         alignSelf: 'stretch',
         marginBottom: s.md,
@@ -145,6 +153,9 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         opacity: 0.8,
         fontSize: 14,
       },
+      footerAttribution: {
+        marginBottom: 12,
+      },
     },
     welcome: {
       logoContainer: {
@@ -153,11 +164,120 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       subtitle: {
         marginBottom: s['3xl'],
       },
+      footerAttribution: {
+        marginBottom: 12,
+      },
     },
     loadingGradient: {
       container: {
         alignItems: 'center',
         justifyContent: 'center',
+      },
+    },
+    connectBgg: {
+      container: {
+        flex: 1,
+        paddingHorizontal: s.xl,
+        paddingTop: s['4xl'],
+        paddingBottom: s['4xl'],
+        alignItems: 'center',
+      },
+      header: {
+        marginBottom: s.lg,
+        textAlign: 'center',
+      },
+      body: {
+        marginBottom: s['3xl'],
+        textAlign: 'center',
+        opacity: 0.9,
+        lineHeight: 22,
+      },
+      inputContainer: {
+        width: '100%',
+        marginBottom: s.xl,
+      },
+      helpButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: s.xl,
+        padding: s.sm,
+      },
+      helpText: {
+        marginLeft: s.xs,
+        fontSize: 14,
+        color: c.tintMain,
+      },
+      loginLinkSection: {
+        marginTop: 'auto',
+        alignItems: 'center',
+        width: '100%',
+        paddingTop: s.xl,
+        paddingBottom: s.xl,
+      },
+      bggLoginLogo: {
+        marginBottom: s.lg,
+      },
+      bggLoginHelper: {
+        textAlign: 'center',
+        opacity: 0.7,
+        paddingHorizontal: s.md,
+        lineHeight: 18,
+      },
+    },
+    helpModal: {
+      overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: s.xl,
+      },
+      content: {
+        backgroundColor: c.backgroundMain,
+        borderRadius: r.lg,
+        padding: s.xl,
+        width: '100%',
+        maxWidth: 500,
+        elevation: e.high,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
+      },
+      title: {
+        marginBottom: s.lg,
+        color: c.textMain,
+      },
+      faqItem: {
+        marginBottom: s.xl,
+      },
+      question: {
+        fontFamily: t.families.subheader,
+        color: c.textMain,
+        marginBottom: s.xs,
+        fontSize: 16,
+      },
+      answer: {
+        color: c.textSecondary,
+        fontSize: 14,
+        lineHeight: 20,
+      },
+      demoLink: {
+        color: c.tintMain,
+        fontFamily: t.families.bodyBold,
+        textDecorationLine: 'underline',
+      },
+      closeButton: {
+        marginTop: s.lg,
+        alignSelf: 'center',
+      },
+      closeIcon: {
+        position: 'absolute',
+        top: s.lg,
+        right: s.lg,
+        zIndex: 10,
+        padding: s.xs,
       },
     },
     listItem: {
@@ -756,11 +876,11 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       fontFamily: t.families.subheader,
       color: c.textSecondary,
     },
-    footer: {
+    attributionContainer: {
       position: 'absolute',
       bottom: s['3xl'],
       alignItems: 'center',
-      marginBottom: 12,
+      alignSelf: 'center',
     },
     bggLogo: {
       width: 160,

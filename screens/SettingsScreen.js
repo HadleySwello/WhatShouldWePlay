@@ -31,7 +31,8 @@ const THEME_VALUES = ['light', 'dark', 'system'];
 
 export default function SettingsScreen({ navigation }) {
   const { styles, tokens, theme } = useAppTheme();
-  const { themeMode, setThemeMode } = useThemeMode();
+  const { themeMode, setThemeMode, reduceMovement, setReduceMovement } =
+    useThemeMode();
   const [defaultPlayerCount, setDefaultPlayerCountState] =
     useState(DEFAULT_PLAYER_COUNT);
   const [votingModeEnabled, setVotingModeEnabledState] = useState(false);
@@ -52,6 +53,13 @@ export default function SettingsScreen({ navigation }) {
       }
     },
     [setThemeMode]
+  );
+
+  const handleReduceMovementChange = useCallback(
+    (value) => {
+      setReduceMovement(value);
+    },
+    [setReduceMovement]
   );
 
   const handleDefaultPlayerCountChange = useCallback((value) => {
@@ -125,6 +133,33 @@ export default function SettingsScreen({ navigation }) {
         style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
       >
         <AppText variant="sectionTitle" style={layout.marginBottomSm}>
+          {copy.settings.accessibility}
+        </AppText>
+        <AppText variant="helper" style={layout.marginBottomLg}>
+          {copy.settings.reduceMovementDescription}
+        </AppText>
+        <View style={styles.votingModeRowInner}>
+          <View style={styles.settingsRowInfo}>
+            <AppText variant="body" style={styles.settingsRowTitle}>
+              {copy.settings.reduceMovement}
+            </AppText>
+          </View>
+          <Switch
+            value={reduceMovement}
+            onValueChange={handleReduceMovementChange}
+            trackColor={{
+              false: tokens.colors.cardMain,
+              true: tokens.colors.tintMain,
+            }}
+            thumbColor="#fff"
+          />
+        </View>
+      </View>
+
+      <View
+        style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
+      >
+        <AppText variant="sectionTitle" style={layout.marginBottomSm}>
           {copy.settings.theRitual}
         </AppText>
         <AppText variant="helper" style={layout.marginBottomLg}>
@@ -175,6 +210,7 @@ export default function SettingsScreen({ navigation }) {
         <AppButton
           variant="primary"
           onPress={() => navigation.navigate('ConnectBGG')}
+          style={layout.marginBottomMd}
         >
           {copy.settings.changeUsername}
         </AppButton>

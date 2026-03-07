@@ -5,18 +5,13 @@ import { Feather } from '@expo/vector-icons';
 import AppGradientBackground from '../components/AppGradientBackground';
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
+import AppLogo from '../components/AppLogo';
 import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
-import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
-import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
-
 export default function HomeScreen({ navigation }) {
-  const { styles, tokens, theme } = useAppTheme();
-  const isDark = theme.dark === true;
-
-  const Logo = isDark ? LogoDark : LogoLight;
+  const { styles, tokens } = useAppTheme();
 
   return (
     <View style={styles.screen.wrapper}>
@@ -30,7 +25,7 @@ export default function HomeScreen({ navigation }) {
         <Feather
           name="settings"
           size={28}
-          color={tokens.colors.textSecondary}
+          color={tokens.colors.backgroundMain}
         />
       </TouchableOpacity>
 
@@ -43,9 +38,7 @@ export default function HomeScreen({ navigation }) {
         ]}
       >
         <View style={layout.center}>
-          <View style={layout.marginBottomSm}>
-            <Logo width={280} height={280} />
-          </View>
+          <AppLogo width={280} height={280} style={layout.marginBottomSm} />
           <AppText variant="subtitle" style={layout.marginBottom3xl}>
             {copy.home.heroDescription}
           </AppText>

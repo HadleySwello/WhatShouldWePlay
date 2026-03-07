@@ -4,23 +4,32 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
+  Linking,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
+import AppFAQModal from '../components/AppFAQModal';
+import PoweredByBGG from '../components/PoweredByBGG';
 import copy from '../constants/copy';
 import { fetchAndSaveCollection } from '../hooks/boardGameGeekApi';
-import { useAppTheme } from '../theme';
-import { layout } from '../theme';
+import { useAppTheme, layout } from '../theme';
 
 export default function ConnectBGGScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
   const { tokens, styles } = useAppTheme();
 
   const handleLoad = () => {
+    if (!username.trim()) {
+      setErrorMessage(copy.connectBGG.usernameRequired);
+      return;
+    }
     setErrorMessage(null);
     setLoading(true);
     fetchAndSaveCollection(username)
@@ -38,54 +47,97 @@ export default function ConnectBGGScreen({ navigation }) {
   const canSubmit = username.trim().length > 0 && !loading;
 
   return (
-    <KeyboardAvoidingView
-      style={[styles.screen.container, layout.paddingXl, layout.center]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <AppText variant="header" style={layout.marginBottomLg}>
-        {copy.connectBGG.header}
-      </AppText>
-      <AppText variant="body" style={layout.marginBottomXl}>
-        {copy.connectBGG.body}
-      </AppText>
-
-      <AppInput
-        placeholder={copy.connectBGG.placeholder}
-        value={username}
-        onChangeText={(text) => {
-          setUsername(text);
-          setErrorMessage(null);
-        }}
-        autoCapitalize="none"
-        autoCorrect={false}
-        editable={!loading}
-        style={layout.marginBottomLg}
-      />
-
-      {errorMessage ? (
-        <AppText variant="error" style={layout.marginBottomLg}>
-          {errorMessage}
+    <View style={styles.screen.wrapper}>
+      <KeyboardAvoidingView
+        style={[styles.connectBgg.container]}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <AppText variant="header" style={styles.connectBgg.header}>
+          {copy.connectBGG.header}
         </AppText>
-      ) : null}
+        <AppText variant="body" style={styles.connectBgg.body}>
+          {copy.connectBGG.body}
+        </AppText>
 
-      {loading ? (
-        <View style={styles.loadingRow}>
-          <ActivityIndicator size="small" color={tokens.colors.tintMain} />
-          <AppText variant="helper">{copy.connectBGG.loading}</AppText>
+        <View style={styles.connectBgg.inputContainer}>
+          <AppInput
+            placeholder={copy.connectBGG.placeholder}
+            value={username}
+            onChangeText={(text) => {
+              setUsername(text);
+              setErrorMessage(null);
+            }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            editable={!loading}
+          />
         </View>
-      ) : (
-        <AppButton
-          variant="primary"
-          onPress={handleLoad}
-          disabled={!canSubmit}
-          style={[
-            styles.button.primaryCompact,
-            !canSubmit && styles.button.disabled,
-          ]}
+
+        {errorMessage ? (
+          <AppText variant="error" style={layout.marginBottomLg}>
+            {errorMessage}
+          </AppText>
+        ) : null}
+
+        <AppFAQModal
+          visible={showHelp}
+          onClose={() => setShowHelp(false)}
+          onSelectDemo={(name) => {
+            setUsername(name);
+            setShowHelp(false);
+          }}
+        />
+
+        {loading ? (
+          <View style={layout.rowCenter}>
+            <ActivityIndicator
+              size="small"
+              color={tokens.colors.tintMain}
+              style={layout.marginRightMd}
+            />
+            <AppText variant="helper">{copy.connectBGG.loading}</AppText>
+          </View>
+        ) : (
+          <AppButton
+            variant="primary"
+            onPress={handleLoad}
+            disabled={!canSubmit}
+            style={layout.stretch}
+          >
+            {copy.connectBGG.cta}
+          </AppButton>
+        )}
+
+        {!loading && (
+          <TouchableOpacity
+            style={styles.connectBgg.helpButton}
+            onPress={() => setShowHelp(true)}
+          >
+            <Feather
+              name="help-circle"
+              size={16}
+              color={tokens.colors.tintMain}
+            />
+            <AppText style={styles.connectBgg.helpText}>
+              {copy.connectBGG.help}
+            </AppText>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity
+          style={styles.connectBgg.loginLinkSection}
+          onPress={() => Linking.openURL(copy.connectBGG.bggLoginUrl)}
+          activeOpacity={0.7}
         >
-          {copy.connectBGG.cta}
-        </AppButton>
-      )}
-    </KeyboardAvoidingView>
+          <PoweredByBGG
+            style={styles.connectBgg.bggLoginLogo}
+            pressable={false}
+          />
+          <AppText variant="helper" style={styles.connectBgg.bggLoginHelper}>
+            {copy.connectBGG.findAccount}
+          </AppText>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </View>
   );
 }

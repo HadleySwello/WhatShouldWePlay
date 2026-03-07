@@ -9,22 +9,36 @@ import {
   getThemeMode,
   setThemeMode as persistThemeMode,
 } from '../helpers/themeStorage';
+import {
+  getReduceMovement,
+  setReduceMovement as persistReduceMovement,
+} from '../helpers/reduceMovementStorage';
 
 const ThemeModeContext = createContext(null);
 
 export function ThemeModeProvider({ children }) {
   const [themeMode, setThemeModeState] = useState('system');
+  const [reduceMovement, setReduceMovementState] = useState(false);
 
   useEffect(() => {
     getThemeMode().then(setThemeModeState);
+    getReduceMovement().then(setReduceMovementState);
   }, []);
 
   const setThemeMode = useCallback((value) => {
-    persistThemeMode(value).then(setThemeModeState);
+    setThemeModeState(value);
+    persistThemeMode(value);
+  }, []);
+
+  const setReduceMovement = useCallback((value) => {
+    setReduceMovementState(value);
+    persistReduceMovement(value);
   }, []);
 
   return (
-    <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
+    <ThemeModeContext.Provider
+      value={{ themeMode, setThemeMode, reduceMovement, setReduceMovement }}
+    >
       {children}
     </ThemeModeContext.Provider>
   );

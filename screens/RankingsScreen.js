@@ -143,10 +143,9 @@ export default function RankingsScreen({ navigation }) {
         )}
       />
       <AppButton
-        variant="primary"
+        variant="primaryCompact"
         onPress={() => navigation.navigate('Setup')}
         style={[
-          styles.button.primaryCompact,
           layout.marginHorizontalLg,
           layout.marginBottomXl,
         ]}

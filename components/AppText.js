@@ -17,11 +17,13 @@ export default function AppText({
     footer: styles.footerText,
     header: {
       fontSize: t.sizes.xl + 4,
+      fontFamily: t.families.header,
       color: c.textMain,
       textAlign: 'center',
     },
     heroTitle: {
       fontSize: t.sizes['5xl'] || 38,
+      fontFamily: t.families.header,
       fontWeight: t.weights.bold,
       color: c.textMain,
       textAlign: 'center',
@@ -29,25 +31,30 @@ export default function AppText({
     },
     title: {
       fontSize: t.sizes['3xl'],
+      fontFamily: t.families.header,
       color: c.textMain,
       textAlign: 'center',
     },
     subtitle: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.subheader,
       color: c.textSecondary,
       textAlign: 'center',
     },
     body: {
       fontSize: t.sizes.md,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       textAlign: 'center',
     },
     label: {
       fontSize: t.sizes.lg,
+      fontFamily: t.families.bodyBold,
       color: c.textMain,
     },
     helper: {
       fontSize: t.sizes.md - 1,
+      fontFamily: t.families.body,
       color: c.textSecondary,
     },
     buttonPrimary: styles.button.primaryText,
@@ -63,6 +70,7 @@ export default function AppText({
     },
     error: {
       fontSize: t.sizes.md - 1,
+      fontFamily: t.families.body,
       color: c.textSecondary,
       textAlign: 'center',
     },

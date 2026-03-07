@@ -1,22 +1,15 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Linking } from 'react-native';
+import { View } from 'react-native';
 import AppGradientBackground from '../components/AppGradientBackground';
-
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
+import AppLogo from '../components/AppLogo';
+import PoweredByBGG from '../components/PoweredByBGG';
 import copy from '../constants/copy';
-import { useAppTheme } from '../theme';
-import { layout } from '../theme';
-
-import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
-import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
-
-const BGG_URL = 'https://boardgamegeek.com';
+import { useAppTheme, layout } from '../theme';
 
 export default function WelcomeScreen({ navigation }) {
-  const { styles, theme } = useAppTheme();
-  const isDark = theme.dark === true;
-  const Logo = isDark ? LogoDark : LogoLight;
+  const { styles } = useAppTheme();
 
   return (
     <View style={styles.screen.wrapper}>
@@ -31,7 +24,7 @@ export default function WelcomeScreen({ navigation }) {
       >
         <View style={layout.center}>
           <View style={styles.welcome.logoContainer}>
-            <Logo width={280} height={280} />
+            <AppLogo width={280} height={280} />
           </View>
           <AppText variant="subtitle" style={styles.welcome.subtitle}>
             {copy.welcome.subtitle}
@@ -45,19 +38,7 @@ export default function WelcomeScreen({ navigation }) {
             </AppButton>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.footer}
-          onPress={() => Linking.openURL(BGG_URL)}
-          activeOpacity={0.7}
-        >
-          <Image
-            source={require('../assets/powered-by-bgg.jpg')}
-            style={styles.bggLogo}
-            resizeMode="contain"
-            accessible
-            accessibilityLabel={copy.splash.a11y}
-          />
-        </TouchableOpacity>
+        <PoweredByBGG style={styles.welcome.footerAttribution} />
       </View>
     </View>
   );

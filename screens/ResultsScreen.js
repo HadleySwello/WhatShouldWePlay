@@ -241,9 +241,8 @@ export default function ResultsScreen({ route, navigation }) {
           <AppText variant="emptyTitle">{copy.results.emptyTitle}</AppText>
           <AppText variant="emptyBody">{copy.results.emptyBody}</AppText>
           <AppButton
-            variant="primary"
+            variant="primaryCompact"
             onPress={() => navigation.goBack()}
-            style={styles.button.primaryCompact}
           >
             {copy.results.backToFilters}
           </AppButton>
@@ -315,9 +314,8 @@ export default function ResultsScreen({ route, navigation }) {
 
       <View style={styles.bottomBar}>
         <AppButton
-          variant="primary"
+          variant="primaryCompact"
           onPress={handleSpin}
-          style={styles.button.primaryCompact}
         >
           {isSingleGame ? copy.results.ctaSelectGame : copy.results.ctaSpin}
         </AppButton>

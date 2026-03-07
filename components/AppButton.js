@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme';
 
 export default function AppButton({
@@ -12,29 +12,34 @@ export default function AppButton({
 }) {
   const { styles } = useAppTheme();
 
-  const containerStyle =
-    variant === 'primary'
-      ? styles.button.primary
-      : variant === 'secondary'
-        ? styles.button.secondary
-        : styles.button.tertiary;
+  const containerStyle = styles.button[variant] || styles.button.primary;
   const textStyle =
-    variant === 'primary'
-      ? styles.button.primaryText
-      : variant === 'secondary'
-        ? styles.button.secondaryText
-        : styles.button.tertiaryText;
+    styles.button[`${variant}Text`] || styles.button.primaryText;
+
+  // Final style merges base variant style, disabled state, and manual overrides
+  const combinedContainerStyle = [
+    containerStyle,
+    disabled && styles.button.disabled,
+    style,
+  ];
+
+  // Helper to extract color from style overrides (allowing ad-hoc color changes)
+  const flattenedStyle = StyleSheet.flatten(style) || {};
+  const finalTextStyle = [
+    textStyle,
+    flattenedStyle.color && { color: flattenedStyle.color },
+  ];
 
   return (
     <TouchableOpacity
-      style={[containerStyle, disabled && styles.button.disabled, style]}
+      style={combinedContainerStyle}
       onPress={onPress}
       disabled={disabled}
       activeOpacity={0.8}
       {...rest}
     >
       {typeof children === 'string' ? (
-        <Text style={textStyle}>{children}</Text>
+        <Text style={finalTextStyle}>{children}</Text>
       ) : (
         children
       )}
