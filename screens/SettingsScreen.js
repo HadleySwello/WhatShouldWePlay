@@ -111,8 +111,8 @@ export default function SettingsScreen({ navigation }) {
         appearance={theme.dark ? 'dark' : 'light'}
         backgroundColor={tokens.colors.backgroundMain}
         fontStyle={{ color: tokens.colors.textSecondary }}
-        activeFontStyle={{ color: tokens.colors.textMain }}
-        tintColor={tokens.colors.cardSecondary}
+        activeFontStyle={{ color: tokens.colors.onTintSecondary }}
+        tintColor={tokens.colors.tintSecondary}
       />
       <AppText variant="sectionTitle" style={styles.settingsSectionTitle}>
         {copy.settings.defaultPlayerCount}

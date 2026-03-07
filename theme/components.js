@@ -11,7 +11,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
   return StyleSheet.create({
     button: {
       primary: {
-        backgroundColor: c.tintMain,
+        backgroundColor: c.tintSecondary,
         paddingVertical: s.lg,
         paddingHorizontal: s['3xl'],
         borderRadius: r.md,
@@ -28,7 +28,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       },
       primaryText: {
         fontSize: t.sizes.lg,
-        color: c.backgroundMain,
+        color: c.onTintSecondary,
         fontWeight: t.weights.semibold,
         textAlign: 'center',
       },
@@ -93,7 +93,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
         color: c.textMain,
       },
       selectedText: {
-        color: c.backgroundMain,
+        color: c.onTintMain,
       },
     },
     screen: {
