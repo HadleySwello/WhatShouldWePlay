@@ -1,8 +1,8 @@
 /**
- * Quick rituals: persona-aligned, market-informed filter defaults.
+ * Quick vibes: persona-aligned, market-informed filter defaults.
  * Based on docs/quick-presets-deep-research-report.md
  */
-export const QUICK_RITUALS = [
+export const QUICK_VIBES = [
   {
     id: 'family-weeknight',
     name: 'Family Weeknight Win',
@@ -140,4 +140,4 @@ export const QUICK_RITUALS = [
   },
 ];
 
-export const QUICK_RITUAL_NAMES = QUICK_RITUALS.map((r) => r.name);
+export const QUICK_VIBE_NAMES = QUICK_VIBES.map((r) => r.name);

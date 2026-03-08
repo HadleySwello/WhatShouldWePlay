@@ -13,7 +13,7 @@ const colors = {
     textSecondary: '#2A575A', // Darker Pine Blue
     textSpecial: '#861657', // Dark Raspberry
 
-    // Accents (10%) - Pine Blue as primary ritual anchor
+    // Accents (10%) - Pine Blue as primary vibe anchor
     tintMain: '#2A575A',
     tintSecondary: '#AA4465', // Berry Crush
     tintSpecial: '#861657', // Dark Raspberry
@@ -33,7 +33,7 @@ const colors = {
     focusRing: '#2A575A',
     overlay: 'rgba(39, 48, 67, 0.5)', // Deep Space Blue with opacity
 
-    // Ritual moments
+    // Vibe moments
     spinnerGlow: '#2A575A',
     confetti1: '#2A575A',
     confetti2: '#AA4465',
@@ -67,8 +67,8 @@ const colors = {
 
     shadow: '#000000',
 
-    // Gemstone Ritual Palette (Wheel)
-    ritual: {
+    // Gemstone Vibe Palette (Wheel)
+    vibe: {
       wheel1: '#542E71', // Deep Amethyst
       wheel2: '#A77B0E', // Gilded Gold
       wheel3: '#2D5D4E', // Ancient Teal
@@ -91,7 +91,7 @@ const colors = {
     textSecondary: '#A8BDBA', // Soft Sage Green
     textSpecial: '#AA4465',
 
-    // Accents (10%) - Inverted Ritual Primary (Powder Petal)
+    // Accents (10%) - Inverted Vibe Primary (Powder Petal)
     tintMain: '#ECD7C7',
     tintSecondary: '#AA4465',
     tintSpecial: '#861657',
@@ -111,7 +111,7 @@ const colors = {
     focusRing: '#ECD7C7',
     overlay: 'rgba(0, 0, 0, 0.6)',
 
-    // Ritual moments
+    // Vibe moments
     spinnerGlow: '#ECD7C7',
     confetti1: '#ECD7C7',
     confetti2: '#AA4465',
@@ -145,8 +145,8 @@ const colors = {
 
     shadow: '#000000',
 
-    // Gemstone Ritual Palette (Wheel)
-    ritual: {
+    // Gemstone Vibe Palette (Wheel)
+    vibe: {
       wheel1: '#542E71', // Deep Amethyst
       wheel2: '#A77B0E', // Gilded Gold
       wheel3: '#2D5D4E', // Ancient Teal

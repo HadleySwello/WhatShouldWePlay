@@ -57,19 +57,19 @@ export const getModalStyles = (c, s, r, t, e) => ({
       color: c.textSecondary,
       marginBottom: s.md,
     },
-    ritualName: {
+    vibeName: {
       fontSize: t.sizes.lg,
       fontFamily: t.families.header,
       color: c.textMain,
       marginBottom: 4,
     },
-    ritualDescription: {
+    vibeDescription: {
       fontSize: t.sizes.md - 1,
       fontFamily: t.families.body,
       color: c.textSecondary,
       marginBottom: s.sm,
     },
-    ritualMetadata: {
+    vibeMetadata: {
       fontSize: t.sizes.sm,
       fontFamily: t.families.body,
       color: c.textSecondary,
@@ -130,7 +130,7 @@ export const getModalStyles = (c, s, r, t, e) => ({
       padding: s.xs,
     },
   },
-  ritualNameModalContent: {
+  vibeNameModalContent: {
     minHeight: 340,
     paddingBottom: s['3xl'],
   },
@@ -144,18 +144,18 @@ export const getModalStyles = (c, s, r, t, e) => ({
   votingModeInfoText: {
     lineHeight: 22,
   },
-  ritualNameModalBody: {
+  vibeNameModalBody: {
     paddingHorizontal: s.xl,
     paddingTop: s.lg,
   },
-  ritualNameRules: {
+  vibeNameRules: {
     fontSize: t.sizes.sm,
     fontFamily: t.families.header,
     color: c.textSecondary,
     marginBottom: s.md,
     lineHeight: 20,
   },
-  ritualNameError: {
+  vibeNameError: {
     color: c.textSecondary,
   },
   spinnerModal: {

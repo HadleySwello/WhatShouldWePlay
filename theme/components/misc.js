@@ -56,23 +56,23 @@ export const getMiscStyles = (c, s, r, t, e) => ({
       lineHeight: 18,
     },
   },
-  ritualSaveControls: {
+  vibeSaveControls: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: s.md,
     flexWrap: 'wrap',
   },
-  ritualSaveControlButton: {
+  vibeSaveControlButton: {
     paddingVertical: s.sm,
     paddingHorizontal: s.lg,
   },
-  ritualDeleteIcon: {
+  vibeDeleteIcon: {
     width: 44,
     height: 44,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ritualDeleteIconAbsolute: {
+  vibeDeleteIconAbsolute: {
     position: 'absolute',
     right: 0,
     top: 0,
@@ -81,7 +81,7 @@ export const getMiscStyles = (c, s, r, t, e) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ritualCardRow: {
+  vibeCardRow: {
     flex: 1,
   },
   stickyButtonContainer: {
@@ -101,27 +101,27 @@ export const getMiscStyles = (c, s, r, t, e) => ({
     shadowRadius: 8,
     elevation: e.high,
   },
-  stickyRitualSection: {
+  stickyVibeSection: {
     marginTop: s.md,
     alignItems: 'center',
   },
-  stickyRitualAction: {
+  stickyVibeAction: {
     paddingVertical: s.sm,
     paddingHorizontal: s.lg,
   },
-  ritualHeaderRow: {
+  vibeHeaderRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     marginBottom: s.lg,
     gap: s.sm,
   },
-  ritualHeaderTitle: {
+  vibeHeaderTitle: {
     fontSize: t.sizes.lg,
     fontFamily: t.families.header,
     color: c.textMain,
   },
-  ritualSavedText: {
+  vibeSavedText: {
     fontSize: t.sizes.md,
     fontFamily: t.families.subheader,
     color: c.tintMain,

@@ -2,13 +2,13 @@
 
 ## Executive summary
 
-WhatShouldWePlay? is positioned less as a “randomizer” and more as a calm, benevolent _decision ritual_ that converts social friction (indecision + responsibility anxiety) into a short, shared, **fair** moment of anticipation and reveal. The uploaded Product Brain explicitly frames the experience as a “mystic ritual-keeper/oracle” that guides the room from indecision to action, while prioritizing clarity and neurodivergent-friendly predictability. fileciteturn1file0
+WhatShouldWePlay? is positioned less as a “randomizer” and more as a calm, benevolent _decision vibe_ that converts social friction (indecision + responsibility anxiety) into a short, shared, **fair** moment of anticipation and reveal. The uploaded Product Brain explicitly frames the experience as a “mystic vibe-keeper/oracle” that guides the room from indecision to action, while prioritizing clarity and neurodivergent-friendly predictability. fileciteturn1file0
 
 Within the BoardGameGeek ecosystem, fantasy/mystical themes are both culturally legible (BGG has explicit “Fantasy” and “Mythology” categories) and extremely broad in scope, spanning epic campaign adventures, co-op “spirits vs invaders” narratives, and dark Arthurian lore—often with a strong emphasis on _meaningful decisions_ and avoiding “analysis paralysis” as a play-killer. BGG discussions and listings also show that users are accustomed to structured, quantitative descriptors (rankings, ratings, player counts, complexity/weight, etc.), which implies that a successful “mystical” brand voice must sit on top of **precise, utilitarian** information rather than replace it. citeturn0search9turn0search0turn7search3turn8search3
 
 Best-fit archetype recommendation:
 
-- Primary: **Magician** (transformation through ritual; “consult the fates”; reveal moment as ceremony)
+- Primary: **Magician** (transformation through vibe; “consult the fates”; reveal moment as ceremony)
 - Secondary: **Caregiver** (reduces anxiety; removes pressure; non-judgmental; supportive)
 - Tertiary: **Sage / Everyman** (structured narrowing + fairness as legitimacy; readable and predictable group tool)
 
@@ -22,7 +22,7 @@ Limitations and assumptions: this report treats the uploaded Product Brain text 
 
 The file frames the core problem as _decision fatigue under social pressure_—especially in group settings, and especially for users who experience anxiety about choosing “wrong,” analysis paralysis, and responsibility stress. It also explicitly calls out neurodivergent players as a primary audience segment and highlights “externalizing the burden of choice” as a key value. fileciteturn1file0
 
-Crucially, the product promise is not simply speed; it’s speed plus _emotional legitimacy_ (“fair, satisfying”) so the choice feels acceptable to the whole table. The “weighted selection” mechanic is positioned as a fairness ritual that preserves agency without forcing negotiation, which is a direct emotional antidote to group tension. fileciteturn1file0
+Crucially, the product promise is not simply speed; it’s speed plus _emotional legitimacy_ (“fair, satisfying”) so the choice feels acceptable to the whole table. The “weighted selection” mechanic is positioned as a fairness vibe that preserves agency without forcing negotiation, which is a direct emotional antidote to group tension. fileciteturn1file0
 
 ### Persona signals and archetype cues embedded in the language
 
@@ -32,13 +32,13 @@ The three personas included in the file point to different “emotional unlocks,
 - Chaos shelf collector: wants rediscovery, novelty, “hidden gems,” playful momentum, and relief from defaulting to the same few games. fileciteturn1file0
 - Casual but overwhelmed owner: wants smooth social flow, minimal debate, and guardrails against choosing something too heavy/long. fileciteturn1file0
 
-The file already proposes a bespoke emotional archetype: “The Mystic Ritual-Keeper,” described as a benevolent oracle that guides a small ceremony: narrow → offer preferences → let fate decide; with boundaries like “never snarky,” “never chaotic,” and “clarity wins over cleverness.” These constraints are a strong “Caregiver + Magician” blend, supported by “Sage” scaffolding (predictable, readable, grounded UI language most of the time). fileciteturn1file0
+The file already proposes a bespoke emotional archetype: “The Mystic Vibe-Keeper,” described as a benevolent oracle that guides a small ceremony: narrow → offer preferences → let fate decide; with boundaries like “never snarky,” “never chaotic,” and “clarity wins over cleverness.” These constraints are a strong “Caregiver + Magician” blend, supported by “Sage” scaffolding (predictable, readable, grounded UI language most of the time). fileciteturn1file0
 
 ### Tone architecture in the file
 
 The file provides an explicit tonal mechanism: mystical language appears only in “meaningful moments” (pre-filtering prompt, pre-spin prompt, reveal, post-reveal), while the rest of the UI stays plain and accessible. This is effectively a **two-layer voice system**: utilitarian clarity as the base layer; ceremonial delight as the highlight layer. fileciteturn1file0
 
-This split is particularly important for a BGG-adjacent product because BGG culture prizes specificity, stats, and meaningful distinctions (weight, player count, etc.). A fully “roleplay” voice everywhere would likely reduce trust; a restrained ritual overlay can add memorability without undermining competence. citeturn7search3 fileciteturn1file0
+This split is particularly important for a BGG-adjacent product because BGG culture prizes specificity, stats, and meaningful distinctions (weight, player count, etc.). A fully “roleplay” voice everywhere would likely reduce trust; a restrained vibe overlay can add memorability without undermining competence. citeturn7search3 fileciteturn1file0
 
 ## BoardGameGeek community context for fantasy and mystical framing
 
@@ -87,9 +87,9 @@ For copywriting, the safest practical takeaway is not “market to a single demo
 
 ## Emotional archetype mapping and best-fit recommendation
 
-### Mapping the file’s “Mystic Ritual-Keeper” to standard archetypes
+### Mapping the file’s “Mystic Vibe-Keeper” to standard archetypes
 
-The Product Brain’s ritual framing is a direct match for the **Magician** archetype: transformation through a structured ceremony, moving the room from “stuck” to “ready,” with an “oracle/fates” metaphor. fileciteturn1file0
+The Product Brain’s vibe framing is a direct match for the **Magician** archetype: transformation through a structured ceremony, moving the room from “stuck” to “ready,” with an “oracle/fates” metaphor. fileciteturn1file0
 
 But the file’s _constraints_ (“never snarky,” “calm,” “comforting,” “neurodivergent-friendly,” “clarity over cleverness,” “removes responsibility pressure”) strongly pull in **Caregiver**. The product is not an edgy trickster; it is a supportive facilitator. fileciteturn1file0
 
@@ -109,7 +109,7 @@ Tertiary archetype: Sage / Everyman (implementation layer)
 Promise: “Clear steps. Fair input. Predictable outcomes.”  
 Emotional payoff: trust and legitimacy.
 
-This is also congruent with BGG’s fantasy/mystical culture: people already enjoy “ritual moments” (setup, reveal, narrative hook), but the community expects the _mechanism_ to be coherent and the constraints to be explicit. citeturn7search19turn8search3turn9search5
+This is also congruent with BGG’s fantasy/mystical culture: people already enjoy “vibe moments” (setup, reveal, narrative hook), but the community expects the _mechanism_ to be coherent and the constraints to be explicit. citeturn7search19turn8search3turn9search5
 
 ### Persona-to-archetype fit
 
@@ -142,7 +142,7 @@ Goal: “tiny ceremony” at high-emotion moments (pre-spin, spin, reveal, celeb
 
 ### Word choices, sentence length, humor level, imagery
 
-Word bank (BGG-friendly mystical diction): consult, summon, omen, fates, table, ritual, reveal, decree, choose, gather, offer, mark, bind, weigh, whisper, settle, proceed.
+Word bank (BGG-friendly mystical diction): consult, summon, omen, fates, table, vibe, reveal, decree, choose, gather, offer, mark, bind, weigh, whisper, settle, proceed.
 
 Avoid: “random,” “LOL,” “chaos,” “YOLO,” “rage,” “goblin mode,” “snark,” or anything that implies the selection is arbitrary or mocking—because fairness and legitimacy are core emotional deliverables. fileciteturn1file0
 
@@ -150,17 +150,17 @@ Recommended sentence length:
 Keep most UI sentences to ~8–14 words, with one idea per line. Reserve longer sentences (20–28 words) for “explainers” (e.g., what weighted voting does). This matches the goal of reducing cognitive load for anxious/overwhelmed users. fileciteturn1file0
 
 Humor:  
-Low to moderate. Warm, lightly playful, never sarcastic. If humor exists, it should be situational (“a tiny ritual”) rather than personality-driven roasting. fileciteturn1file0
+Low to moderate. Warm, lightly playful, never sarcastic. If humor exists, it should be situational (“a tiny vibe”) rather than personality-driven roasting. fileciteturn1file0
 
 Mystical imagery:  
-Prefer “cozy ritual” imagery (glow, candlelight, gentle oracle) over “dark occult” imagery. BGG fantasy spans dark themes, but your product’s goal is relief and calm, not dread. fileciteturn1file0 citeturn8search12
+Prefer “cozy vibe” imagery (glow, candlelight, gentle oracle) over “dark occult” imagery. BGG fantasy spans dark themes, but your product’s goal is relief and calm, not dread. fileciteturn1file0 citeturn8search12
 
 ### Sample headlines and app-store-style positioning
 
 Headlines (option set, A/B-testable):
 
 - “Turn your shelf into a shortlist.”
-- “A calm ritual for choosing what to play.”
+- “A calm vibe for choosing what to play.”
 - “Fair picks. Fast starts.”
 - “Consult the table. Let the fates decide.”
 
@@ -171,7 +171,7 @@ WhatShouldWePlay? helps your group choose a board game in minutes, not debates. 
 Medium product description (BGG-aware, detail-forward):
 
 You already track your collection. The hardest part is picking what hits the table tonight.  
-WhatShouldWePlay? turns “20 minutes of indecision” into a quick, shared ritual: narrow the options by player count, time, and complexity, let each player add weight to the games they’re excited about, then reveal the final choice with a little ceremony.  
+WhatShouldWePlay? turns “20 minutes of indecision” into a quick, shared vibe: narrow the options by player count, time, and complexity, let each player add weight to the games they’re excited about, then reveal the final choice with a little ceremony.  
 It’s designed to reduce decision fatigue and social pressure—especially when nobody wants to be “the decider.” Clear steps stay in plain language; the mystical flavor shows up only at the reveal. fileciteturn1file0
 
 ### Onboarding microcopy and CTAs for BGG users
@@ -195,7 +195,7 @@ Post-import success:
 
 - Header: “Collection received”
 - Body: “Your shelf is ready. Let’s consult the table.”
-- CTA: “Start the ritual”
+- CTA: “Start the vibe”
 
 Setup screen (base layer clarity, minimal magic):
 
@@ -232,7 +232,7 @@ Error/empty state (Caregiver-first):
 Use consistent verbs so the flow feels predictable:
 
 - Base CTAs: “View eligible games”, “Adjust filters”, “Save preset”, “Start new pick”
-- Ritual CTAs (only at key points): “Consult the fates”, “Reveal the choice”, “Let the wheel speak” fileciteturn1file0
+- Vibe CTAs (only at key points): “Consult the fates”, “Reveal the choice”, “Let the wheel speak” fileciteturn1file0
 
 ### Mermaid diagram for archetype-driven copy placement
 
@@ -240,7 +240,7 @@ Use consistent verbs so the flow feels predictable:
 flowchart TD
   A[Group stalls: "What should we play?"] --> B[Sage/Caregiver layer: clear constraints]
   B --> C[Everyman layer: shared input / fairness]
-  C --> D[Magician layer: ritual moment + reveal]
+  C --> D[Magician layer: vibe moment + reveal]
   D --> E[Caregiver payoff: relief + momentum to set up]
 
   B:::base --> C:::base --> E:::base
@@ -263,7 +263,7 @@ Primary risks:
 Over-optimization can _recreate_ the very fatigue you’re trying to remove, because it invites debate (“Is this really optimal?”). It can also intensify anxiety for the completionist persona (“Is this the objectively correct pick?”). fileciteturn1file0 citeturn8search3
 
 Recommendation if you test it:  
-Use Sage as the base layer (you already do), but do not market the product as optimization; market it as an offloading ritual with clear guardrails.
+Use Sage as the base layer (you already do), but do not market the product as optimization; market it as an offloading vibe with clear guardrails.
 
 ### Alternative: Jester-first “Chaos Spinner”
 
@@ -297,13 +297,13 @@ If used, keep it _gentle Hero_: “We’ve got this” rather than “Crush it.�
 
 | Priority | Action                                                       | What you produce                                                                    | Why it matters (emotional + BGG fit)                          | Success signal                                   |
 | -------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------ |
-| Highest  | Define the two-layer voice rules as a one-page “copy system” | A copy style sheet: base vs ritual moments, banned tones, verb consistency          | Prevents drift into cringe/snark and preserves accessibility  | Fewer copy rewrites late; consistent screen feel |
+| Highest  | Define the two-layer voice rules as a one-page “copy system” | A copy style sheet: base vs vibe moments, banned tones, verb consistency          | Prevents drift into cringe/snark and preserves accessibility  | Fewer copy rewrites late; consistent screen feel |
 | Highest  | Rewrite the critical path screens first                      | Welcome, Connect, Setup, Results, Reveal, Selected                                  | This is where decision fatigue happens; copy must reduce load | Lower time-to-first-pick; fewer backtracks       |
 | High     | Add one fairness explainer (short)                           | A single 2–3 sentence explainer for weighted voting                                 | BGG users value understanding mechanisms                      | Higher usage of “Vote First” vs abandonment      |
 | High     | Rework empty/error states in Caregiver voice                 | Empty results, sync errors, no connection                                           | Anxiety spikes here; tone must soothe                         | Reduced drop-off on errors                       |
 | Medium   | Build a “BGG-native” feature paragraph                       | One paragraph that references constraints users recognize (players/time/complexity) | Speaks BGG language without pandering                         | Better conversion on BGG/community shares        |
-| Medium   | Add optional “tone toggle” only if needed                    | “Plain / Ritual” toggle in Settings                                                 | If some users dislike themed copy, you preserve fit           | Higher retention for skeptical users             |
-| Medium   | Create a microcopy test set                                  | 3 variants for key CTAs (“Consult the fates” vs “Spin to choose”)                   | Lets you quantify the ritual’s value                          | Improved completion rate to reveal               |
+| Medium   | Add optional “tone toggle” only if needed                    | “Plain / Vibe” toggle in Settings                                                 | If some users dislike themed copy, you preserve fit           | Higher retention for skeptical users             |
+| Medium   | Create a microcopy test set                                  | 3 variants for key CTAs (“Consult the fates” vs “Spin to choose”)                   | Lets you quantify the vibe’s value                          | Improved completion rate to reveal               |
 
 ### Validation and measurement plan
 

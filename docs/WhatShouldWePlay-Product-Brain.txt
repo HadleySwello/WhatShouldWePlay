@@ -127,7 +127,7 @@ When WhatShouldWePlay? works perfectly, the room feels:
 
 The group moves from **indecision → anticipation → action** quickly and smoothly.
 
-Instead of debating or negotiating, the group performs a small ritual together and arrives at a decision everyone can accept.
+Instead of debating or negotiating, the group performs a small vibe together and arrives at a decision everyone can accept.
 
 The result feels fair, satisfying, and slightly magical.
 
@@ -153,11 +153,11 @@ Instead of **someone choosing**, the group **consults the wheel.**
 
 ### Core Archetype
 
-**The Mystic Ritual-Keeper**
+**The Mystic Vibe-Keeper**
 
 WhatShouldWePlay? acts like a small, benevolent oracle that appears when a group gets stuck deciding what to play.
 
-It does not judge or rush the players. Instead, it guides them through a simple ritual that leads to a fair and satisfying outcome.
+It does not judge or rush the players. Instead, it guides them through a simple vibe that leads to a fair and satisfying outcome.
 
 The app doesn’t *decide for the group* — it **consults the fates on their behalf.**
 
@@ -167,7 +167,7 @@ The app doesn’t *decide for the group* — it **consults the fates on their be
 
 When the group stalls in indecision, the app becomes the neutral third party that resolves the moment.
 
-Instead of someone having to take responsibility for choosing, the group performs a small ritual together:
+Instead of someone having to take responsibility for choosing, the group performs a small vibe together:
 
 1. Narrow the possibilities
 2. Offer their preferences
@@ -179,7 +179,7 @@ This transforms an awkward social negotiation into a **shared moment of anticipa
 
 ### Emotional Outcome
 
-When the ritual completes, the room should feel:
+When the vibe completes, the room should feel:
 
 - Relieved
 - Energized
@@ -211,7 +211,7 @@ The tone should suggest **ancient board-game fate magic**, but delivered lightly
 
 ---
 
-### Ritual Moments
+### Vibe Moments
 
 The mystical tone should appear **only at meaningful moments**:
 
@@ -237,7 +237,7 @@ These moments should feel like **tiny ceremonies**, not jokes.
 
 ### Personality Boundaries
 
-The ritual framing must always sit on top of a **clear and accessible interface**.
+The vibe framing must always sit on top of a **clear and accessible interface**.
 
 Plain language remains the default for instructions and navigation.
 
@@ -255,7 +255,7 @@ while still delivering a memorable personality.
 
 ### Brand Essence
 
-**A playful ritual that turns indecision into destiny.**
+**A playful vibe that turns indecision into destiny.**
 
 # Current App Structure (v1)
 
@@ -282,7 +282,7 @@ Spinner is presented as a modal overlay during selection (implementation detail 
 
 1. **Splash**
     - Title: “What Should We Play?”
-    - Subtitle: “A calm ritual for choosing what to play.”
+    - Subtitle: “A calm vibe for choosing what to play.”
     - Attribution: “Data provided by BoardGameGeek”
     - Auto-routing based on whether shelf data exists locally
 2. **Welcome** (shown when no shelf exists)
@@ -306,13 +306,13 @@ Spinner is presented as a modal overlay during selection (implementation detail 
 1. **Home**
     - Primary CTA: **Choose a game** (Consult the wheel)
 2. **Setup**
-    - Load a ritual (optional)
+    - Load a vibe (optional)
     - Player count (required)
     - Optional filters:
         - Play Time (max length)
         - Complexity (“How complex are you willing to go?”)
         - Advanced: Mechanics, Categories (collapsible)
-    - Save/overwrite rituals inline
+    - Save/overwrite vibes inline
 3. **Results**
     - Displays eligible games
     - Supports weighted input for group fairness
@@ -323,7 +323,7 @@ Spinner is presented as a modal overlay during selection (implementation detail 
     - Confetti celebration
     - Clear outcome
     - Actions:
-        - Start a new ritual
+        - Start a new vibe
         - Consult again (same filters)
 
 ---
@@ -359,7 +359,7 @@ Behavior:
 - games receive weight based on votes
 - spinner resolves with the weighted distribution
 
-This weighted ritual is a core differentiator: it preserves agency while avoiding negotiation.
+This weighted vibe is a core differentiator: it preserves agency while avoiding negotiation.
 
 ---
 
@@ -375,15 +375,15 @@ This weighted ritual is a core differentiator: it preserves agency while avoidin
     - TODO: Light/dark toggle (currently theme follows system)
     - (Other small preferences as needed)
 
-## Rituals (v1)
+## Vibes (v1)
 
-Rituals are a significant feature that reduce friction for returning users and common group configurations.
+Vibes are a significant feature that reduce friction for returning users and common group configurations.
 
-- **Quick rituals** (built-in): Family Weeknight Win, Family Game Night Plus, Anytime Crowd-Pleaser, Big Table Icebreakers, Social Deduction Light, Thinky Euro Night, Deep Strategy Epic, Two-Player Duel, Solo or Co-op Brainburn
-- **User-saved rituals**: save, load, rename, overwrite, delete (max 15)
-- **Load on Setup**: "Load a ritual" opens modal with quick + saved rituals
-- **Save from Setup**: save current filter state (including mechanics/categories) as new ritual or overwrite existing
-- **Save from Results**: "Save as ritual" after filtering (same constraints)
+- **Quick vibes** (built-in): Family Weeknight Win, Family Game Night Plus, Anytime Crowd-Pleaser, Big Table Icebreakers, Social Deduction Light, Thinky Euro Night, Deep Strategy Epic, Two-Player Duel, Solo or Co-op Brainburn
+- **User-saved vibes**: save, load, rename, overwrite, delete (max 15)
+- **Load on Setup**: "Load a vibe" opens modal with quick + saved vibes
+- **Save from Setup**: save current filter state (including mechanics/categories) as new vibe or overwrite existing
+- **Save from Results**: "Save as vibe" after filtering (same constraints)
 
 ---
 
@@ -399,12 +399,12 @@ Rituals are a significant feature that reduce friction for returning users and c
 ## Action Hierarchy
 
 - Primary vs secondary actions are not always clearly distinguished.
-- Some screens feel like “forms” instead of a guided ritual.
+- Some screens feel like “forms” instead of a guided vibe.
 - The moment of selection needs stronger payoff.
 
 ## Copy & Tone
 
-- Copy does not consistently reflect the ritual-keeper voice.
+- Copy does not consistently reflect the vibe-keeper voice.
 - Emotional payoff moments may not feel elevated enough yet.
 
 ## Overall Feeling
@@ -420,17 +420,17 @@ Documenting actual in-app copy — aligned with `constants/copy/en.js`.
 
 ## Current Copy (as implemented)
 
-- **Splash**: "What Should We Play?", "A calm ritual for choosing what to play.", "Consult the wheel. Let the fates decide.", "Data provided by BoardGameGeek"
+- **Splash**: "What Should We Play?", "A calm vibe for choosing what to play.", "Consult the wheel. Let the fates decide.", "Data provided by BoardGameGeek"
 - **Welcome**: "Import your shelf, set tonight's constraints, and we'll guide the pick.", "Connect BoardGameGeek"
 - **ConnectBGG**: "Load Your Shelf", "Connect your BoardGameGeek shelf", "Enter your BoardGameGeek username to load your shelf.", "Load Shelf"
 - **Home**: "What shall we play?", "Choose a game", "Browse your shelf", "Settings"
-- **Setup**: "Load a ritual", "How many at the table tonight?", "Max play time", "How long can the session run?", "Complexity", "How complex? Set the range.", "View {{count}} games"
-- **Results**: "{{count}} games fit tonight.", "Let everyone weigh in", "All voices in. Ready to consult the fates.", "Ritual saved!", "Save as ritual", "Let the wheel speak", "This one."
+- **Setup**: "Load a vibe", "How many at the table tonight?", "Max play time", "How long can the session run?", "Complexity", "How complex? Set the range.", "View {{count}} games"
+- **Results**: "{{count}} games fit tonight.", "Let everyone weigh in", "All voices in. Ready to consult the fates.", "Vibe saved!", "Save as vibe", "Let the wheel speak", "This one."
 - **Spinner**: "Ready to consult the fates?", "Tonight, you shall play:", "Let the wheel speak"
-- **SelectedGame**: "Tonight, you shall play…", "The chosen game", "Start a new ritual", "Consult again (same filters)"
+- **SelectedGame**: "Tonight, you shall play…", "The chosen game", "Start a new vibe", "Consult again (same filters)"
 - **MyGames/Rankings**: "{{username}}'s Shelf", "Browse Shelf", "Your shelf is empty", "Connect a different shelf", "Choose a Game"
 - **Settings**: "Default players at table", "Let everyone weigh in", "Connect a different shelf"
-- **Rituals**: "Load a ritual", "Choose a ritual", "My rituals", "Quick rituals", "Save as new ritual", "Ritual saved!"
+- **Vibes**: "Load a vibe", "Choose a vibe", "My vibes", "Quick vibes", "Save as new vibe", "Vibe saved!"
 
 ---
 
@@ -440,7 +440,7 @@ Documenting actual in-app copy — aligned with `constants/copy/en.js`.
 
 The app must feel **clear, calm, and intentional first**.
 
-The ritual framing adds personality, but the interface must always remain simple and understandable.
+The vibe framing adds personality, but the interface must always remain simple and understandable.
 
 Neurodivergent-friendly design principles apply:
 
@@ -450,7 +450,7 @@ Neurodivergent-friendly design principles apply:
 - Minimal visual noise
 - No hidden rules or surprising behavior
 
-The ritual should feel **comforting and structured**, not chaotic.
+The vibe should feel **comforting and structured**, not chaotic.
 
 ---
 
@@ -463,13 +463,13 @@ The app supports both:
 
 Theme only implmented in a single mode. TODO: Add manual light/dark/system toggle in Settings.
 
-Dark mode should feel especially comfortable in game-night lighting and slightly atmospheric — supporting the ritual tone without becoming dramatic or distracting.
+Dark mode should feel especially comfortable in game-night lighting and slightly atmospheric — supporting the vibe tone without becoming dramatic or distracting.
 
 ---
 
 ## Visual Personality
 
-The visual design should support the feeling of **a small ritual taking place.**
+The visual design should support the feeling of **a small vibe taking place.**
 
 This can be expressed through:
 
@@ -496,7 +496,7 @@ It should never feel:
 
 ## Emotional Design Vibe
 
-Primary: **Cozy Ritual**
+Primary: **Cozy Vibe**
 
 Secondary: **Playful Anticipation**
 
@@ -508,7 +508,7 @@ The experience should feel:
 - Lightly magical
 - Decisive
 
-The ritual builds anticipation and then resolves it quickly.
+The vibe builds anticipation and then resolves it quickly.
 
 ---
 
@@ -529,11 +529,11 @@ This keeps the product accessible while still giving the decision moment a sense
 
 # Product Pillars
 
-## 1. Decision Ritual, Not Decision Tool
+## 1. Decision Vibe, Not Decision Tool
 
 WhatShouldWePlay is not just a filter or randomizer.
 
-It transforms the awkward moment of choosing a game into a **short ritual the group performs together**.
+It transforms the awkward moment of choosing a game into a **short vibe the group performs together**.
 
 The flow intentionally follows a ceremonial structure:
 
@@ -541,9 +541,9 @@ The flow intentionally follows a ceremonial structure:
 2. Offer preferences
 3. Let fate resolve the outcome
 
-The ritual replaces negotiation and removes the burden of choosing from any one person.
+The vibe replaces negotiation and removes the burden of choosing from any one person.
 
-If a feature does not support this ritual, it likely does not belong in the product.
+If a feature does not support this vibe, it likely does not belong in the product.
 
 ---
 
@@ -574,7 +574,7 @@ Features like weighted voting exist to ensure:
 - popular choices are more likely
 - the final outcome still feels surprising and fun
 
-The result should feel like **the group decided together**, even though the ritual resolved the final choice.
+The result should feel like **the group decided together**, even though the vibe resolved the final choice.
 
 ---
 

@@ -179,7 +179,7 @@ export default function SettingsScreen({ navigation }) {
         style={[styles.card.default, styles.card.body, layout.marginBottomLg]}
       >
         <AppText variant="sectionTitle" style={layout.marginBottomLg}>
-          {copy.settings.theRitualSectionTitle}
+          {copy.settings.theVibeSectionTitle}
         </AppText>
 
         <View style={layout.marginBottomMd}>

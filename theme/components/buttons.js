@@ -58,17 +58,17 @@ export const getButtonStyles = (c, s, r, t) => ({
       opacity: 0.5,
     },
   },
-  ritualSaveButton: {
+  vibeSaveButton: {
     backgroundColor: c.tintMain,
     paddingVertical: s.lg - 2,
     paddingHorizontal: s.xl,
     borderRadius: r.md,
   },
-  ritualCancelButton: {
+  vibeCancelButton: {
     paddingVertical: s.lg - 2,
     paddingHorizontal: s.xl,
   },
-  saveRitualButton: {
+  saveVibeButton: {
     paddingVertical: s.lg - 2,
     paddingHorizontal: s.xl,
     borderRadius: r.md,
@@ -85,7 +85,7 @@ export const getButtonStyles = (c, s, r, t) => ({
     padding: s.sm,
     marginRight: s.sm,
   },
-  useRitualButton: {
+  useVibeButton: {
     paddingVertical: s.lg - 2,
     paddingHorizontal: s.xl - 4,
     borderRadius: r.md,
@@ -94,7 +94,7 @@ export const getButtonStyles = (c, s, r, t) => ({
     alignSelf: 'center',
     marginBottom: s.xl,
   },
-  useRitualButtonText: {
+  useVibeButtonText: {
     fontSize: t.sizes.md,
     fontFamily: t.families.subheader,
     color: c.tintMain,
@@ -132,17 +132,17 @@ export const getButtonStyles = (c, s, r, t) => ({
     fontSize: t.sizes.md,
     fontFamily: t.families.subheader,
   },
-  saveRitualButtonText: {
+  saveVibeButtonText: {
     fontSize: t.sizes.md,
     fontFamily: t.families.subheader,
     color: c.tintMain,
   },
-  ritualCancelText: {
+  vibeCancelText: {
     color: c.textSecondary,
     fontSize: t.sizes.md,
     fontFamily: t.families.subheader,
   },
-  ritualSaveControlText: {
+  vibeSaveControlText: {
     fontSize: t.sizes.md,
     fontFamily: t.families.subheader,
     color: c.tintMain,

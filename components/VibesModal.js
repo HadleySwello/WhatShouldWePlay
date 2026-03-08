@@ -15,12 +15,12 @@ const LENGTH_LABELS = {
   long: copy.lengthLabels.long,
 };
 
-function formatRitualMetadata(filters) {
+function formatVibeMetadata(filters) {
   const f = filters || {};
   const parts = [];
-  parts.push(t(copy.ritualMetadata.players, { count: f.playerCount ?? 2 }));
+  parts.push(t(copy.vibeMetadata.players, { count: f.playerCount ?? 2 }));
   parts.push(
-    t(copy.ritualMetadata.complexityLabel, {
+    t(copy.vibeMetadata.complexityLabel, {
       value: formatComplexitySummary(f.complexityMin, f.complexityMax),
     })
   );
@@ -32,30 +32,30 @@ function formatRitualMetadata(filters) {
   return parts.join(' · ');
 }
 
-export default function RitualsModal({
+export default function VibesModal({
   visible,
   onClose,
-  quickRituals,
-  savedRituals,
-  onSelectRitual,
-  onDeleteRitual,
+  quickVibes,
+  savedVibes,
+  onSelectVibe,
+  onDeleteVibe,
 }) {
   const { styles, tokens } = useAppTheme();
   const m = styles.modal;
 
-  const handleSelect = (ritual) => {
-    onSelectRitual(ritual);
+  const handleSelect = (vibe) => {
+    onSelectVibe(vibe);
     onClose();
   };
 
-  const handleDelete = (ritual, e) => {
+  const handleDelete = (vibe, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
-    Alert.alert(copy.modals.rituals.deleteConfirmTitle, ritual.name, [
-      { text: copy.modals.rituals.deleteConfirmCancel, style: 'cancel' },
+    Alert.alert(copy.modals.vibes.deleteConfirmTitle, vibe.name, [
+      { text: copy.modals.vibes.deleteConfirmCancel, style: 'cancel' },
       {
-        text: copy.modals.rituals.deleteConfirmDelete,
+        text: copy.modals.vibes.deleteConfirmDelete,
         style: 'destructive',
-        onPress: () => onDeleteRitual && onDeleteRitual(ritual),
+        onPress: () => onDeleteVibe && onDeleteVibe(vibe),
       },
     ]);
   };
@@ -72,16 +72,16 @@ export default function RitualsModal({
           <View style={m.header}>
             <View style={m.headerTop}>
               <AppText variant="modalTitle">
-                {copy.modals.rituals.title}
+                {copy.modals.vibes.title}
               </AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
                 <AppText variant="closeButtonText">
-                  {copy.modals.rituals.close}
+                  {copy.modals.vibes.close}
                 </AppText>
               </TouchableOpacity>
             </View>
             <AppText variant="headerNote">
-              {copy.modals.rituals.headerNote}
+              {copy.modals.vibes.headerNote}
             </AppText>
           </View>
 
@@ -90,25 +90,25 @@ export default function RitualsModal({
             contentContainerStyle={m.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {savedRituals.length > 0 && (
+            {savedVibes.length > 0 && (
               <>
                 <AppText variant="modalSectionTitle">
-                  {copy.modals.rituals.myRituals}
+                  {copy.modals.vibes.myVibes}
                 </AppText>
-                {savedRituals.map((p) => (
-                  <View key={p.id} style={m.ritualCard}>
+                {savedVibes.map((p) => (
+                  <View key={p.id} style={m.vibeCard}>
                     <TouchableOpacity
-                      style={styles.ritualCardRow}
+                      style={styles.vibeCardRow}
                       onPress={() => handleSelect(p)}
                       activeOpacity={0.7}
                     >
-                      <AppText variant="ritualName">{p.name}</AppText>
-                      <AppText variant="ritualMetadata">
-                        {formatRitualMetadata(p.filters)}
+                      <AppText variant="vibeName">{p.name}</AppText>
+                      <AppText variant="vibeMetadata">
+                        {formatVibeMetadata(p.filters)}
                       </AppText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={styles.ritualDeleteIconAbsolute}
+                      style={styles.vibeDeleteIconAbsolute}
                       onPress={(e) => handleDelete(p, e)}
                       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
@@ -125,23 +125,23 @@ export default function RitualsModal({
 
             <AppText
               variant="modalSectionTitle"
-              style={savedRituals.length > 0 ? m.savedSectionTitle : undefined}
+              style={savedVibes.length > 0 ? m.savedSectionTitle : undefined}
             >
-              {copy.modals.rituals.quickRituals}
+              {copy.modals.vibes.quickVibes}
             </AppText>
-            {quickRituals.map((p) => (
+            {quickVibes.map((p) => (
               <TouchableOpacity
                 key={p.id}
-                style={m.ritualCard}
+                style={m.vibeCard}
                 onPress={() => handleSelect(p)}
                 activeOpacity={0.7}
               >
-                <AppText variant="ritualName">{p.name}</AppText>
+                <AppText variant="vibeName">{p.name}</AppText>
                 {p.description ? (
-                  <AppText variant="ritualDescription">{p.description}</AppText>
+                  <AppText variant="vibeDescription">{p.description}</AppText>
                 ) : null}
-                <AppText variant="ritualMetadata">
-                  {formatRitualMetadata(p.filters)}
+                <AppText variant="vibeMetadata">
+                  {formatVibeMetadata(p.filters)}
                 </AppText>
               </TouchableOpacity>
             ))}

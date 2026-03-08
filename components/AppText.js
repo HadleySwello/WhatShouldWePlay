@@ -65,8 +65,8 @@ export default function AppText({
     buttonPrimary: styles.button?.primaryText,
     buttonSecondary: styles.button?.secondaryText,
     textButton: styles.textButtonText,
-    useRitualButton: styles.useRitualButtonText,
-    saveRitualButtonText: styles.saveRitualButtonText,
+    useVibeButton: styles.useVibeButtonText,
+    saveVibeButtonText: styles.saveVibeButtonText,
     retry: styles.retryButtonText || {
       color: c.tintMain,
       fontSize: t.sizes.md,
@@ -112,9 +112,9 @@ export default function AppText({
     closeButtonText: styles.modal?.closeButtonText,
     headerNote: styles.modal?.headerNote,
     modalSectionTitle: styles.modal?.sectionTitle,
-    ritualName: styles.modal?.ritualName,
-    ritualDescription: styles.modal?.ritualDescription,
-    ritualMetadata: styles.modal?.ritualMetadata,
+    vibeName: styles.modal?.vibeName,
+    vibeDescription: styles.modal?.vibeDescription,
+    vibeMetadata: styles.modal?.vibeMetadata,
 
     // --- Specific Screen Styles ---
     noMatchesTitle: styles.noMatchesTitle,
@@ -126,14 +126,14 @@ export default function AppText({
     advancedFiltersLabel: styles.advancedFiltersLabel,
     voteHint: styles.voteHint,
     allVotesAssigned: styles.allVotesAssigned,
-    ritualSavedText: styles.ritualSavedText,
-    ritualCancelText: styles.ritualCancelText,
+    vibeSavedText: styles.vibeSavedText,
+    vibeCancelText: styles.vibeCancelText,
     celebrationTitle: styles.celebrationTitle,
     winnerValue: styles.winnerValue,
     spinnerTitle: styles.spinnerTitle,
     spinnerWinnerText: styles.spinnerWinnerText,
-    ritualHeaderTitle: styles.ritualHeaderTitle,
-    ritualSaveControlText: styles.ritualSaveControlText,
+    vibeHeaderTitle: styles.vibeHeaderTitle,
+    vibeSaveControlText: styles.vibeSaveControlText,
 
     // --- Empty States ---
     emptyTitle: styles.emptyTitle || {

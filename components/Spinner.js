@@ -58,13 +58,13 @@ export default function Spinner({ slices, onSpinningEnd }) {
 
     const pieData = pieGenerator(slices);
 
-    // Use the Gemstone Ritual Palette from tokens
+    // Use the Gemstone Vibe Palette from tokens
     const WHEEL_PALETTE = [
-      tokens.colors.ritual.wheel1,
-      tokens.colors.ritual.wheel2,
-      tokens.colors.ritual.wheel3,
-      tokens.colors.ritual.wheel4,
-      tokens.colors.ritual.wheel5,
+      tokens.colors.vibe.wheel1,
+      tokens.colors.vibe.wheel2,
+      tokens.colors.vibe.wheel3,
+      tokens.colors.vibe.wheel4,
+      tokens.colors.vibe.wheel5,
     ];
 
     return pieData.map((slice, index) => {

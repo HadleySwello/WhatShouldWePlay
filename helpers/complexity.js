@@ -50,29 +50,29 @@ function valueToTier(val) {
 export function formatComplexitySummary(complexityMin, complexityMax) {
   const min = complexityMin ?? null;
   const max = complexityMax ?? null;
-  if (min == null && max == null) return copy.ritualMetadata.any;
+  if (min == null && max == null) return copy.vibeMetadata.any;
   if (min != null && max == null) {
     const tier = valueToTier(min);
-    if (tier === 'light') return copy.ritualMetadata.lightAndUp;
-    if (tier === 'medium') return copy.ritualMetadata.mediumAndUp;
-    return copy.ritualMetadata.heavyAndUp;
+    if (tier === 'light') return copy.vibeMetadata.lightAndUp;
+    if (tier === 'medium') return copy.vibeMetadata.mediumAndUp;
+    return copy.vibeMetadata.heavyAndUp;
   }
   if (min == null && max != null) {
     const tier = valueToTier(max);
-    if (tier === 'light') return copy.ritualMetadata.upToLight;
-    if (tier === 'medium') return copy.ritualMetadata.upToMedium;
-    return copy.ritualMetadata.upToHeavy;
+    if (tier === 'light') return copy.vibeMetadata.upToLight;
+    if (tier === 'medium') return copy.vibeMetadata.upToMedium;
+    return copy.vibeMetadata.upToHeavy;
   }
   const minTier = valueToTier(min);
   const maxTier = valueToTier(max);
   if (minTier === maxTier) {
-    if (minTier === 'light') return copy.ritualMetadata.light;
-    if (minTier === 'medium') return copy.ritualMetadata.medium;
-    return copy.ritualMetadata.heavy;
+    if (minTier === 'light') return copy.vibeMetadata.light;
+    if (minTier === 'medium') return copy.vibeMetadata.medium;
+    return copy.vibeMetadata.heavy;
   }
   if (minTier === 'light' && maxTier === 'medium')
-    return copy.ritualMetadata.lightToMedium;
+    return copy.vibeMetadata.lightToMedium;
   if (minTier === 'light' && maxTier === 'heavy')
-    return copy.ritualMetadata.lightToHeavy;
-  return copy.ritualMetadata.mediumToHeavy;
+    return copy.vibeMetadata.lightToHeavy;
+  return copy.vibeMetadata.mediumToHeavy;
 }

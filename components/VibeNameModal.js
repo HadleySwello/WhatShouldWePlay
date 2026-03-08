@@ -7,20 +7,20 @@ import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme/layout';
 import {
-  findRitualByName,
-  getRituals,
-  MAX_RITUALS,
-  MAX_RITUAL_NAME_LENGTH,
-  normalizeRitualName,
-  QUICK_RITUAL_NAMES,
-} from '../helpers/ritualsStorage';
+  findVibeByName,
+  getVibes,
+  MAX_VIBES,
+  MAX_VIBE_NAME_LENGTH,
+  normalizeVibeName,
+  QUICK_VIBE_NAMES,
+} from '../helpers/vibesStorage';
 
-export default function RitualNameModal({
+export default function VibeNameModal({
   visible,
   onClose,
   onSave,
   excludeId,
-  checkRitualCount = false,
+  checkVibeCount = false,
 }) {
   const [name, setName] = useState('');
   const [error, setError] = useState(null);
@@ -37,25 +37,25 @@ export default function RitualNameModal({
   }, [visible]);
 
   const handleSave = () => {
-    const finalName = normalizeRitualName(name);
+    const finalName = normalizeVibeName(name);
     setError(null);
     setWarning(null);
 
     if (!finalName) {
-      setError(copy.modals.ritualName.errorRequired);
+      setError(copy.modals.vibeName.errorRequired);
       return;
     }
-    if (finalName.length > MAX_RITUAL_NAME_LENGTH) {
+    if (finalName.length > MAX_VIBE_NAME_LENGTH) {
       setError(
-        t(copy.modals.ritualName.errorTooLong, { max: MAX_RITUAL_NAME_LENGTH })
+        t(copy.modals.vibeName.errorTooLong, { max: MAX_VIBE_NAME_LENGTH })
       );
       return;
     }
-    if (checkRitualCount) {
-      getRituals().then((rituals) => {
-        if (rituals.length >= MAX_RITUALS) {
+    if (checkVibeCount) {
+      getVibes().then((vibes) => {
+        if (vibes.length >= MAX_VIBES) {
           setError(
-            t(copy.modals.ritualName.errorMaxRituals, { max: MAX_RITUALS })
+            t(copy.modals.vibeName.errorMaxVibes, { max: MAX_VIBES })
           );
           return;
         }
@@ -67,22 +67,22 @@ export default function RitualNameModal({
   };
 
   function trySubmit(finalName) {
-    const matchedQuickRitual = QUICK_RITUAL_NAMES.find(
+    const matchedQuickVibe = QUICK_VIBE_NAMES.find(
       (q) => q.trim().toLowerCase() === finalName.trim().toLowerCase()
     );
-    if (matchedQuickRitual) {
-      const transformedName = 'My ' + matchedQuickRitual;
+    if (matchedQuickVibe) {
+      const transformedName = 'My ' + matchedQuickVibe;
       setName(transformedName);
       setWarning(
-        t(copy.modals.ritualName.warningMatchesBuiltIn, {
+        t(copy.modals.vibeName.warningMatchesBuiltIn, {
           name: transformedName,
         })
       );
       return;
     }
-    findRitualByName(finalName, { excludeId }).then((existing) => {
+    findVibeByName(finalName, { excludeId }).then((existing) => {
       if (existing) {
-        setError(copy.modals.ritualName.errorExists);
+        setError(copy.modals.vibeName.errorExists);
         return;
       }
       onSave(finalName);
@@ -98,24 +98,24 @@ export default function RitualNameModal({
       onRequestClose={onClose}
     >
       <View style={m.overlay}>
-        <View style={[m.content, styles.ritualNameModalContent]}>
+        <View style={[m.content, styles.vibeNameModalContent]}>
           <View style={m.header}>
             <View style={m.headerTop}>
               <AppText variant="modalTitle">
-                {copy.modals.ritualName.title}
+                {copy.modals.vibeName.title}
               </AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
                 <AppText variant="closeButtonText">
-                  {copy.modals.ritualName.cancel}
+                  {copy.modals.vibeName.cancel}
                 </AppText>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.ritualNameModalBody}>
-            <AppText variant="helper" style={styles.ritualNameRules}>
-              {copy.modals.ritualName.rules}
+          <View style={styles.vibeNameModalBody}>
+            <AppText variant="helper" style={styles.vibeNameRules}>
+              {copy.modals.vibeName.rules}
             </AppText>
-            <View style={styles.ritualInputRow}>
+            <View style={styles.vibeInputRow}>
               <AppInput
                 value={name}
                 onChangeText={(text) => {
@@ -123,25 +123,25 @@ export default function RitualNameModal({
                   if (error) setError(null);
                   if (warning) setWarning(null);
                 }}
-                placeholder={copy.modals.ritualName.placeholder}
+                placeholder={copy.modals.vibeName.placeholder}
                 autoFocus
                 autoCapitalize="words"
                 maxLength={100}
-                style={[styles.ritualInput, layout.flex1]}
+                style={[styles.vibeInput, layout.flex1]}
               />
               <TouchableOpacity
-                style={styles.ritualSaveButton}
+                style={styles.vibeSaveButton}
                 onPress={handleSave}
               >
                 <AppText variant="buttonPrimary">
-                  {copy.modals.ritualName.save}
+                  {copy.modals.vibeName.save}
                 </AppText>
               </TouchableOpacity>
             </View>
             {error ? (
               <AppText
                 variant="helper"
-                style={[layout.marginTopMd, styles.ritualNameError]}
+                style={[layout.marginTopMd, styles.vibeNameError]}
               >
                 {error}
               </AppText>

@@ -16,7 +16,7 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | ----------- | ---------------------------------------- | ----------------------- |
 | title       | What Should We Play?                     |                         |
 | subtitle    | A Board Game Decision Tool               |                         |
-| tagline     | A calm ritual for choosing what to play. | Optional, shown smaller |
+| tagline     | A calm vibe for choosing what to play. | Optional, shown smaller |
 | attribution | Data provided by BoardGameGeek           |                         |
 | a11y        | Powered by BoardGameGeek                 | Accessibility label     |
 
@@ -48,7 +48,7 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | failedToLoadCollection | Failed to load collection |
 | unknownError           | Unknown BGG error         |
 
-### presetMetadata
+### vibeMetadata
 
 | Key             | Value                 | Interpolation |
 | --------------- | --------------------- | ------------- |
@@ -72,8 +72,8 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 
 | Key                | Value                                                         | Interpolation |
 | ------------------ | ------------------------------------------------------------- | ------------- |
-| maxRitualsReached  | You can only save {{max}} rituals. Delete one to add another. | max           |
-| ritualNameRequired | Ritual name is required.                                      |               |
+| maxVibesReached  | You can only save {{max}} vibes. Delete one to add another. | max           |
+| vibeNameRequired | Vibe name is required.                                      |               |
 
 ### home
 
@@ -99,7 +99,7 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 
 | Key                  | Value                                                                 | Interpolation |
 | -------------------- | --------------------------------------------------------------------- | ------------- |
-| loadPreset           | Load a ritual                                                         |               |
+| loadVibe           | Load a vibe                                                         |               |
 | howManyPlayers       | How many players?                                                     |               |
 | playTime             | Play Time                                                             |               |
 | maxLength            | Maximum game length                                                   |               |
@@ -118,10 +118,10 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | noMatchesBody        | Try increasing max time or lowering complexity. We'll find something. |               |
 | ctaViewGames         | View {{count}} Games                                                  | count         |
 | ctaNoMatches         | No matches                                                            |               |
-| presetHeader         | Ritual: {{name}}                                                      | name          |
-| presetHeaderModified | Ritual: {{name}} (modified)                                           | name          |
+| vibeHeader         | Vibe: {{name}}                                                      | name          |
+| vibeHeaderModified | Vibe: {{name}} (modified)                                           | name          |
 | customFilters        | Custom filters                                                        |               |
-| presetModified       | (modified)                                                            |               |
+| vibeModified       | (modified)                                                            |               |
 | saveAsNew            | Save as new                                                           |               |
 | save                 | Save                                                                  |               |
 | dontSave             | Don't save                                                            |               |
@@ -138,8 +138,8 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | enableVotingMode | Enable Voting Mode                                                    |                                        |
 | votingHint       | One vote per player ({{assigned}} of {{total}} assigned)              | assigned, total                        |
 | allVotesAssigned | All votes assigned.                                                   |                                        |
-| presetSaved      | Ritual saved!                                                         |                                        |
-| saveAsPreset     | Save as ritual                                                        |                                        |
+| vibeSaved      | Vibe saved!                                                         |                                        |
+| saveAsVibe     | Save as vibe                                                        |                                        |
 | emptyTitle       | Nothing fits those constraints                                        |                                        |
 | emptyBody        | Try increasing max time or lowering complexity. We'll find something. |                                        |
 | backToFilters    | Adjust filters                                                        |                                        |
@@ -166,7 +166,7 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | title            | Tonight, you shall play…  |               |
 | fallbackGameName | Selected game             |               |
 | complexityLabel  | Complexity: {{value}}     | value         |
-| ctaStartNew      | Start the ritual          |               |
+| ctaStartNew      | Start the vibe          |               |
 | ctaPickAgain     | Pick Again (Same Filters) |               |
 
 ### rankings
@@ -189,33 +189,33 @@ Use `{{key}}` placeholders. Consumer calls `t(copy.path.to.key, { key: value })`
 | enableVotingMode   | Enable Voting Mode   |
 | changeUsername     | Change Username      |
 
-### modals.presets
+### modals.vibes
 
 | Key                 | Value                                                    |
 | ------------------- | -------------------------------------------------------- |
-| title               | Choose a ritual                                          |
-| headerNote          | You can save rituals from the game list after filtering. |
-| myPresets           | My rituals                                               |
-| quickPresets        | Quick rituals                                            |
+| title               | Choose a vibe                                          |
+| headerNote          | You can save vibes from the game list after filtering. |
+| myVibes           | My vibes                                               |
+| quickVibes        | Quick vibes                                            |
 | close               | Close                                                    |
-| deleteConfirmTitle  | Delete ritual?                                           |
+| deleteConfirmTitle  | Delete vibe?                                           |
 | deleteConfirmCancel | Cancel                                                   |
 | deleteConfirmDelete | Delete                                                   |
 
-### modals.presetName
+### modals.vibeName
 
 | Key                   | Value                                                                                                    | Interpolation |
 | --------------------- | -------------------------------------------------------------------------------------------------------- | ------------- |
-| title                 | Ritual name                                                                                              |               |
+| title                 | Vibe name                                                                                              |               |
 | rules                 | Required. Max 64 characters. Multiple spaces are collapsed. Newlines and control characters are removed. |               |
 | placeholder           | e.g. 2-Player Night                                                                                      |               |
 | save                  | Save                                                                                                     |               |
 | cancel                | Cancel                                                                                                   |               |
-| errorRequired         | Please enter a ritual name.                                                                              |               |
-| errorTooLong          | Ritual name must be {{max}} characters or less.                                                          | max           |
-| errorMaxPresets       | You can only save {{max}} rituals. Delete one to add another.                                            | max           |
-| errorExists           | Ritual name already exists.                                                                              |               |
-| warningMatchesBuiltIn | Name matches built-in ritual. Will save as "{{name}}".                                                   | name          |
+| errorRequired         | Please enter a vibe name.                                                                              |               |
+| errorTooLong          | Vibe name must be {{max}} characters or less.                                                          | max           |
+| errorMaxVibes       | You can only save {{max}} vibes. Delete one to add another.                                            | max           |
+| errorExists           | Vibe name already exists.                                                                              |               |
+| warningMatchesBuiltIn | Name matches built-in vibe. Will save as "{{name}}".                                                   | name          |
 
 ### modals.votingMode
 
@@ -263,4 +263,4 @@ Display complexity as **Low**, **Medium**, **High** (capitalized). Use `capitali
 
 ## Excluded from Copy Object
 
-- **Preset names/descriptions** — `helpers/quickPresets.js` (content, not UI copy)
+- **Vibe names/descriptions** — `helpers/quickVibes.js` (content, not UI copy)

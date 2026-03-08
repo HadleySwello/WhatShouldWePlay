@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { saveRitual } from '../helpers/ritualsStorage';
+import { saveVibe } from '../helpers/vibesStorage';
 import { getVotes, setVotes } from '../helpers/voteCache';
 import { getVotingModeEnabled } from '../helpers/votingModeStorage';
 
@@ -20,7 +20,7 @@ import {
   capitalizeComplexityTier,
 } from '../helpers/complexity';
 import AppButton from '../components/AppButton';
-import RitualNameModal from '../components/RitualNameModal';
+import VibeNameModal from '../components/VibeNameModal';
 import VoteControl from '../components/VoteControl';
 import AppToggle from '../components/AppToggle';
 import { useAppTheme } from '../theme';
@@ -69,8 +69,8 @@ export default function ResultsScreen({ route, navigation }) {
       getVotingModeEnabled().then(setVotingModeEnabled);
     }, [])
   );
-  const [showRitualNameModal, setShowRitualNameModal] = useState(false);
-  const [ritualSaved, setRitualSaved] = useState(false);
+  const [showVibeNameModal, setShowVibeNameModal] = useState(false);
+  const [vibeSaved, setVibeSaved] = useState(false);
 
   const gameKey = filteredGames.map((g) => g.id).join(',');
   const [gameVotes, setGameVotes] = useState(() => {
@@ -139,7 +139,7 @@ export default function ResultsScreen({ route, navigation }) {
     });
   };
 
-  const canSaveRitual = filters && filteredGames.length > 0;
+  const canSaveVibe = filters && filteredGames.length > 0;
   const allVotesAssigned =
     playerCount > 0 && totalVotes >= playerCount && filteredGames.length > 0;
 
@@ -206,17 +206,17 @@ export default function ResultsScreen({ route, navigation }) {
           {copy.results.allVotesAssigned}
         </AppText>
       )}
-      {canSaveRitual &&
-        (ritualSaved ? (
-          <AppText variant="ritualSavedText">
-            {copy.results.ritualSaved}
+      {canSaveVibe &&
+        (vibeSaved ? (
+          <AppText variant="vibeSavedText">
+            {copy.results.vibeSaved}
           </AppText>
         ) : (
           <AppButton
-            variant="saveRitualButton"
-            onPress={() => setShowRitualNameModal(true)}
+            variant="saveVibeButton"
+            onPress={() => setShowVibeNameModal(true)}
           >
-            {copy.results.saveAsRitual}
+            {copy.results.saveAsVibe}
           </AppButton>
         ))}
     </View>
@@ -295,16 +295,16 @@ export default function ResultsScreen({ route, navigation }) {
       </View>
 
 
-      <RitualNameModal
-        visible={showRitualNameModal}
-        onClose={() => setShowRitualNameModal(false)}
+      <VibeNameModal
+        visible={showVibeNameModal}
+        onClose={() => setShowVibeNameModal(false)}
         onSave={(name) => {
-          saveRitual(name, filters).then(() => {
-            setRitualSaved(true);
-            setShowRitualNameModal(false);
+          saveVibe(name, filters).then(() => {
+            setVibeSaved(true);
+            setShowVibeNameModal(false);
           });
         }}
-        checkRitualCount
+        checkVibeCount
       />
 
       <VotingModeInfoModal

@@ -19,7 +19,7 @@ export default function SplashScreen({ navigation }) {
   const { styles } = useAppTheme();
 
   useEffect(() => {
-    let cancelled = false;
+    // let cancelled = false;
 
     const checkAndGo = async () => {
       try {

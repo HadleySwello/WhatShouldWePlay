@@ -204,7 +204,7 @@ export const getCardStyles = (c, s, r, t, e) => ({
     color: c.tintMain,
     marginBottom: s.lg,
   },
-  ritualCard: {
+  vibeCard: {
     backgroundColor: c.cardSecondary,
     borderRadius: r.lg - 2,
     padding: s.lg,

@@ -1,25 +1,50 @@
 /**
- * English copy — single source of truth for all user-facing strings.
- * Use {{key}} for interpolation; consumer replaces with actual values.
+ * ENGLISH COPY: STRATEGIC SOURCE OF TRUTH
+ *
+ * CORE BRAND VOICE:
+ * The app should feel like a "calm vibe." Avoid aggressive "gamification" language.
+ * Instead, use words that evoke fate, choices, and relief from "decision fatigue."
+ * Clarity over wit always.
+ *
+ * INTERPOLATION:
+ * Use {{key}} for dynamic values. The consumer handles replacement.
  */
+
 export default {
+  /**
+   * SPLASH SCREEN (SplashScreen.js)
+   * User Task: Waiting for the initial app startup and collection-auth check.
+   * App Objective: First brand impression and clear loading state.
+   */
   splash: {
     title: 'What Should We Play?',
-    subtitle: 'A calm ritual for choosing what to play.',
-    tagline: 'Consult the wheel. Let the fates decide.',
+    subtitle: 'Group voting.\n Weighted results.\n No more arguments.',
+    tagline: 'Ending the\n "I don\'t know, what do you want to play?"\n loop.',
     attribution: 'Data provided by BoardGameGeek',
     a11y: 'Powered by BoardGameGeek',
   },
+
+  /**
+   * WELCOME SCREEN (WelcomeScreen.js)
+   * User Task: Understanding what the app does and how to get started.
+   * App Objective: Conversion—convincing the user to link their BGG account.
+   */
   welcome: {
     title: 'What Should We Play?',
     subtitle:
       "Import your shelf, set tonight's constraints, and we'll guide the pick.",
     cta: 'Connect BoardGameGeek',
   },
+
+  /**
+   * CONNECT BGG SCREEN (ConnectBGGScreen.js)
+   * User Task: Entering their BGG username to sync their game collection.
+   * App Objective: Minimizing friction in the account linking process.
+   */
   connectBGG: {
     navTitle: 'Load Your Shelf',
     header: 'Connect your\nBoardGameGeek\nCollection',
-    body: 'To start, we’ll import your BGG collection to create your digital shelf. Once linked, your collection will always be ready to help you and your group find the perfect game.',
+    body: 'Tired of staring at your shelf? Sync your BGG account and let’s actually start playing.\n We’ll pull in everything you own, no manual entry, no "what was that game with the birds?", just your actual collection, ready to filter and vote on.',
     placeholder: 'BoardGameGeek Username',
     help: 'Why do we need this?',
     loading: 'Finding your games…',
@@ -31,6 +56,12 @@ export default {
     usernameRequired: 'Please enter a username.',
     cta: 'Load Shelf',
   },
+
+  /**
+   * FAQ MODAL (AppFAQModal.js)
+   * User Task: Getting help with linking their collection or trying a demo.
+   * App Objective: Support and troubleshooting to prevent onboarding drop-off.
+   */
   faq: {
     title: 'How this works',
     q1: 'How do I find my BGG username?',
@@ -45,6 +76,12 @@ export default {
     a5: 'Curious what a huge collection looks like? Try "{{demoUsername}}", the username of BGG’s founder, to see the app in action with over 1,000 games.',
     close: 'I understand',
   },
+
+  /**
+   * HOME SCREEN (HomeScreen.js)
+   * User Task: Selecting whether to pick a game or manage their collection.
+   * App Objective: Navigation hub for the main app features.
+   */
   home: {
     heroTitle: 'What Should We Play?',
     heroDescription: 'Set your constraints and let the wheel decide.',
@@ -52,6 +89,12 @@ export default {
     ctaBrowse: 'Browse your shelf',
     ctaSettings: 'Settings',
   },
+
+  /**
+   * NAVIGATION & TITLES (Navigation.js)
+   * User Task: Identifying which part of the app they are currently in.
+   * App Objective: Contextual header text and navigation labels.
+   */
   navigation: {
     connectCollection: 'Load Your Shelf',
     settings: 'Settings',
@@ -62,8 +105,14 @@ export default {
     selectedGame: 'The wheel has chosen',
     spinnerScreen: 'Spin the wheel',
   },
+
+  /**
+   * SETUP SCREEN (SetupScreen.js)
+   * User Task: Inputting constraints (players, time, complexity) to filter their collection.
+   * App Objective: Advanced filtering interface for narrowing down game choices.
+   */
   setup: {
-    loadRitual: 'Load a ritual',
+    loadVibe: 'Load a vibe',
     howManyPlayers: 'How many at the table tonight?',
     playTime: 'Max play time',
     maxLength: 'How long can the session run?',
@@ -83,30 +132,42 @@ export default {
     noMatchesBody: "Widen the filters—we'll find something.",
     ctaViewGames: 'View {{count}} games',
     ctaNoMatches: 'No matches',
-    ritualHeader: 'Ritual: {{name}}',
-    ritualHeaderModified: 'Ritual: {{name}} (modified)',
+    vibeHeader: 'Vibe: {{name}}',
+    vibeHeaderModified: 'Vibe: {{name}} (modified)',
     customFilters: 'Custom filters',
-    ritualModified: '(modified)',
-    saveAsNew: 'Save as new ritual',
+    vibeModified: '(modified)',
+    saveAsNew: 'Save as new vibe',
     save: 'Save',
     dontSave: "Don't save",
     rename: 'Rename',
     loading: 'Loading shelf…',
   },
+
+  /**
+   * RESULTS SCREEN (ResultsScreen.js)
+   * User Task: Reviewing the list of matching games and optionally voting.
+   * App Objective: Displaying the filtered dataset and managing group input.
+   */
   results: {
     gameMatch: '{{count}} game fits tonight.',
     gamesMatchMany: '{{count}} games fit tonight.',
     enableVotingMode: 'Enable Voting Mode',
     votingHint: 'One vote per player ({{assigned}} of {{total}} in)',
     allVotesAssigned: 'All voices in. Ready to consult the fates.',
-    ritualSaved: 'Ritual saved!',
-    saveAsRitual: 'Save as ritual',
+    vibeSaved: 'Vibe saved!',
+    saveAsVibe: 'Save as vibe',
     emptyTitle: 'Nothing on your shelf fits tonight.',
     emptyBody: "Widen the filters—we'll find something.",
     backToFilters: 'Adjust filters',
     ctaSpin: 'Let the wheel speak',
     ctaSelectGame: 'This one.',
   },
+
+  /**
+   * SPINNER SCREEN (SpinnerScreen.js)
+   * User Task: Spinning the wheel to make a final selection from the list.
+   * App Objective: Core interactive element that manages the random selection.
+   */
   spinner: {
     title: 'Ready to consult the fates?',
     celebrationTitle: 'Tonight, you shall play:',
@@ -117,18 +178,36 @@ export default {
     winnerLabel: 'Winner: {{name}}',
     noGames: 'No games on the wheel',
   },
+
+  /**
+   * SELECTED GAME REVEAL (SelectedGameScreen.js)
+   * User Task: Viewing the final outcome and starting the physical play session.
+   * App Objective: Confirming the selection and providing a path to reset or replay.
+   */
   selectedGame: {
     title: 'Tonight, you shall play…',
     fallbackGameName: 'The chosen game',
     complexityLabel: 'Complexity: {{value}}',
-    ctaStartNew: 'Start a new ritual',
+    ctaStartNew: 'Start a new vibe',
     ctaPickAgain: 'Consult again (same filters)',
   },
+
+  /**
+   * DATA SOURCE STRINGS (BGG API)
+   * User Task: Understanding API errors or status.
+   * App Objective: Technical error reporting for external data sources.
+   */
   bgg: {
     failedToLoadCollection: 'Failed to load collection',
     unknownError: 'Unknown BGG error',
   },
-  ritualMetadata: {
+
+  /**
+   * METADATA & LABELS (Shared components)
+   * User Task: Distinguishing between complexity levels and player counts.
+   * App Objective: Standardized labels for game attributes across the app.
+   */
+  vibeMetadata: {
     any: 'Any',
     lightAndUp: 'Light and up',
     mediumAndUp: 'Medium and up',
@@ -145,11 +224,23 @@ export default {
     players: '{{count}} players',
     complexityLabel: 'Complexity: {{value}}',
   },
+
+  /**
+   * ERROR HANDLING
+   * User Task: Correcting input errors or understanding app limits.
+   * App Objective: Validation logic and state management feedback.
+   */
   errors: {
-    maxRitualsReached:
-      'You can only save {{max}} rituals. Delete one to add another.',
-    ritualNameRequired: 'Ritual name is required.',
+    maxVibesReached:
+      'You can only save {{max}} vibes. Delete one to add another.',
+    vibeNameRequired: 'Vibe name is required.',
   },
+
+  /**
+   * BROWSE SHELF (RankingsScreen.js)
+   * User Task: Browsing their entire synced collection and seeing ratings.
+   * App Objective: Gallery view for collection management and discovery.
+   */
   rankings: {
     navTitleTemplate: "{{username}}'s Shelf",
     loading: 'Loading shelf…',
@@ -163,6 +254,12 @@ export default {
     ctaChooseGame: 'Choose a Game',
     gameDetails: 'Rating: {{rating}}',
   },
+
+  /**
+   * SETTINGS (SettingsScreen.js)
+   * User Task: Adjusting theme, accessibility, and account connection.
+   * App Objective: User preference management and account actions.
+   */
   settings: {
     appearanceSectionTitle: 'Appearance',
     chooseThemeLabel: 'Theme',
@@ -170,7 +267,7 @@ export default {
     themeLightLabel: 'Light',
     themeDarkLabel: 'Dark',
     themeSystemLabel: 'System',
-    theRitualSectionTitle: 'Ritual Defaults',
+    theVibeSectionTitle: 'Vibe Defaults',
     defaultPlayerCountLabel: 'Default players at table',
     defaultPlayerCountHelper: 'The number of players at your table.',
     enableVotingModeLabel: 'Enable Voting Mode by Default',
@@ -185,31 +282,37 @@ export default {
     changeUsernameLabel: 'Connect a different shelf',
     deleteMyAccountLabel: 'Unlink My Account',
   },
+
+  /**
+   * MODALS & DIALOGS
+   * User Task: Managing saved filter sets (vibes) and understanding voting.
+   * App Objective: Specialized overlays for complex secondary tasks.
+   */
   modals: {
-    rituals: {
-      title: 'Choose a ritual',
-      headerNote: 'You can save rituals from the game list after filtering.',
-      myRituals: 'My rituals',
-      quickRituals: 'Quick rituals',
+    vibes: {
+      title: 'Choose a vibe',
+      headerNote: 'You can save vibes from the game list after filtering.',
+      myVibes: 'My vibes',
+      quickVibes: 'Quick vibes',
       close: 'Close',
-      deleteConfirmTitle: 'Delete ritual?',
+      deleteConfirmTitle: 'Delete vibe?',
       deleteConfirmCancel: 'Cancel',
       deleteConfirmDelete: 'Delete',
     },
-    ritualName: {
-      title: 'Ritual name',
+    vibeName: {
+      title: 'Vibe name',
       rules:
         'Required. Max 64 characters. Multiple spaces are collapsed. Newlines and control characters are removed.',
       placeholder: 'e.g. 2-Player Night',
       save: 'Save',
       cancel: 'Cancel',
-      errorRequired: 'Please enter a ritual name.',
-      errorTooLong: 'Ritual name must be {{max}} characters or less.',
-      errorMaxRituals:
-        'You can only save {{max}} rituals. Delete one to add another.',
-      errorExists: 'Ritual name already exists.',
+      errorRequired: 'Please enter a vibe name.',
+      errorTooLong: 'Vibe name must be {{max}} characters or less.',
+      errorMaxVibes:
+        'You can only save {{max}} vibes. Delete one to add another.',
+      errorExists: 'Vibe name already exists.',
       warningMatchesBuiltIn:
-        'Name matches built-in ritual. Will save as "{{name}}".',
+        'Name matches built-in vibe. Will save as "{{name}}".',
     },
     votingMode: {
       title: 'Let everyone weigh in',
@@ -234,6 +337,12 @@ Hive
 Games with more votes are more likely to be chosen.`,
     },
   },
+
+  /**
+   * TIME LABELS
+   * User Task: Selecting a timeframe for gameplay.
+   * App Objective: Practical time-bucket labels for filtering.
+   */
   lengthLabels: {
     any: 'Any length',
     under30min: '≤30m',
@@ -241,16 +350,28 @@ Games with more votes are more likely to be chosen.`,
     under2hours: '≤2h',
     long: '3h+',
   },
+
+  /**
+   * SYSTEM ALERTS
+   * User Task: Reviewing confirmation prompts for destructive actions.
+   * App Objective: Preventing accidental data loss or invalid states.
+   */
   alerts: {
     votingModeSinglePlayerTitle: 'Voting Mode',
     votingModeSinglePlayerMessage:
       'Voting mode is not available for single-player games.',
     deleteAccountTitle: 'Delete your account?',
     deleteAccountMessage:
-      'This cannot be undone. Your shelf, saved rituals, and preferences will be permanently deleted. There is no way to recover them.',
+      'This cannot be undone. Your shelf, saved vibes, and preferences will be permanently deleted. There is no way to recover them.',
     deleteAccountCancel: 'Cancel',
     deleteAccountConfirm: 'Delete my account',
   },
+
+  /**
+   * SHARED / COMMON STRINGS
+   * User Task: Generic interaction (save, close, cancel).
+   * App Objective: Reusable UI labels for consistency.
+   */
   common: {
     close: 'Close',
     cancel: 'Cancel',

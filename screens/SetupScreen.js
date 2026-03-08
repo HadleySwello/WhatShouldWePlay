@@ -10,13 +10,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { RangeSlider } from '@sharcoux/slider';
 import useBoardGameGeekCollection from '../hooks/boardGameGeekApi';
 import {
-  getRituals,
-  saveRitual,
-  updateRitual,
-  deleteRitual,
-} from '../helpers/ritualsStorage';
-import RitualsModal from '../components/RitualsModal';
-import RitualNameModal from '../components/RitualNameModal';
+  getVibes,
+  saveVibe,
+  updateVibe,
+  deleteVibe,
+} from '../helpers/vibesStorage';
+import VibesModal from '../components/VibesModal';
+import VibeNameModal from '../components/VibeNameModal';
 import PlayerCountStepper from '../components/PlayerCountStepper';
 import {
   getDefaultPlayerCount,
@@ -30,7 +30,7 @@ import AppToggle from '../components/AppToggle';
 import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
-import { QUICK_RITUALS } from '../helpers/quickRituals';
+import { QUICK_VIBES } from '../helpers/quickVibes';
 
 const LENGTH_ORDER = ['under 30 min', 'under 1 hour', 'under 2 hours', 'long'];
 
@@ -116,16 +116,16 @@ function getUniqueCategories(games) {
   return [...set].sort();
 }
 
-function filtersMatchRitual(
+function filtersMatchVibe(
   playerCount,
   complexityMin,
   complexityMax,
   maxLength,
   selectedMechanics,
   selectedCategories,
-  ritualFilters
+  vibeFilters
 ) {
-  const f = ritualFilters || {};
+  const f = vibeFilters || {};
   const mechs = selectedMechanics ?? [];
   const cats = selectedCategories ?? [];
   const pMechs = f.selectedMechanics ?? [];
@@ -173,24 +173,24 @@ export default function SetupScreen({ navigation }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [mechanicsExpanded, setMechanicsExpanded] = useState(false);
   const [categoriesExpanded, setCategoriesExpanded] = useState(false);
-  const [showRitualsModal, setShowRitualsModal] = useState(false);
-  const [showRitualNameModal, setShowRitualNameModal] = useState(false);
-  const [ritualNameModalMode, setRitualNameModalMode] = useState('saveAsNew'); // 'rename' | 'saveAsNew'
-  const [savedRituals, setSavedRituals] = useState([]);
-  const [loadedRitual, setLoadedRitual] = useState(null);
+  const [showVibesModal, setShowVibesModal] = useState(false);
+  const [showVibeNameModal, setShowVibeNameModal] = useState(false);
+  const [vibeNameModalMode, setVibeNameModalMode] = useState('saveAsNew'); // 'rename' | 'saveAsNew'
+  const [savedVibes, setSavedVibes] = useState([]);
+  const [loadedVibe, setLoadedVibe] = useState(null);
   const { tokens, styles } = useAppTheme();
 
-  const refreshRituals = useCallback(() => {
-    getRituals().then(setSavedRituals);
+  const refreshVibes = useCallback(() => {
+    getVibes().then(setSavedVibes);
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      refreshRituals();
-      if (!loadedRitual) {
+      refreshVibes();
+      if (!loadedVibe) {
         getDefaultPlayerCount().then(setPlayerCount);
       }
-    }, [refreshRituals, loadedRitual])
+    }, [refreshVibes, loadedVibe])
   );
 
   const filteredGames = useMemo(
@@ -229,20 +229,20 @@ export default function SetupScreen({ navigation }) {
     selectedCategories
   );
   const isModified =
-    loadedRitual &&
-    loadedRitual.filters &&
-    !filtersMatchRitual(
+    loadedVibe &&
+    loadedVibe.filters &&
+    !filtersMatchVibe(
       playerCount,
       complexityMin,
       complexityMax,
       maxLength,
       selectedMechanics,
       selectedCategories,
-      loadedRitual.filters
+      loadedVibe.filters
     );
-  const isMyRitual = loadedRitual && !loadedRitual.isQuick;
+  const isMyVibe = loadedVibe && !loadedVibe.isQuick;
 
-  const applyRitualFilters = useCallback((f) => {
+  const applyVibeFilters = useCallback((f) => {
     const ff = f || {};
     setPlayerCount(ff.playerCount ?? DEFAULT_PLAYER_COUNT);
     setComplexityMin(ff.complexityMin ?? null);
@@ -252,13 +252,13 @@ export default function SetupScreen({ navigation }) {
     setSelectedCategories(ff.selectedCategories ?? []);
   }, []);
 
-  const handleRitualSelect = useCallback(
-    (ritual) => {
-      const f = ritual.filters || ritual;
-      applyRitualFilters(f);
-      setLoadedRitual({
-        id: ritual.id,
-        name: ritual.name,
+  const handleVibeSelect = useCallback(
+    (vibe) => {
+      const f = vibe.filters || vibe;
+      applyVibeFilters(f);
+      setLoadedVibe({
+        id: vibe.id,
+        name: vibe.name,
         filters: {
           playerCount: f.playerCount ?? DEFAULT_PLAYER_COUNT,
           complexityMin: f.complexityMin ?? null,
@@ -267,68 +267,68 @@ export default function SetupScreen({ navigation }) {
           selectedMechanics: f.selectedMechanics ?? [],
           selectedCategories: f.selectedCategories ?? [],
         },
-        isQuick: ritual.isQuick === true,
+        isQuick: vibe.isQuick === true,
       });
-      setShowRitualsModal(false);
+      setShowVibesModal(false);
     },
-    [applyRitualFilters]
+    [applyVibeFilters]
   );
 
   const handleSaveOverwrite = useCallback(() => {
-    if (!loadedRitual || !isMyRitual || !isModified) return;
-    updateRitual(loadedRitual.id, {
-      name: loadedRitual.name,
+    if (!loadedVibe || !isMyVibe || !isModified) return;
+    updateVibe(loadedVibe.id, {
+      name: loadedVibe.name,
       filters: currentFilters,
     }).then((updated) => {
       if (updated) {
-        setLoadedRitual({ ...loadedRitual, filters: currentFilters });
-        refreshRituals();
+        setLoadedVibe({ ...loadedVibe, filters: currentFilters });
+        refreshVibes();
       }
     });
-  }, [loadedRitual, isMyRitual, isModified, currentFilters, refreshRituals]);
+  }, [loadedVibe, isMyVibe, isModified, currentFilters, refreshVibes]);
 
   const handleSaveAsNew = useCallback(() => {
-    setRitualNameModalMode('saveAsNew');
-    setShowRitualNameModal(true);
+    setVibeNameModalMode('saveAsNew');
+    setShowVibeNameModal(true);
   }, []);
 
   const handleRename = useCallback(() => {
-    setRitualNameModalMode('rename');
-    setShowRitualNameModal(true);
+    setVibeNameModalMode('rename');
+    setShowVibeNameModal(true);
   }, []);
 
-  const handleRitualNameSave = useCallback(
+  const handleVibeNameSave = useCallback(
     (name) => {
-      if (ritualNameModalMode === 'rename' && loadedRitual && isMyRitual) {
-        updateRitual(loadedRitual.id, {
+      if (vibeNameModalMode === 'rename' && loadedVibe && isMyVibe) {
+        updateVibe(loadedVibe.id, {
           name,
-          filters: loadedRitual.filters,
+          filters: loadedVibe.filters,
         }).then((updated) => {
           if (updated) {
-            setLoadedRitual({ ...loadedRitual, name });
-            setShowRitualNameModal(false);
-            refreshRituals();
+            setLoadedVibe({ ...loadedVibe, name });
+            setShowVibeNameModal(false);
+            refreshVibes();
           }
         });
       } else {
-        saveRitual(name, currentFilters).then((ritual) => {
-          setLoadedRitual({
-            id: ritual.id,
-            name: ritual.name,
-            filters: ritual.filters,
+        saveVibe(name, currentFilters).then((vibe) => {
+          setLoadedVibe({
+            id: vibe.id,
+            name: vibe.name,
+            filters: vibe.filters,
             isQuick: false,
           });
-          setShowRitualNameModal(false);
-          refreshRituals();
+          setShowVibeNameModal(false);
+          refreshVibes();
         });
       }
     },
     [
-      ritualNameModalMode,
-      loadedRitual,
-      isMyRitual,
+      vibeNameModalMode,
+      loadedVibe,
+      isMyVibe,
       currentFilters,
-      refreshRituals,
+      refreshVibes,
     ]
   );
 
@@ -370,10 +370,10 @@ export default function SetupScreen({ navigation }) {
           <View>
             <AppButton
               variant="tertiary"
-              onPress={() => setShowRitualsModal(true)}
-              style={styles.useRitualButton}
+              onPress={() => setShowVibesModal(true)}
+              style={styles.useVibeButton}
             >
-              {copy.setup.loadRitual}
+              {copy.setup.loadVibe}
             </AppButton>
             <AppText variant="sectionTitle">
               {copy.setup.howManyPlayers}
@@ -610,64 +610,64 @@ export default function SetupScreen({ navigation }) {
             ? copy.setup.ctaNoMatches
             : t(copy.setup.ctaViewGames, { count: filteredGames.length })}
         </AppButton>
-        <View style={styles.stickyRitualSection}>
-          <AppText variant="ritualHeaderTitle">
-            {loadedRitual
+        <View style={styles.stickyVibeSection}>
+          <AppText variant="vibeHeaderTitle">
+            {loadedVibe
               ? isModified
-                ? t(copy.setup.ritualHeaderModified, {
-                    name: loadedRitual.name,
+                ? t(copy.setup.vibeHeaderModified, {
+                    name: loadedVibe.name,
                   })
-                : t(copy.setup.ritualHeader, { name: loadedRitual.name })
+                : t(copy.setup.vibeHeader, { name: loadedVibe.name })
               : copy.setup.customFilters}
           </AppText>
-          {(loadedRitual == null ||
-            (isMyRitual && isModified) ||
-            (isMyRitual && !isModified) ||
-            (loadedRitual && loadedRitual.isQuick && isModified)) && (
-            <View style={styles.ritualSaveControls}>
-              {loadedRitual == null ? (
+          {(loadedVibe == null ||
+            (isMyVibe && isModified) ||
+            (isMyVibe && !isModified) ||
+            (loadedVibe && loadedVibe.isQuick && isModified)) && (
+            <View style={styles.vibeSaveControls}>
+              {loadedVibe == null ? (
                 <TouchableOpacity
-                  style={styles.stickyRitualAction}
+                  style={styles.stickyVibeAction}
                   onPress={handleSaveAsNew}
                 >
-                  <AppText variant="ritualSaveControlText">
+                  <AppText variant="vibeSaveControlText">
                     {copy.setup.saveAsNew}
                   </AppText>
                 </TouchableOpacity>
-              ) : isMyRitual && isModified ? (
+              ) : isMyVibe && isModified ? (
                 <React.Fragment>
                   <TouchableOpacity
-                    style={styles.stickyRitualAction}
+                    style={styles.stickyVibeAction}
                     onPress={handleSaveOverwrite}
                   >
-                    <AppText variant="ritualSaveControlText">
+                    <AppText variant="vibeSaveControlText">
                       {copy.setup.save}
                     </AppText>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.stickyRitualAction}
+                    style={styles.stickyVibeAction}
                     onPress={handleSaveAsNew}
                   >
-                    <AppText variant="ritualSaveControlText">
+                    <AppText variant="vibeSaveControlText">
                       {copy.setup.saveAsNew}
                     </AppText>
                   </TouchableOpacity>
                 </React.Fragment>
-              ) : isMyRitual && !isModified ? (
+              ) : isMyVibe && !isModified ? (
                 <TouchableOpacity
-                  style={styles.stickyRitualAction}
+                  style={styles.stickyVibeAction}
                   onPress={handleRename}
                 >
-                  <AppText variant="ritualSaveControlText">
+                  <AppText variant="vibeSaveControlText">
                     {copy.setup.rename}
                   </AppText>
                 </TouchableOpacity>
-              ) : loadedRitual.isQuick && isModified ? (
+              ) : loadedVibe.isQuick && isModified ? (
                 <TouchableOpacity
-                  style={styles.stickyRitualAction}
+                  style={styles.stickyVibeAction}
                   onPress={handleSaveAsNew}
                 >
-                  <AppText variant="ritualSaveControlText">
+                  <AppText variant="vibeSaveControlText">
                     {copy.setup.saveAsNew}
                   </AppText>
                 </TouchableOpacity>
@@ -677,31 +677,31 @@ export default function SetupScreen({ navigation }) {
         </View>
       </View>
 
-      <RitualsModal
-        visible={showRitualsModal}
-        onClose={() => setShowRitualsModal(false)}
-        quickRituals={QUICK_RITUALS}
-        savedRituals={savedRituals}
-        onSelectRitual={handleRitualSelect}
-        onDeleteRitual={(ritual) => {
-          deleteRitual(ritual.id).then(() => {
-            if (loadedRitual && loadedRitual.id === ritual.id) {
-              setLoadedRitual(null);
+      <VibesModal
+        visible={showVibesModal}
+        onClose={() => setShowVibesModal(false)}
+        quickVibes={QUICK_VIBES}
+        savedVibes={savedVibes}
+        onSelectVibe={handleVibeSelect}
+        onDeleteVibe={(vibe) => {
+          deleteVibe(vibe.id).then(() => {
+            if (loadedVibe && loadedVibe.id === vibe.id) {
+              setLoadedVibe(null);
             }
-            refreshRituals();
+            refreshVibes();
           });
         }}
       />
-      <RitualNameModal
-        visible={showRitualNameModal}
-        onClose={() => setShowRitualNameModal(false)}
-        onSave={handleRitualNameSave}
+      <VibeNameModal
+        visible={showVibeNameModal}
+        onClose={() => setShowVibeNameModal(false)}
+        onSave={handleVibeNameSave}
         excludeId={
-          ritualNameModalMode === 'rename' && loadedRitual
-            ? loadedRitual.id
+          vibeNameModalMode === 'rename' && loadedVibe
+            ? loadedVibe.id
             : undefined
         }
-        checkRitualCount={ritualNameModalMode === 'saveAsNew'}
+        checkVibeCount={vibeNameModalMode === 'saveAsNew'}
       />
     </View>
   );

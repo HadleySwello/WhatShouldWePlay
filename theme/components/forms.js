@@ -63,13 +63,13 @@ export const getFormStyles = (c, s, r, t) => ({
     gap: s.sm,
     marginBottom: s.xl - 4,
   },
-  ritualInputRow: {
+  vibeInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: s.sm,
     marginBottom: s.md,
   },
-  ritualInput: {
+  vibeInput: {
     flex: 1,
     backgroundColor: c.cardMain,
     borderRadius: r.md,
