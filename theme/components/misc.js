@@ -9,7 +9,7 @@ export const getMiscStyles = (c, s, r, t, e) => ({
     container: {
       flex: 1,
       paddingHorizontal: s.xl,
-      paddingTop: s['4xl'],
+      paddingTop: s['2xl'],
       paddingBottom: s['4xl'],
       alignItems: 'center',
     },

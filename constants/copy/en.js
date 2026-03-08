@@ -32,8 +32,8 @@ export default {
   welcome: {
     title: 'What Should We Play?',
     subtitle:
-      "Import your shelf, set tonight's constraints, and we'll guide the pick.",
-    cta: 'Connect BoardGameGeek',
+      'End the back-and-forth and get a game on the table.\n\nSync your BoardGameGeek collection to create your digital shelf. From there, your group can set constraints, cast votes, and let the wheel settle the score.',
+    cta: 'Set up your shelf',
   },
 
   /**
@@ -42,19 +42,17 @@ export default {
    * App Objective: Minimizing friction in the account linking process.
    */
   connectBGG: {
-    navTitle: 'Load Your Shelf',
-    header: 'Connect your\nBoardGameGeek\nCollection',
-    body: 'Tired of staring at your shelf? Sync your BGG account and let’s actually start playing.\n We’ll pull in everything you own, no manual entry, no "what was that game with the birds?", just your actual collection, ready to filter and vote on.',
+    header: 'Import your\nBoardGameGeek\nCollection',
+    body: 'Deciding what to play is the hardest part of game night. Importing your BoardGameGeek account turns your collection into a digital shelf that is ready for the group to use.\n\nLet us handle the indecision so you can focus on the fun part. Just filter your games, cast your votes, and let the wheel make the final call.',
     placeholder: 'BoardGameGeek Username',
-    help: 'Why do we need this?',
-    loading: 'Finding your games…',
+    help: 'How does this work?',
+    loading: 'Fetching your games...',
     findAccount:
-      'Find or create your free account at BoardGameGeek.com. It only takes a minute to start building your digital collection.',
+      'Don’t have a BGG account? Create one for free at BoardGameGeek.com to start tracking your collection. It only takes a minute.',
     bggLoginUrl: 'https://boardgamegeek.com/login',
-    error:
-      "We couldn't find that username on BoardGameGeek. Double-check the spelling?",
-    usernameRequired: 'Please enter a username.',
-    cta: 'Load Shelf',
+    error: "We couldn't find that username. Check the spelling and try again?",
+    usernameRequired: 'Please enter a username to continue.',
+    cta: 'Create my shelf',
   },
 
   /**
@@ -96,7 +94,7 @@ export default {
    * App Objective: Contextual header text and navigation labels.
    */
   navigation: {
-    connectCollection: 'Load Your Shelf',
+    connectCollection: 'Create Your Shelf',
     settings: 'Settings',
     browseCollection: 'Browse Shelf',
     browseCollectionTemplate: "{{username}}'s Shelf",
