@@ -1,4 +1,10 @@
-import { Modal, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Modal,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import AppText from './AppText';
 import AppButton from './AppButton';
@@ -28,22 +34,44 @@ export default function AppFAQModal({ visible, onClose, onSelectDemo }) {
             {t.title}
           </AppText>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <FAQItem question={t.q1} answer={t.a1} />
-            <FAQItem question={t.q2} answer={t.a2} />
-            <FAQItem question={t.q3} answer={t.a3} />
-            <FAQItem question={t.q4} answer={t.a4} />
-            <FAQItem question={t.q5}>
+            <FAQItem question={t.q1}>
               <AppText style={styles.helpModal.answer}>
-                {t.a5.split('{{demoUsername}}')[0]}
+                {t.a1.split('site')[0]}
+                <AppText
+                  style={styles.helpModal.demoLink}
+                  onPress={() => Linking.openURL(t.bggLoginUrl)}
+                >
+                  site
+                </AppText>
+                {t.a1.split('site')[1]}
+              </AppText>
+            </FAQItem>
+            <FAQItem question={t.q2}>
+              <AppText style={styles.helpModal.answer}>
+                {t.a2.split('BoardGameGeek.com')[0]}
+                <AppText
+                  style={styles.helpModal.demoLink}
+                  onPress={() => Linking.openURL(t.bggSignupUrl)}
+                >
+                  BoardGameGeek.com
+                </AppText>
+                {t.a2.split('BoardGameGeek.com')[1]}
+              </AppText>
+            </FAQItem>
+            <FAQItem question={t.q3}>
+              <AppText style={styles.helpModal.answer}>
+                {t.a3.split('{{demoUsername}}')[0]}
                 <AppText
                   style={styles.helpModal.demoLink}
                   onPress={() => onSelectDemo?.('aldie')}
                 >
                   aldie
                 </AppText>
-                {t.a5.split('{{demoUsername}}')[1]}
+                {t.a3.split('{{demoUsername}}')[1]}
               </AppText>
             </FAQItem>
+            <FAQItem question={t.q4} answer={t.a4} />
+            <FAQItem question={t.q5} answer={t.a5} />
           </ScrollView>
           <View style={styles.helpModal.closeButton}>
             <AppButton variant="secondary" onPress={onClose}>

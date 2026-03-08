@@ -63,16 +63,18 @@ export default {
   faq: {
     title: 'How this works',
     q1: 'How do I find my BGG username?',
-    a1: 'This is the name you use to log in to BoardGameGeek.com. We use it to find the public list of games you own.',
-    q2: 'Is my account secure?',
-    a2: 'Yes. We only access your public collection data. We will never ask for your password or any private account details.',
-    q3: "I don't have a BGG account.",
-    a3: "We highly recommend making one! It's free, easy, and a wonderful way to track your collection. Once you add your games there, they'll be ready to load here. In the meantime, feel free to try a friends!",
-    q4: "Why isn't my shelf loading?",
-    a4: 'Double-check that your games are marked as "Owned" on BGG. If you just made changes, it may take a few minutes for their system to update our view.',
-    q5: 'Can I try a demo username?',
-    a5: 'Curious what a huge collection looks like? Try "{{demoUsername}}", the username of BGG’s founder, to see the app in action with over 1,000 games.',
-    close: 'I understand',
+    a1: 'Your username is what you use to log in to BoardGameGeek.com. If you aren’t sure what it is, you can check your profile on their site.',
+    bggLoginUrl: 'https://boardgamegeek.com/login',
+    bggSignupUrl: 'https://boardgamegeek.com/join',
+    q2: "What if I don't have a BGG account?",
+    a2: 'It is easy to create a free account at BoardGameGeek.com. Once you add your games to your collection there, they will be ready to load here.',
+    q3: 'Can I try a demo?',
+    a3: 'Check out "{{demoUsername}}". This is the collection of the founder of BGG and features a massive library of games.',
+    q4: 'Is my data private?',
+    a4: 'Yes. We only access your public collection list. We will never ask for your password, email, or any private account details.',
+    q5: "Why isn't my shelf loading?",
+    a5: 'Make sure your games are marked as "Owned" on BGG. If you just updated your collection, it can take a few minutes for their system to refresh.',
+    close: 'Got it',
   },
 
   /**
@@ -82,10 +84,9 @@ export default {
    */
   home: {
     heroTitle: 'What Should We Play?',
-    heroDescription: 'Set your constraints and let the wheel decide.',
-    ctaChoose: 'Choose a game',
-    ctaBrowse: 'Browse your shelf',
-    ctaSettings: 'Settings',
+    heroDescription: 'End the indecision.\n Let the wheel decide.',
+    ctaChoose: 'Find the right game',
+    ctaBrowse: 'Browse my shelf',
   },
 
   /**
