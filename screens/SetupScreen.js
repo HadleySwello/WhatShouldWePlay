@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
-  Switch,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -27,6 +26,7 @@ import {
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import AppChip from '../components/AppChip';
+import AppToggle from '../components/AppToggle';
 import copy, { t } from '../constants/copy';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
@@ -368,14 +368,13 @@ export default function SetupScreen({ navigation }) {
       >
         <View style={styles.filtersContent}>
           <View>
-            <TouchableOpacity
-              style={styles.useRitualButton}
+            <AppButton
+              variant="tertiary"
               onPress={() => setShowRitualsModal(true)}
+              style={styles.useRitualButton}
             >
-              <AppText variant="useRitualButton">
-                {copy.setup.loadRitual}
-              </AppText>
-            </TouchableOpacity>
+              {copy.setup.loadRitual}
+            </AppButton>
             <AppText variant="sectionTitle">
               {copy.setup.howManyPlayers}
             </AppText>
@@ -418,7 +417,7 @@ export default function SetupScreen({ navigation }) {
             </AppText>
             <View style={styles.complexityRow}>
               <AppText variant="body">{copy.setup.anyComplexity}</AppText>
-              <Switch
+              <AppToggle
                 value={complexityMin == null && complexityMax == null}
                 onValueChange={(on) => {
                   if (on) {
@@ -429,11 +428,6 @@ export default function SetupScreen({ navigation }) {
                     setComplexityMax(5);
                   }
                 }}
-                trackColor={{
-                  false: tokens.colors.cardMain,
-                  true: tokens.colors.tintMain,
-                }}
-                thumbColor="#fff"
               />
             </View>
             {complexityMin != null || complexityMax != null ? (
@@ -610,11 +604,7 @@ export default function SetupScreen({ navigation }) {
           variant="primary"
           onPress={handleFindGames}
           disabled={hasNoMatches}
-          style={[
-            styles.button.primary,
-            layout.stretch,
-            hasNoMatches && styles.button.disabled,
-          ]}
+          style={layout.stretch}
         >
           {hasNoMatches
             ? copy.setup.ctaNoMatches

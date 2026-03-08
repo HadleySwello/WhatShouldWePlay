@@ -1,11 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-  ScrollView,
-  Switch,
-  TouchableOpacity,
-  Alert,
-  View,
-} from 'react-native';
+import { ScrollView, TouchableOpacity, Alert, View } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -13,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AppButton from '../components/AppButton';
 import copy from '../constants/copy';
 import AppText from '../components/AppText';
+import AppToggle from '../components/AppToggle';
 import PlayerCountStepper from '../components/PlayerCountStepper';
 import {
   getDefaultPlayerCount,
@@ -161,14 +156,9 @@ export default function SettingsScreen({ navigation }) {
               {copy.settings.reduceMovementHelper}
             </AppText>
           </View>
-          <Switch
+          <AppToggle
             value={reduceMovement}
             onValueChange={handleReduceMovementChange}
-            trackColor={{
-              false: tokens.colors.cardMain,
-              true: tokens.colors.tintMain,
-            }}
-            thumbColor={tokens.colors.onTintSecondary}
           />
         </View>
 
@@ -181,15 +171,7 @@ export default function SettingsScreen({ navigation }) {
               {copy.settings.largeTextHelper}
             </AppText>
           </View>
-          <Switch
-            value={largeText}
-            onValueChange={handleLargeTextChange}
-            trackColor={{
-              false: tokens.colors.cardMain,
-              true: tokens.colors.tintMain,
-            }}
-            thumbColor={tokens.colors.onTintSecondary}
-          />
+          <AppToggle value={largeText} onValueChange={handleLargeTextChange} />
         </View>
       </View>
 
@@ -229,15 +211,10 @@ export default function SettingsScreen({ navigation }) {
               </AppText>
             </View>
             <View pointerEvents={isSinglePlayer ? 'none' : 'auto'}>
-              <Switch
+              <AppToggle
                 value={isSinglePlayer ? false : votingModeEnabled}
                 onValueChange={handleVotingModeChange}
                 disabled={isSinglePlayer}
-                trackColor={{
-                  false: tokens.colors.cardMain,
-                  true: tokens.colors.tintMain,
-                }}
-                thumbColor={tokens.colors.onTintSecondary}
               />
             </View>
           </View>

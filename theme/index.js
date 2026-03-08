@@ -1,6 +1,6 @@
 import { useTheme as usePaperTheme } from 'react-native-paper';
 import { tokensLight, tokensDark } from './tokens';
-import { getComponentVariantStyles } from './components';
+import { getComponentVariantStyles } from './components/index';
 import { lightTheme } from './light';
 import { darkTheme } from './dark';
 
@@ -15,7 +15,7 @@ export {
   getSpinnerMarkerStyle,
   getSpinnerWheelStyle,
   getLoadingGradientStyle,
-} from './components';
+} from './components/index';
 export { spacing } from './spacing';
 export { radius } from './radius';
 export { typography } from './typography';

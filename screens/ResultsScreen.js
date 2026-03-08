@@ -4,7 +4,6 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  Switch,
   Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -22,6 +21,8 @@ import {
 } from '../helpers/complexity';
 import AppButton from '../components/AppButton';
 import RitualNameModal from '../components/RitualNameModal';
+import VoteControl from '../components/VoteControl';
+import AppToggle from '../components/AppToggle';
 import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 
@@ -173,15 +174,10 @@ export default function ResultsScreen({ route, navigation }) {
         >
           <View style={styles.votingModeRowInner}>
             <AppText variant="body">{copy.results.enableVotingMode}</AppText>
-            <Switch
+            <AppToggle
               value={isSinglePlayer ? false : votingModeEnabled}
               onValueChange={handleVotingModeToggle}
               disabled={isSinglePlayer}
-              trackColor={{
-                false: tokens.colors.cardMain,
-                true: tokens.colors.tintMain,
-              }}
-              thumbColor="#fff"
             />
           </View>
         </TouchableOpacity>
@@ -216,14 +212,12 @@ export default function ResultsScreen({ route, navigation }) {
             {copy.results.ritualSaved}
           </AppText>
         ) : (
-          <TouchableOpacity
-            style={styles.saveRitualButton}
+          <AppButton
+            variant="saveRitualButton"
             onPress={() => setShowRitualNameModal(true)}
           >
-            <AppText variant="saveRitualButtonText">
-              {copy.results.saveAsRitual}
-            </AppText>
-          </TouchableOpacity>
+            {copy.results.saveAsRitual}
+          </AppButton>
         ))}
     </View>
   );
@@ -283,23 +277,11 @@ export default function ResultsScreen({ route, navigation }) {
                 </AppText>
               </View>
               {votingModeEnabled && (
-                <View style={styles.voteRow}>
-                  <TouchableOpacity
-                    style={styles.voteButton}
-                    onPress={() => handleVote(item.name, -1)}
-                  >
-                    <AppText variant="voteSymbol">−</AppText>
-                  </TouchableOpacity>
-                  <AppText variant="voteCount">
-                    {gameVotes[item.name] || 0}
-                  </AppText>
-                  <TouchableOpacity
-                    style={styles.voteButton}
-                    onPress={() => handleVote(item.name, 1)}
-                  >
-                    <AppText variant="voteSymbol">+</AppText>
-                  </TouchableOpacity>
-                </View>
+                <VoteControl
+                  value={gameVotes[item.name]}
+                  onIncrement={() => handleVote(item.name, 1)}
+                  onDecrement={() => handleVote(item.name, -1)}
+                />
               )}
             </View>
           )}
