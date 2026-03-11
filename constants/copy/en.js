@@ -112,7 +112,8 @@ export default {
    */
   setup: {
     loadVibe: 'Load a vibe',
-    howManyPlayers: 'How many at the table tonight?',
+    howManyPlayersHelper: 'How many at the table tonight?',
+    howManyPlayers: 'Player count',
     playTime: 'Max play time',
     maxLength: 'How long can the session run?',
     complexity: 'Complexity',

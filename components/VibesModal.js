@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Feather } from '@expo/vector-icons';
 
 import AppText from './AppText';
 import copy, { t } from '../constants/copy';
@@ -14,23 +15,6 @@ const LENGTH_LABELS = {
   'under 2 hours': copy.lengthLabels.under2hours,
   long: copy.lengthLabels.long,
 };
-
-function formatVibeMetadata(filters) {
-  const f = filters || {};
-  const parts = [];
-  parts.push(t(copy.vibeMetadata.players, { count: f.playerCount ?? 2 }));
-  parts.push(
-    t(copy.vibeMetadata.complexityLabel, {
-      value: formatComplexitySummary(f.complexityMin, f.complexityMax),
-    })
-  );
-  parts.push(LENGTH_LABELS[f.maxLength] ?? LENGTH_LABELS.null);
-  const mechs = f.selectedMechanics ?? [];
-  const cats = f.selectedCategories ?? [];
-  if (mechs.length > 0) parts.push(mechs.join(', '));
-  if (cats.length > 0) parts.push(cats.join(', '));
-  return parts.join(' · ');
-}
 
 export default function VibesModal({
   visible,
@@ -71,9 +55,7 @@ export default function VibesModal({
         <View style={m.content}>
           <View style={m.header}>
             <View style={m.headerTop}>
-              <AppText variant="modalTitle">
-                {copy.modals.vibes.title}
-              </AppText>
+              <AppText variant="modalTitle">{copy.modals.vibes.title}</AppText>
               <TouchableOpacity onPress={onClose} style={m.closeButton}>
                 <AppText variant="closeButtonText">
                   {copy.modals.vibes.close}
@@ -95,31 +77,94 @@ export default function VibesModal({
                 <AppText variant="modalSectionTitle">
                   {copy.modals.vibes.myVibes}
                 </AppText>
-                {savedVibes.map((p) => (
-                  <View key={p.id} style={m.vibeCard}>
+                {savedVibes.map((p) => {
+                  const f = p.filters || {};
+                  const complexityLabel = formatComplexitySummary(
+                    f.complexityMin,
+                    f.complexityMax
+                  );
+                  const lengthLabel =
+                    LENGTH_LABELS[f.maxLength] ?? LENGTH_LABELS.null;
+
+                  return (
                     <TouchableOpacity
-                      style={styles.vibeCardRow}
+                      key={p.id}
+                      style={styles.vibeCard}
                       onPress={() => handleSelect(p)}
-                      activeOpacity={0.7}
+                      activeOpacity={0.8}
                     >
-                      <AppText variant="vibeName">{p.name}</AppText>
-                      <AppText variant="vibeMetadata">
-                        {formatVibeMetadata(p.filters)}
-                      </AppText>
+                      <View style={styles.vibeCardHeader}>
+                        <AppText variant="vibeName">{p.name}</AppText>
+                        <TouchableOpacity
+                          style={styles.vibeDeleteIconAbsolute}
+                          onPress={(e) => handleDelete(p, e)}
+                          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                        >
+                          <Icon
+                            name="delete-outline"
+                            size={22}
+                            color={tokens.colors.textSecondary}
+                          />
+                        </TouchableOpacity>
+                      </View>
+
+                      {p.description ? (
+                        <AppText variant="vibeDescription">
+                          {p.description}
+                        </AppText>
+                      ) : null}
+
+                      <View style={styles.vibeCardStatsRow}>
+                        <View style={styles.vibeCardStatItem}>
+                          <Feather
+                            name="users"
+                            size={14}
+                            color={tokens.colors.textSecondary}
+                          />
+                          <AppText variant="vibeMetadata">
+                            {t(copy.vibeMetadata.players, {
+                              count: f.playerCount ?? 2,
+                            })}
+                          </AppText>
+                        </View>
+                        <View style={styles.vibeCardStatItem}>
+                          <Feather
+                            name="target"
+                            size={14}
+                            color={tokens.colors.textSecondary}
+                          />
+                          <AppText variant="vibeMetadata">
+                            {complexityLabel}
+                          </AppText>
+                        </View>
+                        <View style={styles.vibeCardStatItem}>
+                          <Feather
+                            name="clock"
+                            size={14}
+                            color={tokens.colors.textSecondary}
+                          />
+                          <AppText variant="vibeMetadata">
+                            {lengthLabel}
+                          </AppText>
+                        </View>
+                      </View>
+
+                      {(f.selectedMechanics?.length > 0 ||
+                        f.selectedCategories?.length > 0) && (
+                        <View style={styles.vibeCardTags}>
+                          {[
+                            ...(f.selectedMechanics || []),
+                            ...(f.selectedCategories || []),
+                          ].map((tag, i) => (
+                            <View key={i} style={styles.vibeCardTag}>
+                              <AppText variant="gameCardTag">{tag}</AppText>
+                            </View>
+                          ))}
+                        </View>
+                      )}
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.vibeDeleteIconAbsolute}
-                      onPress={(e) => handleDelete(p, e)}
-                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
-                      <Icon
-                        name="delete-outline"
-                        size={24}
-                        color={tokens.colors.textSecondary}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                ))}
+                  );
+                })}
               </>
             )}
 
@@ -129,22 +174,79 @@ export default function VibesModal({
             >
               {copy.modals.vibes.quickVibes}
             </AppText>
-            {quickVibes.map((p) => (
-              <TouchableOpacity
-                key={p.id}
-                style={m.vibeCard}
-                onPress={() => handleSelect(p)}
-                activeOpacity={0.7}
-              >
-                <AppText variant="vibeName">{p.name}</AppText>
-                {p.description ? (
-                  <AppText variant="vibeDescription">{p.description}</AppText>
-                ) : null}
-                <AppText variant="vibeMetadata">
-                  {formatVibeMetadata(p.filters)}
-                </AppText>
-              </TouchableOpacity>
-            ))}
+            {quickVibes.map((p) => {
+              const f = p.filters || {};
+              const complexityLabel = formatComplexitySummary(
+                f.complexityMin,
+                f.complexityMax
+              );
+              const lengthLabel =
+                LENGTH_LABELS[f.maxLength] ?? LENGTH_LABELS.null;
+
+              return (
+                <TouchableOpacity
+                  key={p.id}
+                  style={styles.vibeCard}
+                  onPress={() => handleSelect(p)}
+                  activeOpacity={0.8}
+                >
+                  <View style={styles.vibeCardHeader}>
+                    <AppText variant="vibeName">{p.name}</AppText>
+                  </View>
+
+                  {p.description ? (
+                    <AppText variant="vibeDescription">{p.description}</AppText>
+                  ) : null}
+
+                  <View style={styles.vibeCardStatsRow}>
+                    <View style={styles.vibeCardStatItem}>
+                      <Feather
+                        name="users"
+                        size={14}
+                        color={tokens.colors.textSecondary}
+                      />
+                      <AppText variant="vibeMetadata">
+                        {t(copy.vibeMetadata.players, {
+                          count: f.playerCount ?? 2,
+                        })}
+                      </AppText>
+                    </View>
+                    <View style={styles.vibeCardStatItem}>
+                      <Feather
+                        name="target"
+                        size={14}
+                        color={tokens.colors.textSecondary}
+                      />
+                      <AppText variant="vibeMetadata">
+                        {complexityLabel}
+                      </AppText>
+                    </View>
+                    <View style={styles.vibeCardStatItem}>
+                      <Feather
+                        name="clock"
+                        size={14}
+                        color={tokens.colors.textSecondary}
+                      />
+                      <AppText variant="vibeMetadata">{lengthLabel}</AppText>
+                    </View>
+                  </View>
+
+                  {(f.selectedMechanics?.length > 0 ||
+                    f.selectedCategories?.length > 0) && (
+                    <View style={styles.vibeCardTags}>
+                      {[
+                        ...(f.selectedMechanics || []),
+                        ...(f.selectedCategories || []),
+                      ].map((tag, i) => (
+                        <View key={i} style={styles.vibeCardTag}>
+                          <AppText variant="gameCardTag">{tag}</AppText>
+                        </View>
+                      ))}
+                    </View>
+                  )}
+                </TouchableOpacity>
+              );
+            })}
           </ScrollView>
         </View>
       </View>

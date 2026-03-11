@@ -323,13 +323,7 @@ export default function SetupScreen({ navigation }) {
         });
       }
     },
-    [
-      vibeNameModalMode,
-      loadedVibe,
-      isMyVibe,
-      currentFilters,
-      refreshVibes,
-    ]
+    [vibeNameModalMode, loadedVibe, isMyVibe, currentFilters, refreshVibes]
   );
 
   const handleFindGames = () => {
@@ -375,8 +369,9 @@ export default function SetupScreen({ navigation }) {
             >
               {copy.setup.loadVibe}
             </AppButton>
-            <AppText variant="sectionTitle">
-              {copy.setup.howManyPlayers}
+            <AppText variant="label">{copy.setup.howManyPlayers}</AppText>
+            <AppText variant="helper" style={styles.helper}>
+              {copy.setup.howManyPlayersHelper}
             </AppText>
             <PlayerCountStepper
               value={playerCount}
