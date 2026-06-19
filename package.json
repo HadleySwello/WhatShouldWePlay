@@ -23,11 +23,15 @@
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-native-picker/picker": "2.11.1",
     "@react-native-segmented-control/segmented-control": "^2.5.7",
+    "@react-native/typescript-config": "^0.86.0",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@sharcoux/slider": "^8.0.6",
     "@shopify/react-native-skia": "2.2.12",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-test-renderer": "^19.1.0",
     "axios": "^1.7.9",
     "d3-shape": "^3.2.0",
     "expo": "~54.0.35",
@@ -64,7 +68,10 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "source-map-loader": "^5.0.0",
+    "ts-loader": "^9.6.1",
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "react-native-worklets": "0.5.1"
