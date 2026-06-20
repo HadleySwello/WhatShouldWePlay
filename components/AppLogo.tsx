@@ -1,11 +1,21 @@
-import React from 'react';
+import * as React from 'react';
 import { View } from 'react-native';
 import { useAppTheme } from '../theme';
 
-import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
-import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
+import * as LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
+import * as LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
 
-export default function AppLogo({ width = 280, height = 280, style }) {
+export type AppLogoProps = {
+  width: number;
+  height: number;
+  style: any;
+};
+
+export default function AppLogo({
+  width = 280,
+  height = 280,
+  style,
+}: AppLogoProps) {
   const { theme } = useAppTheme();
   const isDark = theme.dark === true;
   const Logo = isDark ? LogoDark : LogoLight;

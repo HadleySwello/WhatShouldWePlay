@@ -14,7 +14,12 @@ import AppText from './AppText';
 const { width } = Dimensions.get('window');
 const WHEEL_SIZE = width * 0.8;
 
-export default function Spinner({ slices, onSpinningEnd }) {
+export type SpinnerProps = {
+  slices: any;
+  onSpinningEnd: any;
+};
+
+export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
   const [winner, setWinner] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const spinDuration = 5000;

@@ -6,12 +6,19 @@ import { useAppTheme } from '../theme';
 /**
  * Displays a 5-star rating.
  */
+export type StarRatingProps = {
+  rating: number;
+  maxIcons: number;
+  size: number;
+  color?: any;
+};
+
 export default function StarRating({
   rating = 0,
   maxIcons = 5,
   size = 14,
   color,
-}) {
+}: StarRatingProps) {
   const { tokens, styles } = useAppTheme();
   const iconColor = color || tokens.colors.tintMain;
 

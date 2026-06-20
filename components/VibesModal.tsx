@@ -16,6 +16,15 @@ const LENGTH_LABELS = {
   long: copy.lengthLabels.long,
 };
 
+export type VibesModalProps = {
+  visible: any;
+  onClose: any;
+  quickVibes: any;
+  savedVibes: any;
+  onSelectVibe: any;
+  onDeleteVibe: any;
+};
+
 export default function VibesModal({
   visible,
   onClose,
@@ -23,16 +32,16 @@ export default function VibesModal({
   savedVibes,
   onSelectVibe,
   onDeleteVibe,
-}) {
+}: VibesModalProps) {
   const { styles, tokens } = useAppTheme();
   const m = styles.modal;
 
-  const handleSelect = (vibe) => {
+  const handleSelect = (vibe: any) => {
     onSelectVibe(vibe);
     onClose();
   };
 
-  const handleDelete = (vibe, e) => {
+  const handleDelete = (vibe: any, e: any) => {
     if (e && e.stopPropagation) e.stopPropagation();
     Alert.alert(copy.modals.vibes.deleteConfirmTitle, vibe.name, [
       { text: copy.modals.vibes.deleteConfirmCancel, style: 'cancel' },
@@ -77,7 +86,7 @@ export default function VibesModal({
                 <AppText variant="modalSectionTitle">
                   {copy.modals.vibes.myVibes}
                 </AppText>
-                {savedVibes.map((p) => {
+                {savedVibes.map((p: any) => {
                   const f = p.filters || {};
                   const complexityLabel = formatComplexitySummary(
                     f.complexityMin,
@@ -174,7 +183,7 @@ export default function VibesModal({
             >
               {copy.modals.vibes.quickVibes}
             </AppText>
-            {quickVibes.map((p) => {
+            {quickVibes.map((p: any) => {
               const f = p.filters || {};
               const complexityLabel = formatComplexitySummary(
                 f.complexityMin,

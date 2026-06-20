@@ -20,7 +20,11 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export default function GameCard({ game }) {
+export type GameCardProps = {
+  game: any;
+};
+
+export default function GameCard({ game }: GameCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { styles, tokens, reduceMovement } = useAppTheme();
   const animationValue = useRef(new Animated.Value(0)).current;

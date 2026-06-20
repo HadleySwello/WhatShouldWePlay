@@ -58,6 +58,9 @@ export const layout = StyleSheet.create({
   paddingBottom2xl: {
     paddingBottom: s['2xl'],
   },
+  marginBottomSm: {
+    marginBottom: s.sm,
+  },
   marginBottomXs: {
     marginBottom: s.xs,
   },
@@ -75,6 +78,9 @@ export const layout = StyleSheet.create({
   },
   marginTopMd: {
     marginTop: s.md,
+  },
+  marginTopLg: {
+    marginTop: s.lg,
   },
   marginHorizontalLg: {
     marginHorizontal: s.lg,
