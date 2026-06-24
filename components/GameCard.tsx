@@ -179,7 +179,7 @@ export default function GameCard({ game }: GameCardProps) {
           <View style={layout.marginBottomSm}>
             <AppText variant="gameCardSectionTitle">Mechanics</AppText>
             <View style={styles.gameCard.tagCloud}>
-              {mechanics.map((m, i) => (
+              {mechanics.map((m: any, i: any) => (
                 <View key={i} style={styles.gameCard.tag}>
                   <AppText variant="gameCardTag">{String(m)}</AppText>
                 </View>
@@ -191,7 +191,7 @@ export default function GameCard({ game }: GameCardProps) {
           <View>
             <AppText variant="gameCardSectionTitle">Categories</AppText>
             <View style={styles.gameCard.tagCloud}>
-              {categories.map((c, i) => (
+              {categories.map((c: any, i: any) => (
                 <View key={i} style={styles.gameCard.tag}>
                   <AppText variant="gameCardTag">{String(c)}</AppText>
                 </View>
