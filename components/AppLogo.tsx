@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { useAppTheme } from '../theme';
 
-import * as LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
-import * as LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
+import LogoLight from '../assets/WhatShouldWePlayLogo-Light.svg';
+import LogoDark from '../assets/WhatShouldWePlayLogo-Dark.svg';
 
 export type AppLogoProps = {
   width: number;

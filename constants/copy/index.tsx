@@ -12,7 +12,7 @@ const copy = en;
  * @param {Record<string, string|number>} vars - Key-value pairs to interpolate
  * @returns {string}
  */
-export function t(str, vars = {}) {
+export function t(str: string, vars: Record<string, string | number> = {}) {
   if (typeof str !== 'string') return '';
   return Object.keys(vars).reduce(
     (acc, key) => acc.replace(new RegExp(`{{${key}}}`, 'g'), String(vars[key])),
