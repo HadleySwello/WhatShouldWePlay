@@ -10,13 +10,13 @@ export const PLAYER_COUNT_MIN = 1;
 export const PLAYER_COUNT_MAX = 10;
 export const DEFAULT_PLAYER_COUNT = 2;
 
-function sanitize(value) {
+function sanitize(value: number | string | null | undefined): number {
   const n = Number(value);
   if (!Number.isFinite(n)) return DEFAULT_PLAYER_COUNT;
   return Math.max(PLAYER_COUNT_MIN, Math.min(PLAYER_COUNT_MAX, Math.round(n)));
 }
 
-export async function getDefaultPlayerCount() {
+export async function getDefaultPlayerCount(): Promise<number> {
   try {
     const raw = await AsyncStorage.getItem(STORAGE_KEY);
     if (raw == null) {
@@ -39,7 +39,9 @@ export async function getDefaultPlayerCount() {
   }
 }
 
-export async function setDefaultPlayerCount(value) {
+export async function setDefaultPlayerCount(
+  value: number | string | null | undefined
+): Promise<number> {
   const clamped = sanitize(value);
   await AsyncStorage.setItem(STORAGE_KEY, String(clamped));
   return clamped;

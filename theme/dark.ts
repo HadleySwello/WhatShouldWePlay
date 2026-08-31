@@ -3,7 +3,7 @@ import { tokensDark } from './tokens';
 
 const c = tokensDark.colors;
 
-export const darkTheme = {
+export const darkTheme: typeof MD3DarkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,

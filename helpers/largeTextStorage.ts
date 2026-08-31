@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LARGE_TEXT_KEY = 'largeText';
 
-export async function getLargeText() {
+export async function getLargeText(): Promise<boolean> {
   try {
     const value = await AsyncStorage.getItem(LARGE_TEXT_KEY);
     return value === 'true';
@@ -11,7 +11,9 @@ export async function getLargeText() {
   }
 }
 
-export async function setLargeText(value) {
+export async function setLargeText(
+  value: boolean | string | null | undefined
+): Promise<void> {
   try {
     await AsyncStorage.setItem(LARGE_TEXT_KEY, value ? 'true' : 'false');
   } catch (_e) {

@@ -54,6 +54,8 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
     });
   };
 
+  const SvgTextNode = SvgText as any;
+
   const renderSlices = () => {
     type SpinnerSlice = d3Shape.PieArcDatum<string>;
 
@@ -107,7 +109,7 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
       return (
         <G key={`slice-${index}`}>
           <Path d={pathValue} fill={sliceColor} />
-          <SvgText
+          <SvgTextNode
             x={labelX}
             y={labelY}
             textAnchor="end" // Text ends at the outer radius, pointing outwards
@@ -118,7 +120,7 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
             {slices[index].length > 18
               ? `${slices[index].substring(0, 15)}...`
               : slices[index]}
-          </SvgText>
+          </SvgTextNode>
         </G>
       );
     });

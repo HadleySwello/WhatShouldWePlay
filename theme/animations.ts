@@ -1,12 +1,12 @@
-import { Easing } from 'react-native';
+import { Easing, type EasingFunction } from 'react-native';
 
-export const durations = {
+export const durations: Record<string, number> = {
   fast: 150,
   normal: 300,
   slow: 500,
 };
 
-export const easing = {
+export const easing: Record<string, EasingFunction> = {
   easeIn: Easing.in(Easing.ease),
   easeOut: Easing.out(Easing.ease),
   easeInOut: Easing.inOut(Easing.ease),

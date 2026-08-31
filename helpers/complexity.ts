@@ -4,12 +4,17 @@
  */
 import copy from '../constants/copy';
 
+type ComplexityTier = 'low' | 'medium' | 'high';
+type DisplayComplexityTier = 'light' | 'medium' | 'heavy';
+
 /**
  * Capitalize tier for display (Low, Medium, High).
  * @param {string|null} tier - 'low' | 'medium' | 'high' | null
  * @returns {string|null}
  */
-export function capitalizeComplexityTier(tier) {
+export function capitalizeComplexityTier(
+  tier: string | null | undefined
+): string | null {
   if (tier == null || typeof tier !== 'string') return null;
   return tier.charAt(0).toUpperCase() + tier.slice(1);
 }
@@ -18,7 +23,9 @@ export function capitalizeComplexityTier(tier) {
  * @param {number} weight - BGG complexity weight (e.g. 2.5)
  * @returns {'low'|'medium'|'high'|null}
  */
-export function getComplexityTier(weight) {
+export function getComplexityTier(
+  weight: number | null | undefined
+): ComplexityTier | null {
   if (
     weight == null ||
     typeof weight !== 'number' ||
@@ -35,7 +42,9 @@ export function getComplexityTier(weight) {
  * Map BGG complexity value (0-5) to tier for display.
  * 0,1 → light; 2,3 → medium; 4,5 → heavy
  */
-function valueToTier(val) {
+function valueToTier(
+  val: number | null | undefined
+): DisplayComplexityTier | null {
   if (val == null || val < 0) return null;
   if (val <= 1) return 'light';
   if (val <= 3) return 'medium';
@@ -47,7 +56,10 @@ function valueToTier(val) {
  * @param {number|null} complexityMax
  * @returns {string} - For display in filter summaries (tier-based, e.g. "Light and up")
  */
-export function formatComplexitySummary(complexityMin, complexityMax) {
+export function formatComplexitySummary(
+  complexityMin: number | null | undefined,
+  complexityMax: number | null | undefined
+): string {
   const min = complexityMin ?? null;
   const max = complexityMax ?? null;
   if (min == null && max == null) return copy.vibeMetadata.any;

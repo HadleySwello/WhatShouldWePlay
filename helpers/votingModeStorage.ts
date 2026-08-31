@@ -8,7 +8,7 @@ const STORAGE_KEY = 'votingModeEnabled';
 
 const DEFAULT_VALUE = false;
 
-export async function getVotingModeEnabled() {
+export async function getVotingModeEnabled(): Promise<boolean> {
   try {
     const raw = await AsyncStorage.getItem(STORAGE_KEY);
     if (raw == null) {
@@ -22,7 +22,9 @@ export async function getVotingModeEnabled() {
   }
 }
 
-export async function setVotingModeEnabled(value) {
+export async function setVotingModeEnabled(
+  value: boolean | string | number | null | undefined
+): Promise<boolean> {
   const bool = Boolean(value);
   await AsyncStorage.setItem(STORAGE_KEY, String(bool));
   return bool;

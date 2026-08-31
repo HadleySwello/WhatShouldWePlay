@@ -21,14 +21,17 @@ export { radius } from './radius';
 export { typography } from './typography';
 export { durations, easing } from './animations';
 
-const cachedStyles = {
+const cachedStyles: Record<
+  string,
+  ReturnType<typeof getComponentVariantStyles> | null
+> = {
   light: null,
   dark: null,
   lightLarge: null,
   darkLarge: null,
 };
 
-function getStyles(isDark, isLarge) {
+function getStyles(isDark: boolean, isLarge: boolean) {
   const key = `${isDark ? 'dark' : 'light'}${isLarge ? 'Large' : ''}`;
   if (!cachedStyles[key]) {
     const rawTokens = isDark ? tokensDark : tokensLight;
@@ -52,7 +55,6 @@ export function useAppTheme() {
   const isDark = theme.dark === true;
   const rawTokens = isDark ? tokensDark : tokensLight;
 
-  // Dynamically select typography sizes based on preference
   const tokens = {
     ...rawTokens,
     typography: {
