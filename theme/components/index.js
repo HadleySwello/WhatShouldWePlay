@@ -62,16 +62,18 @@ export function getSpinnerWheelStyle(wheelSize) {
 export function getSpinnerMarkerStyle(wheelSize, tokens = tokensLight) {
   const s = tokens.spacing;
   const c = tokens.colors;
-  return {
-    position: 'absolute',
-    width: 20,
-    height: 20,
-    backgroundColor: c.tintMain,
-    borderRadius: 10,
-    zIndex: 1,
-    top: -s.md - 2,
-    left: wheelSize / 2 - s.md - 2,
-  };
+  return StyleSheet.create({
+    marker: {
+      position: 'absolute',
+      width: 20,
+      height: 20,
+      backgroundColor: c.tintMain,
+      borderRadius: 10,
+      zIndex: 1,
+      top: -s.md - 2,
+      left: wheelSize / 2 - s.md - 2,
+    },
+  }).marker;
 }
 
 export function getLoadingGradientStyle(tokens = tokensLight) {

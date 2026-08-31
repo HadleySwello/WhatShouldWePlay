@@ -55,9 +55,14 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
   };
 
   const renderSlices = () => {
-    const pieGenerator = d3Shape.pie().value(1).sort(null);
+    type SpinnerSlice = d3Shape.PieArcDatum<string>;
+
+    const pieGenerator = d3Shape
+      .pie<string>()
+      .value(() => 1)
+      .sort(null);
     const arcGenerator = d3Shape
-      .arc()
+      .arc<SpinnerSlice>()
       .outerRadius(WHEEL_SIZE / 2)
       .innerRadius(0);
 
@@ -74,6 +79,7 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
 
     return pieData.map((slice, index) => {
       const path = arcGenerator(slice);
+      const pathValue = path ?? undefined;
       const labelAngle = (slice.startAngle + slice.endAngle) / 2;
 
       // Spoke-style rotation: the text points outward from the center.
@@ -100,7 +106,7 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
 
       return (
         <G key={`slice-${index}`}>
-          <Path d={path} fill={sliceColor} />
+          <Path d={pathValue} fill={sliceColor} />
           <SvgText
             x={labelX}
             y={labelY}
