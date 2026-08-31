@@ -1,4 +1,52 @@
-export const getMiscStyles = (c, s, r, t, e) => ({
+type MiscColors = {
+  tintMain: string;
+  backgroundMain: string;
+  cardMain: string;
+  shadow: string;
+  textMain: string;
+  textSecondary: string;
+  textSpecial: string;
+};
+
+type MiscSpacing = {
+  xl: number;
+  '2xl': number;
+  '3xl': number;
+  '4xl': number;
+  lg: number;
+  md: number;
+  sm: number;
+  xs: number;
+};
+
+type MiscRadius = unknown;
+
+type MiscTypography = {
+  sizes: {
+    '2xl': number;
+    '3xl': number;
+    xs: number;
+    lg: number;
+    md: number;
+  };
+  families: {
+    header: string;
+    subheader: string;
+    body: string;
+  };
+};
+
+type MiscElevation = {
+  high: number;
+};
+
+export const getMiscStyles = (
+  c: MiscColors,
+  s: MiscSpacing,
+  r: MiscRadius,
+  t: MiscTypography,
+  e: MiscElevation
+) => ({
   loadingGradient: {
     container: {
       alignItems: 'center',

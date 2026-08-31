@@ -7,7 +7,9 @@ import { getLayoutStyles } from './layout';
 import { getModalStyles } from './modals';
 import { getMiscStyles } from './misc';
 
-export function getComponentVariantStyles(tokens = tokensLight) {
+type AppTokens = typeof tokensLight;
+
+export function getComponentVariantStyles(tokens: AppTokens = tokensLight) {
   const c = tokens.colors;
   const s = tokens.spacing;
   const r = tokens.radius;
@@ -21,7 +23,7 @@ export function getComponentVariantStyles(tokens = tokensLight) {
   const modalStyles = getModalStyles(c, s, r, t, e);
   const miscStyles = getMiscStyles(c, s, r, t, e);
 
-  return StyleSheet.create({
+  const legacyStyles: Record<string, any> = {
     ...buttonStyles,
     ...cardStyles,
     ...formStyles,
@@ -49,17 +51,22 @@ export function getComponentVariantStyles(tokens = tokensLight) {
       fontFamily: t.families.body,
       fontWeight: '700',
     },
-  });
+  };
+
+  return StyleSheet.create(legacyStyles as any);
 }
 
-export function getSpinnerWheelStyle(wheelSize) {
+export function getSpinnerWheelStyle(wheelSize: number) {
   return {
     width: wheelSize,
     height: wheelSize,
   };
 }
 
-export function getSpinnerMarkerStyle(wheelSize, tokens = tokensLight) {
+export function getSpinnerMarkerStyle(
+  wheelSize: number,
+  tokens: AppTokens = tokensLight
+) {
   const s = tokens.spacing;
   const c = tokens.colors;
   return StyleSheet.create({
@@ -76,7 +83,7 @@ export function getSpinnerMarkerStyle(wheelSize, tokens = tokensLight) {
   }).marker;
 }
 
-export function getLoadingGradientStyle(tokens = tokensLight) {
+export function getLoadingGradientStyle(tokens: AppTokens = tokensLight) {
   const c = tokens.colors;
   return {
     colors: [c.backgroundMain, c.cardMain, c.backgroundMain],

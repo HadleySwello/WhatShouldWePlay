@@ -1,4 +1,50 @@
-export const getModalStyles = (c, s, r, t, e) => ({
+type ModalColors = {
+  backgroundMain: string;
+  cardMain: string;
+  textSecondary: string;
+  textMain: string;
+  tintMain: string;
+};
+
+type ModalSpacing = {
+  lg: number;
+  xl: number;
+  md: number;
+  sm: number;
+  xs: number;
+  '3xl': number;
+};
+
+type ModalRadius = {
+  lg: number;
+};
+
+type ModalTypography = {
+  sizes: {
+    sm: number;
+    '2xl': number;
+    md: number;
+    lg: number;
+  };
+  families: {
+    body: string;
+    header: string;
+    subheader: string;
+    bodyBold: string;
+  };
+};
+
+type ModalElevation = {
+  high: number;
+};
+
+export const getModalStyles = (
+  c: ModalColors,
+  s: ModalSpacing,
+  r: ModalRadius,
+  t: ModalTypography,
+  e: ModalElevation
+) => ({
   modal: {
     overlay: {
       flex: 1,
