@@ -1,4 +1,20 @@
-export function getNavigationScreenOptions(tokens) {
+type NavigationTokens = {
+  colors: {
+    backgroundMain: string;
+    tintMain: string;
+    textMain: string;
+  };
+  typography: {
+    sizes: {
+      '3xl': number;
+    };
+    families: {
+      header: string;
+    };
+  };
+};
+
+export function getNavigationScreenOptions(tokens: NavigationTokens) {
   const c = tokens.colors;
   const t = tokens.typography;
   return {

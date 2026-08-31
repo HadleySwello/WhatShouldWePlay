@@ -4,7 +4,9 @@ import { radius } from './radius';
 import { elevation } from './elevation';
 import { typography } from './typography';
 
-const makeTokens = (palette) => ({
+type Palette = (typeof colors)['light'] | (typeof colors)['dark'];
+
+const makeTokens = (palette: Palette) => ({
   colors: {
     backgroundMain: palette.backgroundMain,
     backgroundSecondary: palette.backgroundSecondary,

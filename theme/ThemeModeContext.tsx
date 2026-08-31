@@ -4,6 +4,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  type ReactNode,
 } from 'react';
 import {
   getThemeMode,
@@ -18,10 +19,21 @@ import {
   setLargeText as persistLargeText,
 } from '../helpers/largeTextStorage';
 
-const ThemeModeContext = createContext(null);
+type ThemeMode = 'light' | 'dark' | 'system';
 
-export function ThemeModeProvider({ children }) {
-  const [themeMode, setThemeModeState] = useState('system');
+type ThemeContextValue = {
+  themeMode: ThemeMode;
+  setThemeMode: (value: ThemeMode) => void;
+  reduceMovement: boolean;
+  setReduceMovement: (value: boolean) => void;
+  largeText: boolean;
+  setLargeText: (value: boolean) => void;
+};
+
+const ThemeModeContext = createContext<ThemeContextValue | null>(null);
+
+export function ThemeModeProvider({ children }: { children: ReactNode }) {
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
   const [reduceMovement, setReduceMovementState] = useState(false);
   const [largeText, setLargeTextState] = useState(false);
 
@@ -31,17 +43,17 @@ export function ThemeModeProvider({ children }) {
     getLargeText().then(setLargeTextState);
   }, []);
 
-  const setThemeMode = useCallback((value) => {
+  const setThemeMode = useCallback((value: ThemeMode) => {
     setThemeModeState(value);
     persistThemeMode(value);
   }, []);
 
-  const setReduceMovement = useCallback((value) => {
+  const setReduceMovement = useCallback((value: boolean) => {
     setReduceMovementState(value);
     persistReduceMovement(value);
   }, []);
 
-  const setLargeText = useCallback((value) => {
+  const setLargeText = useCallback((value: boolean) => {
     setLargeTextState(value);
     persistLargeText(value);
   }, []);
@@ -62,7 +74,7 @@ export function ThemeModeProvider({ children }) {
   );
 }
 
-export function useThemeMode() {
+export function useThemeMode(): ThemeContextValue {
   const ctx = useContext(ThemeModeContext);
   if (!ctx) {
     throw new Error('useThemeMode must be used within ThemeModeProvider');

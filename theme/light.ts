@@ -3,7 +3,7 @@ import { tokensLight } from './tokens';
 
 const c = tokensLight.colors;
 
-export const lightTheme = {
+export const lightTheme: typeof MD3LightTheme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,

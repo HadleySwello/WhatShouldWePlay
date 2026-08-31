@@ -1,5 +1,44 @@
 // Typography scale - font sizes, weights, line heights
-export const typography = {
+type TypographyScale = {
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+  xl: number;
+  '2xl': number;
+  '3xl': number;
+  '4xl': number;
+  '5xl': number;
+};
+
+type TypographyFamilies = {
+  header: string;
+  subheader: string;
+  body: string;
+  bodyMedium: string;
+  bodyBold: string;
+};
+
+type TypographyWeights = {
+  regular: string;
+  medium: string;
+  semibold: string;
+  bold: string;
+};
+
+type TypographyLineHeights = {
+  tight: number;
+  normal: number;
+  relaxed: number;
+};
+
+export const typography: {
+  sizes: TypographyScale;
+  sizesLargeText: TypographyScale;
+  families: TypographyFamilies;
+  weights: TypographyWeights;
+  lineHeights: TypographyLineHeights;
+} = {
   sizes: {
     xs: 12,
     sm: 14,
