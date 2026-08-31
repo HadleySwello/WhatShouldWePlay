@@ -1,4 +1,42 @@
-export const getButtonStyles = (c, s, r, t) => ({
+type ButtonColors = {
+  tintSecondary: string;
+  tintMain: string;
+  onTintSecondary: string;
+  backgroundMain: string;
+  textSecondary: string;
+  textMain: string;
+  cardMain: string;
+};
+
+type ButtonSpacing = {
+  lg: number;
+  xl: number;
+  md: number;
+  sm: number;
+  '2xl': number;
+};
+
+type ButtonRadius = {
+  md: number;
+};
+
+type ButtonTypography = {
+  sizes: {
+    lg: number;
+    md: number;
+  };
+  families: {
+    subheader: string;
+    header: string;
+  };
+};
+
+export const getButtonStyles = (
+  c: ButtonColors,
+  s: ButtonSpacing,
+  r: ButtonRadius,
+  t: ButtonTypography
+) => ({
   button: {
     primary: {
       backgroundColor: c.tintSecondary,

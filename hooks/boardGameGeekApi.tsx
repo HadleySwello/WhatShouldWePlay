@@ -116,7 +116,7 @@ const fetchCollectionForUsername = async (
 
   if (response.status === 202) {
     if (retry < maxRetries) {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise<void>((resolve) => setTimeout(() => resolve, 3000));
       return fetchCollectionForUsername(username, retry + 1, maxRetries);
     }
     throw new Error('Reached max retries while waiting for BGG request.');
@@ -152,7 +152,7 @@ const fetchThingDetailsBatch = async (
   }
 
   if (response.status === 202 && retry < maxRetries) {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise<void>((resolve) => setTimeout(() => resolve, 3000));
     return fetchThingDetailsBatch(ids, retry + 1, maxRetries);
   }
 

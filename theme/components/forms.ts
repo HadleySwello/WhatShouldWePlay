@@ -1,4 +1,43 @@
-export const getFormStyles = (c, s, r, t) => ({
+type FormColors = {
+  cardMain: string;
+  tintMain: string;
+  onTintMain: string;
+  textMain: string;
+  textSecondary: string;
+};
+
+type FormSpacing = {
+  lg: number;
+  md: number;
+  xl: number;
+  sm: number;
+  '2xl': number;
+};
+
+type FormRadius = {
+  md: number;
+  xl: number;
+};
+
+type FormTypography = {
+  sizes: {
+    md: number;
+    sm: number;
+    lg: number;
+  };
+  families: {
+    body: string;
+    subheader: string;
+    header: string;
+  };
+};
+
+export const getFormStyles = (
+  c: FormColors,
+  s: FormSpacing,
+  r: FormRadius,
+  t: FormTypography
+) => ({
   input: {
     default: {
       backgroundColor: c.cardMain,

@@ -1,4 +1,57 @@
-export const getCardStyles = (c, s, r, t, e) => ({
+type CardColors = {
+  cardSecondary: string;
+  cardMain: string;
+  border: string;
+  shadow: string;
+  textMain: string;
+  textSecondary: string;
+  divider: string;
+  tintMain: string;
+};
+
+type CardSpacing = {
+  lg: number;
+  md: number;
+  xl: number;
+  sm: number;
+  xs: number;
+  '2xl': number;
+};
+
+type CardRadius = {
+  md: number;
+  lg: number;
+  sm: number;
+};
+
+type CardTypography = {
+  sizes: {
+    lg: number;
+    sm: number;
+    xs: number;
+    md: number;
+    xl: number;
+  };
+  families: {
+    header: string;
+    subheader: string;
+    body: string;
+    bodyBold: string;
+  };
+};
+
+type CardElevation = {
+  medium: number;
+  high: number;
+};
+
+export const getCardStyles = (
+  c: CardColors,
+  s: CardSpacing,
+  r: CardRadius,
+  t: CardTypography,
+  e: CardElevation
+) => ({
   card: {
     default: {
       backgroundColor: c.cardSecondary,

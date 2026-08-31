@@ -1,4 +1,50 @@
-export const getLayoutStyles = (c, s, r, t, e) => ({
+type LayoutColors = {
+  backgroundMain: string;
+  cardSecondary: string;
+  cardMain: string;
+  textMain: string;
+  textSecondary: string;
+};
+
+type LayoutSpacing = {
+  '3xl': number;
+  xl: number;
+  sm: number;
+  lg: number;
+  md: number;
+  '2xl': number;
+};
+
+type LayoutRadius = {
+  md: number;
+  sm: number;
+};
+
+type LayoutTypography = {
+  sizes: {
+    lg: number;
+    sm: number;
+    '2xl': number;
+    md: number;
+  };
+  families: {
+    header: string;
+    body: string;
+    subheader: string;
+  };
+};
+
+type LayoutElevation = {
+  high: number;
+};
+
+export const getLayoutStyles = (
+  c: LayoutColors,
+  s: LayoutSpacing,
+  r: LayoutRadius,
+  t: LayoutTypography,
+  e: LayoutElevation
+) => ({
   screen: {
     container: {
       flex: 1,
