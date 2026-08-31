@@ -2,7 +2,18 @@ import React from 'react';
 import { Switch, Platform } from 'react-native';
 import { useAppTheme } from '../theme';
 
-export default function AppToggle({ value, onValueChange, disabled, ...rest }) {
+export type AppToggleProps = {
+  value: any;
+  onValueChange: any;
+  disabled: any;
+};
+
+export default function AppToggle({
+  value,
+  onValueChange,
+  disabled,
+  ...rest
+}: AppToggleProps) {
   const { tokens } = useAppTheme();
 
   return (

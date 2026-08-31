@@ -8,7 +8,15 @@ import {
   PLAYER_COUNT_MAX,
 } from '../helpers/defaultPlayerCountStorage';
 
-export default function PlayerCountStepper({ value, onValueChange }) {
+export type PlayerCountStepperProps = {
+  value: any;
+  onValueChange: any;
+};
+
+export default function PlayerCountStepper({
+  value,
+  onValueChange,
+}: PlayerCountStepperProps) {
   const { styles } = useAppTheme();
 
   const decrement = () => {

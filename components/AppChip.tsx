@@ -1,6 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { useAppTheme } from '../theme';
+
+export type AppChipProps = {
+  selected: any;
+  onPress: any;
+  children: any;
+  style: any;
+};
 
 export default function AppChip({
   selected,
@@ -8,7 +15,7 @@ export default function AppChip({
   children,
   style,
   ...rest
-}) {
+}: AppChipProps) {
   const { styles } = useAppTheme();
   const containerStyle = selected
     ? [styles.chip.default, styles.chip.selected]

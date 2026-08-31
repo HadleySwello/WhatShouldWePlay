@@ -5,7 +5,15 @@ import AppText from './AppText';
 import copy from '../constants/copy';
 import { useAppTheme } from '../theme';
 
-export default function VotingModeInfoModal({ visible, onClose }) {
+export type VotingModeInfoModal = {
+  visible: any;
+  onClose: any;
+};
+
+export default function VotingModeInfoModal({
+  visible,
+  onClose,
+}: VotingModeInfoModal) {
   const { styles } = useAppTheme();
   const m = styles.modal;
 

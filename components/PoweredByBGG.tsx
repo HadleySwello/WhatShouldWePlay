@@ -4,7 +4,15 @@ import copy from '../constants/copy';
 
 const BGG_URL = 'https://boardgamegeek.com';
 
-export default function PoweredByBGG({ style, pressable = true }) {
+export type PoweredByBGGProps = {
+  style: any;
+  pressable: boolean;
+};
+
+export default function PoweredByBGG({
+  style,
+  pressable = true,
+}: PoweredByBGGProps) {
   const { styles } = useAppTheme();
 
   const logo = (

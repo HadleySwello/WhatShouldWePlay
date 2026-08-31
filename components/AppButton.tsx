@@ -1,6 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme';
+
+export type AppButtonProps = {
+  variant: string;
+  onPress: any;
+  disabled?: boolean;
+  children: any;
+  style?: any;
+};
 
 export default function AppButton({
   variant = 'primary',
@@ -9,7 +17,7 @@ export default function AppButton({
   children,
   style,
   ...rest
-}) {
+}: AppButtonProps) {
   const { styles } = useAppTheme();
 
   const containerStyle = styles.button[variant] || styles.button.primary;

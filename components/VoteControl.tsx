@@ -3,7 +3,19 @@ import { View, TouchableOpacity } from 'react-native';
 import { useAppTheme } from '../theme';
 import AppText from './AppText';
 
-export default function VoteControl({ value, onIncrement, onDecrement, style }) {
+export type VoteControlProps = {
+  value: any;
+  onIncrement: any;
+  onDecrement: any;
+  style: any;
+};
+
+export default function VoteControl({
+  value,
+  onIncrement,
+  onDecrement,
+  style,
+}: VoteControlProps) {
   const { styles } = useAppTheme();
 
   return (
@@ -15,11 +27,9 @@ export default function VoteControl({ value, onIncrement, onDecrement, style }) 
       >
         <AppText variant="voteSymbol">−</AppText>
       </TouchableOpacity>
-      
-      <AppText variant="voteCount">
-        {value || 0}
-      </AppText>
-      
+
+      <AppText variant="voteCount">{value || 0}</AppText>
+
       <TouchableOpacity
         style={styles.voteButton}
         onPress={onIncrement}

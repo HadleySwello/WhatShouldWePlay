@@ -11,7 +11,17 @@ import AppButton from './AppButton';
 import { useAppTheme } from '../theme';
 import copy from '../constants/copy';
 
-export default function AppFAQModal({ visible, onClose, onSelectDemo }) {
+export type AppFAQModalProps = {
+  visible: boolean;
+  onClose: any;
+  onSelectDemo: any;
+};
+
+export default function AppFAQModal({
+  visible,
+  onClose,
+  onSelectDemo,
+}: AppFAQModalProps) {
   const { styles, tokens } = useAppTheme();
   const t = copy.faq;
 
@@ -84,7 +94,13 @@ export default function AppFAQModal({ visible, onClose, onSelectDemo }) {
   );
 }
 
-function FAQItem({ question, answer, children }) {
+export type FAQItemProps = {
+  question: any;
+  answer?: any;
+  children?: any;
+};
+
+function FAQItem({ question, answer, children }: FAQItemProps) {
   const { styles } = useAppTheme();
   return (
     <View style={styles.helpModal.faqItem}>

@@ -2,19 +2,13 @@ import React from 'react';
 import { Text as RNText } from 'react-native';
 import { useAppTheme } from '../theme';
 
-export default function AppText({
-  variant = 'body',
-  style,
-  children,
-  ...rest
-}) {
-  const { tokens, styles } = useAppTheme();
+// Helper function to create variant styles
+function getVariantStyles(tokens: any, styles: any) {
   const c = tokens.colors;
   const t = tokens.typography;
   const s = tokens.spacing;
 
-  // Organised variant definitions for better maintainability
-  const variantStyles = {
+  return {
     // --- Typography & Headers ---
     header: {
       fontSize: t.sizes.xl + 4,
@@ -146,7 +140,27 @@ export default function AppText({
       color: c.textSecondary,
       textAlign: 'center',
     },
-  };
+  } as const;
+}
+
+type TextVariant = keyof ReturnType<typeof getVariantStyles>;
+
+export type AppTextProps = {
+  variant?: TextVariant;
+  style?: any;
+  children?: any;
+  numberOfLines?: number;
+  onPress?: any;
+};
+
+export default function AppText({
+  variant = 'body',
+  style,
+  children,
+  ...rest
+}: AppTextProps) {
+  const { tokens, styles } = useAppTheme();
+  const variantStyles = getVariantStyles(tokens, styles);
 
   const baseStyle = variantStyles[variant] || variantStyles.body;
   return (

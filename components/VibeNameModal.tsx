@@ -15,16 +15,24 @@ import {
   QUICK_VIBE_NAMES,
 } from '../helpers/vibesStorage';
 
+export type VibeNameModalProps = {
+  visible: any;
+  onClose: any;
+  onSave: any;
+  excludeId: any;
+  checkVibeCount: boolean;
+};
+
 export default function VibeNameModal({
   visible,
   onClose,
   onSave,
   excludeId,
   checkVibeCount = false,
-}) {
+}: VibeNameModalProps) {
   const [name, setName] = useState('');
-  const [error, setError] = useState(null);
-  const [warning, setWarning] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
   const { styles, tokens } = useAppTheme();
   const m = styles.modal;
 
@@ -54,9 +62,7 @@ export default function VibeNameModal({
     if (checkVibeCount) {
       getVibes().then((vibes) => {
         if (vibes.length >= MAX_VIBES) {
-          setError(
-            t(copy.modals.vibeName.errorMaxVibes, { max: MAX_VIBES })
-          );
+          setError(t(copy.modals.vibeName.errorMaxVibes, { max: MAX_VIBES }));
           return;
         }
         trySubmit(finalName);
@@ -66,7 +72,7 @@ export default function VibeNameModal({
     trySubmit(finalName);
   };
 
-  function trySubmit(finalName) {
+  function trySubmit(finalName: any) {
     const matchedQuickVibe = QUICK_VIBE_NAMES.find(
       (q) => q.trim().toLowerCase() === finalName.trim().toLowerCase()
     );
@@ -118,7 +124,7 @@ export default function VibeNameModal({
             <View style={styles.vibeInputRow}>
               <AppInput
                 value={name}
-                onChangeText={(text) => {
+                onChangeText={(text: string) => {
                   setName(text);
                   if (error) setError(null);
                   if (warning) setWarning(null);

@@ -4,6 +4,14 @@ import { useAppTheme } from '../theme';
 import { layout } from '../theme';
 import AppText from './AppText';
 
+export type AppListItemProps = {
+  thumbnail: any;
+  name: any;
+  details: any;
+  children: any;
+  style: any;
+};
+
 export default function AppListItem({
   thumbnail,
   name,
@@ -11,7 +19,7 @@ export default function AppListItem({
   children,
   style,
   ...rest
-}) {
+}: AppListItemProps) {
   const { styles } = useAppTheme();
 
   return (
