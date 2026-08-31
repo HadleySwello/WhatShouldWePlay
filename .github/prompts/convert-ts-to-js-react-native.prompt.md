@@ -1,6 +1,6 @@
 ---
 agent: 'agent'
-name: 'convert-to-typescript'
+name: 'convert to javascript'
 description: 'Convert JavaScript files to TypeScript in a React Native / Expo project while preserving behavior and repo conventions.'
 ---
 
