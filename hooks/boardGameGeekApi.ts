@@ -11,28 +11,84 @@ import * as userGamesStorage from '../helpers/userGamesStorage';
 const BGG_API_BASE = 'https://boardgamegeek.com/xmlapi2';
 const BGG_USERNAME_KEY = 'bggUsername';
 const BGG_COLLECTION_KEY = 'bggCollection';
-const TEST_USERNAME = 'test'; // dev only: use seed data, no API call
+const TEST_USERNAME = 'test';
 const THING_API_LIMIT = 20;
 const parser = new XMLParser({ ignoreAttributes: false });
 
-function getBggApiToken() {
-  return Constants.expoConfig?.extra?.bggApiToken || '';
+type BggApiExtra = {
+  extra?: {
+    bggApiToken?: string;
+  };
+};
+
+type BggGameRecord = Record<string, any>;
+
+type GameDetails = {
+  description?: string;
+  categories: string[];
+  mechanics: string[];
+  minAge: number | null;
+  minPlaytime: number | null;
+  maxPlaytime: number | null;
+  bggAverage: number | null;
+  bggRank: number | null;
+  complexityWeight?: number;
+};
+
+export type BoardGame = {
+  id: string;
+  name: string;
+  playersMin: number;
+  playersMax: number;
+  complexityWeight: number;
+  length: string;
+  image: string;
+  thumbnail: string;
+  yearPublished: string | number;
+  rating: string | number | null;
+  categories: string[];
+  mechanics: string[];
+  description?: string;
+  minAge?: number | null;
+  minPlaytime?: number | null;
+  maxPlaytime?: number | null;
+  bggAverage?: number | null;
+  bggRank?: number | null;
+};
+
+export type BoardGameGeekCollectionResult = {
+  games: BoardGame[];
+  username: string | null;
+  isLoading: boolean;
+  error: string | null;
+  reload: () => Promise<void>;
+  addUserGame: (game: BoardGame) => Promise<void>;
+  removeUserGame: (gameId: string) => Promise<void>;
+};
+
+type ThingDataMap = Record<string, GameDetails>;
+
+function getBggApiToken(): string {
+  return (
+    (Constants.expoConfig as BggApiExtra | undefined)?.extra?.bggApiToken || ''
+  );
 }
 
-function parseBggErrors(data) {
+function parseBggErrors(data: BggGameRecord | null | undefined): string | null {
   const err = data?.errors?.error;
   if (!err) return null;
   const list = Array.isArray(err) ? err : [err];
-  const messages = list.map((e) => e?.message || e?.['#text']).filter(Boolean);
-  return messages.length > 0 ? messages[0] : copy.bgg.unknownError;
+  const messages = list
+    .map((e: BggGameRecord) => e?.message || e?.['#text'])
+    .filter(Boolean);
+  return messages.length > 0 ? String(messages[0]) : copy.bgg.unknownError;
 }
 
-// Attempt to fetch the user's collection, up to 5 retries if we get 202
 const fetchCollectionForUsername = async (
-  username,
+  username: string,
   retry = 0,
   maxRetries = 5
-) => {
+): Promise<BggGameRecord> => {
   const token = getBggApiToken();
   if (!token) {
     throw new Error(
@@ -52,29 +108,33 @@ const fetchCollectionForUsername = async (
   });
 
   if (response.status === 200) {
-    const data = parser.parse(response.data);
+    const data = parser.parse(response.data) as BggGameRecord;
     const errMsg = parseBggErrors(data);
     if (errMsg) throw new Error(errMsg);
     return data;
-  } else if (response.status === 202) {
+  }
+
+  if (response.status === 202) {
     if (retry < maxRetries) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       return fetchCollectionForUsername(username, retry + 1, maxRetries);
-    } else {
-      throw new Error('Reached max retries while waiting for BGG request.');
     }
-  } else {
-    throw new Error(`Unexpected status: ${response.status}`);
+    throw new Error('Reached max retries while waiting for BGG request.');
   }
+
+  throw new Error(`Unexpected status: ${response.status}`);
 };
 
-// Fetch thing details for up to THING_API_LIMIT game IDs per request.
-// Parsed: categories, mechanics, minAge, minPlaytime, maxPlaytime, bggAverage, bggRank.
-const fetchThingDetailsBatch = async (ids, retry = 0, maxRetries = 5) => {
-  if (!ids || ids.length === 0) return {};
-  if (ids.length > THING_API_LIMIT) {
+const fetchThingDetailsBatch = async (
+  ids: Array<string | number> | string,
+  retry = 0,
+  maxRetries = 5
+): Promise<ThingDataMap> => {
+  if (!ids || (Array.isArray(ids) && ids.length === 0)) return {};
+  if (Array.isArray(ids) && ids.length > THING_API_LIMIT) {
     throw new Error(`Cannot load more than ${THING_API_LIMIT} items`);
   }
+
   const token = getBggApiToken();
   if (!token) return {};
 
@@ -85,23 +145,26 @@ const fetchThingDetailsBatch = async (ids, retry = 0, maxRetries = 5) => {
   });
 
   if (response.status === 200) {
-    const data = parser.parse(response.data);
+    const data = parser.parse(response.data) as BggGameRecord;
     const errMsg = parseBggErrors(data);
     if (errMsg) throw new Error(errMsg);
     return parseThingResponse(data);
   }
+
   if (response.status === 202 && retry < maxRetries) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     return fetchThingDetailsBatch(ids, retry + 1, maxRetries);
   }
+
   return {};
 };
 
-// Fetch thing details for any number of IDs by batching into requests of THING_API_LIMIT.
-const fetchThingDetails = async (ids) => {
+const fetchThingDetails = async (
+  ids: Array<string | number>
+): Promise<ThingDataMap> => {
   if (!ids || ids.length === 0) return {};
   const idArr = Array.isArray(ids) ? [...ids] : [String(ids)];
-  const merged = {};
+  const merged: ThingDataMap = {};
   for (let i = 0; i < idArr.length; i += THING_API_LIMIT) {
     const batch = idArr.slice(i, i + THING_API_LIMIT);
     const batchResult = await fetchThingDetailsBatch(batch);
@@ -110,24 +173,28 @@ const fetchThingDetails = async (ids) => {
   return merged;
 };
 
-function parseThingResponse(data) {
-  const result = {};
+function parseThingResponse(data: BggGameRecord): ThingDataMap {
+  const result: ThingDataMap = {};
   const raw = data?.items?.item;
   const items = Array.isArray(raw) ? raw : raw ? [raw] : [];
+
   for (const item of items) {
     const id = item['@_id'] || item['@_objectid'];
     if (!id) continue;
+
     const links = item.link;
     const linkList = Array.isArray(links) ? links : links ? [links] : [];
-    const categories = [];
-    const mechanics = [];
+    const categories: string[] = [];
+    const mechanics: string[] = [];
+
     for (const link of linkList) {
       const type = link['@_type'];
       const value = link['@_value'];
       if (!value) continue;
-      if (type === 'boardgamecategory') categories.push(value);
-      if (type === 'boardgamemechanic') mechanics.push(value);
+      if (type === 'boardgamecategory') categories.push(String(value));
+      if (type === 'boardgamemechanic') mechanics.push(String(value));
     }
+
     const minAge = item.minage?.['@_value'];
     const minPlaytime = item.minplaytime?.['@_value'];
     const maxPlaytime = item.maxplaytime?.['@_value'];
@@ -137,13 +204,14 @@ function parseThingResponse(data) {
     const ranks = stats?.ranks?.rank;
     const rankList = Array.isArray(ranks) ? ranks : ranks ? [ranks] : [];
     const boardGameRank = rankList.find(
-      (r) => r['@_type'] === 'subtype' && r['@_id'] === '1'
+      (r: BggGameRecord) => r['@_type'] === 'subtype' && r['@_id'] === '1'
     );
     const bggRank = boardGameRank
       ? parseInt(boardGameRank['@_value'], 10)
       : null;
     const description = item.description;
-    result[id] = {
+
+    result[String(id)] = {
       description,
       categories,
       mechanics,
@@ -155,31 +223,27 @@ function parseThingResponse(data) {
       ...(averageweight ? { complexityWeight: parseFloat(averageweight) } : {}),
     };
   }
+
   return result;
 }
 
-/**
- * A hook that fetches the BGG collection, merges data from the snippet
- * into a single shape -- no placeholders, no second calls, just what's
- * actually in the snippet.
- */
-const useBoardGameGeekCollection = () => {
-  const [games, setGames] = useState([]);
-  const [username, setUsername] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const useBoardGameGeekCollection = (): BoardGameGeekCollectionResult => {
+  const [games, setGames] = useState<BoardGame[]>([]);
+  const [username, setUsername] = useState<string | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadData = async (forceRefresh = false) => {
+  const loadData = async (forceRefresh = false): Promise<void> => {
     setLoading(true);
     setError(null);
 
     const storedUsername = await AsyncStorage.getItem(BGG_USERNAME_KEY);
-    let sourceGames = [];
+    let sourceGames: BoardGame[] = [];
 
     if (storedUsername) {
       if (storedUsername.toLowerCase() === TEST_USERNAME) {
         const cached = await AsyncStorage.getItem(BGG_COLLECTION_KEY);
-        sourceGames = cached ? JSON.parse(cached) : seedGames;
+        sourceGames = cached ? (JSON.parse(cached) as BoardGame[]) : seedGames;
         setError(null);
       } else {
         const cachedRaw = await AsyncStorage.getItem(BGG_COLLECTION_KEY);
@@ -195,14 +259,17 @@ const useBoardGameGeekCollection = () => {
           })();
 
         if (hasCache && !forceRefresh) {
-          sourceGames = JSON.parse(cachedRaw);
+          sourceGames = JSON.parse(cachedRaw) as BoardGame[];
           setError(null);
         } else {
           try {
             const data = await fetchCollectionForUsername(storedUsername);
             const raw = data?.items?.item;
             const items = Array.isArray(raw) ? raw : raw ? [raw] : [];
-            sourceGames = items.map((item) => mapItemToGame(item));
+            sourceGames = items.map((item: BggGameRecord) =>
+              mapItemToGame(item)
+            );
+
             if (sourceGames.length > 0) {
               const ids = sourceGames.map((g) => g.id).filter(Boolean);
               const thingData = await fetchThingDetails(ids);
@@ -213,6 +280,7 @@ const useBoardGameGeekCollection = () => {
                 mechanics: thingData[g.id]?.mechanics ?? [],
               }));
             }
+
             setError(null);
             await AsyncStorage.setItem(
               BGG_COLLECTION_KEY,
@@ -220,18 +288,20 @@ const useBoardGameGeekCollection = () => {
             );
           } catch (err) {
             if (hasCache) {
-              sourceGames = JSON.parse(cachedRaw);
+              sourceGames = JSON.parse(cachedRaw as string) as BoardGame[];
             } else {
-              sourceGames = seedGames;
+              sourceGames = seedGames as BoardGame[];
             }
-            setError(err?.message || copy.bgg.failedToLoadCollection);
+            setError(
+              (err as Error)?.message || copy.bgg.failedToLoadCollection
+            );
           }
         }
       }
     }
 
-    const userGames = await userGamesStorage.getUserGames();
-    const normalized = (g) => ({
+    const userGames = (await userGamesStorage.getUserGames()) as BoardGame[];
+    const normalized = (g: BoardGame): BoardGame => ({
       ...g,
       categories: g.categories || [],
       mechanics: g.mechanics || [],
@@ -244,6 +314,7 @@ const useBoardGameGeekCollection = () => {
     const combined = sourceGames
       .map(normalized)
       .concat(userGames.map(normalized));
+
     setGames(combined);
     setUsername(storedUsername || null);
     setLoading(false);
@@ -253,12 +324,14 @@ const useBoardGameGeekCollection = () => {
     loadData();
   }, []);
 
-  const addUserGame = (game) => {
-    return userGamesStorage.addUserGame(game).then(() => loadData());
+  const addUserGame = async (game: BoardGame): Promise<void> => {
+    await userGamesStorage.addUserGame(game);
+    await loadData();
   };
 
-  const removeUserGame = (gameId) => {
-    return userGamesStorage.removeUserGame(gameId).then(() => loadData());
+  const removeUserGame = async (gameId: string): Promise<void> => {
+    await userGamesStorage.removeUserGame(gameId);
+    await loadData();
   };
 
   return {
@@ -272,7 +345,7 @@ const useBoardGameGeekCollection = () => {
   };
 };
 
-function mapItemToGame(item) {
+function mapItemToGame(item: BggGameRecord): BoardGame {
   const rawName = item.name;
   const gameName =
     typeof rawName === 'object'
@@ -282,9 +355,10 @@ function mapItemToGame(item) {
   const maxPlayers = parseInt(item.stats?.['@_maxplayers'] || '1', 10);
   const ratingValue = item.stats?.rating?.['@_value'] || null;
   const complexityWeight = parseComplexityWeight(item);
+
   return {
     id: item['@_objectid'] || '(no id)',
-    name: gameName,
+    name: String(gameName),
     playersMin: minPlayers,
     playersMax: maxPlayers,
     complexityWeight,
@@ -298,15 +372,14 @@ function mapItemToGame(item) {
   };
 }
 
-function parseComplexityWeight(item) {
-  // Collection API may use stats.rating; Thing API uses statistics.ratings
+function parseComplexityWeight(item: BggGameRecord): number {
   const fromStats = item.stats?.rating?.averageweight?.['@_value'];
   const fromStatistics = item.statistics?.ratings?.averageweight?.['@_value'];
   const raw = fromStats ?? fromStatistics ?? '0';
   return parseFloat(raw);
 }
 
-function parseLength(item) {
+function parseLength(item: BggGameRecord): string {
   const playingTime = parseInt(item.stats?.['@_playingtime'] || '0', 10);
   if (playingTime <= 30) return 'under 30 min';
   if (playingTime <= 60) return 'under 1 hour';
@@ -314,25 +387,23 @@ function parseLength(item) {
   return 'long';
 }
 
-/**
- * Fetch BGG collection for a username, save to AsyncStorage, then return.
- * Call this from Connect BGG screen. Throws on failure.
- * For dev testing: username "test" uses seed data and skips the API.
- */
-export async function fetchAndSaveCollection(username) {
+export async function fetchAndSaveCollection(
+  username: string | undefined | null
+): Promise<BoardGame[]> {
   const trimmed = (username || '').trim();
   if (!trimmed) throw new Error(copy.connectBGG.usernameRequired);
 
   if (trimmed.toLowerCase() === TEST_USERNAME) {
     await AsyncStorage.setItem(BGG_USERNAME_KEY, TEST_USERNAME);
     await AsyncStorage.setItem(BGG_COLLECTION_KEY, JSON.stringify(seedGames));
-    return seedGames;
+    return seedGames as BoardGame[];
   }
 
   const data = await fetchCollectionForUsername(trimmed);
   const raw = data?.items?.item;
   const items = Array.isArray(raw) ? raw : raw ? [raw] : [];
-  let sourceGames = items.map((item) => mapItemToGame(item));
+  let sourceGames = items.map((item: BggGameRecord) => mapItemToGame(item));
+
   if (sourceGames.length > 0) {
     const ids = sourceGames.map((g) => g.id).filter(Boolean);
     const thingData = await fetchThingDetails(ids);
@@ -343,6 +414,7 @@ export async function fetchAndSaveCollection(username) {
       mechanics: thingData[g.id]?.mechanics ?? [],
     }));
   }
+
   await AsyncStorage.setItem(BGG_USERNAME_KEY, trimmed);
   await AsyncStorage.setItem(BGG_COLLECTION_KEY, JSON.stringify(sourceGames));
   return sourceGames;
