@@ -26,7 +26,8 @@ export default function StarRating({
     <View style={styles.starRating.container}>
       {[...Array(maxIcons)].map((_, i) => {
         const starIndex = i + 1;
-        let iconName = 'star-o'; // empty
+        let iconName: React.ComponentProps<typeof FontAwesome>['name'] =
+          'star-o';
 
         if (rating >= starIndex) {
           iconName = 'star'; // full

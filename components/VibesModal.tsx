@@ -8,7 +8,7 @@ import copy, { t } from '../constants/copy';
 import { formatComplexitySummary } from '../helpers/complexity';
 import { useAppTheme } from '../theme';
 
-const LENGTH_LABELS = {
+const LENGTH_LABELS: Record<string, string> = {
   null: copy.lengthLabels.any,
   'under 30 min': copy.lengthLabels.under30min,
   'under 1 hour': copy.lengthLabels.under1hour,

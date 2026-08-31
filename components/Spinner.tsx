@@ -54,10 +54,17 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
     });
   };
 
+  const SvgTextNode = SvgText as any;
+
   const renderSlices = () => {
-    const pieGenerator = d3Shape.pie().value(1).sort(null);
+    type SpinnerSlice = d3Shape.PieArcDatum<string>;
+
+    const pieGenerator = d3Shape
+      .pie<string>()
+      .value(() => 1)
+      .sort(null);
     const arcGenerator = d3Shape
-      .arc()
+      .arc<SpinnerSlice>()
       .outerRadius(WHEEL_SIZE / 2)
       .innerRadius(0);
 
@@ -74,6 +81,7 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
 
     return pieData.map((slice, index) => {
       const path = arcGenerator(slice);
+      const pathValue = path ?? undefined;
       const labelAngle = (slice.startAngle + slice.endAngle) / 2;
 
       // Spoke-style rotation: the text points outward from the center.
@@ -100,8 +108,8 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
 
       return (
         <G key={`slice-${index}`}>
-          <Path d={path} fill={sliceColor} />
-          <SvgText
+          <Path d={pathValue} fill={sliceColor} />
+          <SvgTextNode
             x={labelX}
             y={labelY}
             textAnchor="end" // Text ends at the outer radius, pointing outwards
@@ -112,7 +120,7 @@ export default function Spinner({ slices, onSpinningEnd }: SpinnerProps) {
             {slices[index].length > 18
               ? `${slices[index].substring(0, 15)}...`
               : slices[index]}
-          </SvgText>
+          </SvgTextNode>
         </G>
       );
     });

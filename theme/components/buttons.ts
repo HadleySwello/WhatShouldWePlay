@@ -1,0 +1,188 @@
+type ButtonColors = {
+  tintSecondary: string;
+  tintMain: string;
+  onTintSecondary: string;
+  backgroundMain: string;
+  textSecondary: string;
+  textMain: string;
+  cardMain: string;
+};
+
+type ButtonSpacing = {
+  lg: number;
+  xl: number;
+  md: number;
+  sm: number;
+  '2xl': number;
+};
+
+type ButtonRadius = {
+  md: number;
+};
+
+type ButtonTypography = {
+  sizes: {
+    lg: number;
+    md: number;
+  };
+  families: {
+    subheader: string;
+    header: string;
+  };
+};
+
+export const getButtonStyles = (
+  c: ButtonColors,
+  s: ButtonSpacing,
+  r: ButtonRadius,
+  t: ButtonTypography
+) => ({
+  button: {
+    primary: {
+      backgroundColor: c.tintSecondary,
+      paddingVertical: s.lg,
+      paddingHorizontal: s.xl,
+      borderRadius: r.md,
+      alignItems: 'center',
+      alignSelf: 'stretch',
+      marginBottom: s.lg,
+    },
+    primaryCompact: {
+      backgroundColor: c.tintMain,
+      paddingVertical: s.lg,
+      paddingHorizontal: s.xl,
+      borderRadius: r.md,
+      alignItems: 'center',
+    },
+    primaryText: {
+      fontSize: t.sizes.lg,
+      fontFamily: t.families.subheader,
+      color: c.onTintSecondary,
+      textAlign: 'center',
+    },
+    primaryCompactText: {
+      fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
+      color: c.backgroundMain,
+      textAlign: 'center',
+    },
+    secondary: {
+      paddingVertical: s.lg - 2,
+      paddingHorizontal: s['2xl'] - 4,
+      borderRadius: r.md,
+      borderWidth: 1,
+      borderColor: c.tintMain,
+      color: c.backgroundMain,
+      alignItems: 'center',
+      alignSelf: 'stretch',
+      marginBottom: s.md,
+    },
+    secondaryText: {
+      fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
+      color: c.tintMain,
+      textAlign: 'center',
+    },
+    tertiary: {
+      paddingVertical: s.md,
+    },
+    tertiaryText: {
+      fontSize: t.sizes.md,
+      fontFamily: t.families.subheader,
+      color: c.textSecondary,
+      textAlign: 'center',
+    },
+    disabled: {
+      opacity: 0.5,
+    },
+  },
+  vibeSaveButton: {
+    backgroundColor: c.tintMain,
+    paddingVertical: s.lg - 2,
+    paddingHorizontal: s.xl,
+    borderRadius: r.md,
+  },
+  vibeCancelButton: {
+    paddingVertical: s.lg - 2,
+    paddingHorizontal: s.xl,
+  },
+  saveVibeButton: {
+    paddingVertical: s.lg - 2,
+    paddingHorizontal: s.xl,
+    borderRadius: r.md,
+    borderWidth: 2,
+    borderColor: c.tintMain,
+    alignSelf: 'flex-start',
+  },
+  retryButton: {
+    paddingVertical: s.md,
+    paddingHorizontal: s.xl,
+    alignSelf: 'center',
+  },
+  refreshButton: {
+    padding: s.sm,
+    marginRight: s.sm,
+  },
+  useVibeButton: {
+    paddingVertical: s.lg - 2,
+    paddingHorizontal: s.xl - 4,
+    borderRadius: r.md,
+    borderWidth: 2,
+    borderColor: c.tintMain,
+    alignSelf: 'center',
+    marginBottom: s.xl,
+  },
+  useVibeButtonText: {
+    fontSize: t.sizes.md,
+    fontFamily: t.families.subheader,
+    color: c.tintMain,
+  },
+  voteButton: {
+    width: 40,
+    height: 40,
+    borderRadius: r.md,
+    backgroundColor: c.cardMain,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  voteSymbol: {
+    fontSize: 20,
+    fontFamily: t.families.header,
+    color: c.textMain,
+  },
+  voteCount: {
+    fontSize: t.sizes.lg,
+    fontFamily: t.families.header,
+    color: c.textMain,
+    minWidth: 32,
+    textAlign: 'center',
+  },
+  textButton: {
+    paddingVertical: s.md,
+  },
+  textButtonText: {
+    fontSize: t.sizes.md,
+    fontFamily: t.families.subheader,
+    color: c.textSecondary,
+  },
+  retryButtonText: {
+    color: c.tintMain,
+    fontSize: t.sizes.md,
+    fontFamily: t.families.subheader,
+  },
+  saveVibeButtonText: {
+    fontSize: t.sizes.md,
+    fontFamily: t.families.subheader,
+    color: c.tintMain,
+  },
+  vibeCancelText: {
+    color: c.textSecondary,
+    fontSize: t.sizes.md,
+    fontFamily: t.families.subheader,
+  },
+  vibeSaveControlText: {
+    fontSize: t.sizes.md,
+    fontFamily: t.families.subheader,
+    color: c.tintMain,
+  },
+});
